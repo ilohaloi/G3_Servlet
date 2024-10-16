@@ -15,15 +15,15 @@ public class MemberJDBC implements MemberDAO{
 		String userid = "root";
 		String passwd = "123456";
 
-		private static final String INSERT_STMT = 
+		private static final String INSERT_STMT =
 			"INSERT INTO member_data (memb_id,memb_name,memb_email,memb_tell,memb_address,memb_birthday,memb_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		private static final String GET_ALL_STMT = 
+		private static final String GET_ALL_STMT =
 			"SELECT * FROM member_data order by memb_id";
-		private static final String GET_ONE_STMT = 
+		private static final String GET_ONE_STMT =
 			"SELECT memb_id,memb_name,memb_email,memb_tell,memb_address,memb_birthday,memb_password FROM member_data where memb_id = ?";
-		private static final String UPDATE = 
+		private static final String UPDATE =
 				"UPDATE member_data set memb_name=?, memb_tell=?, memb_address=?, memb_password=? where memb_id = ?";
-		
+
 		@Override
 		public void insert(MemberVO memberVO) {
 
@@ -36,7 +36,9 @@ public class MemberJDBC implements MemberDAO{
 				con = DriverManager.getConnection(url, userid, passwd);
 				pstmt = con.prepareStatement(INSERT_STMT);
 
+				//TODO ERROR ID 是空值
 				pstmt.setInt(1, memberVO.getId());
+
 				pstmt.setString(2, memberVO.getName());
 				pstmt.setString(3, memberVO.getEmail());
 				pstmt.setString(4, memberVO.getTell());
@@ -73,7 +75,7 @@ public class MemberJDBC implements MemberDAO{
 			}
 
 		}
-		
+
 		@Override
 		public void update(MemberVO memberVO) {
 
@@ -115,7 +117,7 @@ public class MemberJDBC implements MemberDAO{
 		        }
 		    }
 		}
-		
+
 		@Override
 		public MemberVO findByPK(Integer id) {
 
@@ -198,7 +200,7 @@ public class MemberJDBC implements MemberDAO{
 				rs = pstmt.executeQuery();
 
 				while (rs.next()) {
-		
+
 					memberVO = new MemberVO();
 					memberVO.setId(rs.getInt("memb_id"));
 					memberVO.setName(rs.getString("memb_name"));
