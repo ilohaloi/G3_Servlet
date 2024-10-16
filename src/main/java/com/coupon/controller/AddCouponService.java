@@ -2,7 +2,7 @@ package com.coupon.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.Timestamp; // 引入 Timestamp
+import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +17,7 @@ import com.google.gson.JsonDeserializer;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @WebServlet("/addCoupon")
 public class AddCouponService extends HttpServlet {
@@ -63,10 +64,9 @@ public class AddCouponService extends HttpServlet {
 		Gson gson = gsonBuilder.create();
 		Cp cp = gson.fromJson(json, Cp.class);
 
-		// 在此處確保coup_name是基於時間的隨機碼
+		// 在此處確保coup_name是基於自定義規則的隨機碼
 		if (cp != null) {
-			// 自動生成 coup_name
-			cp.setCoup_name(generateTimeBasedName());
+			cp.setCoup_name(generateCustomRandomName());
 		}
 
 		// 檢查 cp 是否為 null 及 ID 是否存在
@@ -82,10 +82,17 @@ public class AddCouponService extends HttpServlet {
 		System.out.println("新增成功");
 	}
 
-	// 用於生成基於時間的隨機碼
-	private String generateTimeBasedName() {
-		long timestamp = System.currentTimeMillis();
-		int randomNum = (int) (Math.random() * 1000); // 生成0-999的隨機數
-		return String.format("NAME-%d-%03d", timestamp, randomNum); // NAME-時間戳-隨機數
+	// 用於生成基於自定義規則的隨機碼
+	private String generateCustomRandomName() {
+		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // 可用字符
+		StringBuilder randomName = new StringBuilder();
+		Random random = new Random();
+
+		for (int i = 0; i < 10; i++) { // 隨機碼長度為 10
+			int index = random.nextInt(characters.length());
+			randomName.append(characters.charAt(index));
+		}
+
+		return randomName.toString(); // 返回隨機生成的碼
 	}
 }
