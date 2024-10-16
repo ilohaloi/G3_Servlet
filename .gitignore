@@ -1,0 +1,7 @@
+.dbeaver/
+.settings/
+.project
+.classpath
+Scripts/
+target/
+.codetogether.ignore
