@@ -35,7 +35,11 @@ public interface JsonSerializerInterface {
 	public default <T>String toJson(List<T> list,boolean annotation){
 		Gson gson = null;
 		if(annotation)
-			gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+			gson = new GsonBuilder()
+			.setPrettyPrinting()
+			.excludeFieldsWithoutExposeAnnotation()
+			.setDateFormat("yyyy-MM-dd HH:mm:ss")
+			.create();
 		else
 			gson = new Gson();
 
@@ -46,7 +50,10 @@ public interface JsonSerializerInterface {
 
 		Gson gson = null;
 		if(annotation)
-			gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+			gson = new GsonBuilder()
+			.setPrettyPrinting()
+			.excludeFieldsWithoutExposeAnnotation()
+			.create();
 		else
 			gson = new Gson();
 
@@ -57,8 +64,8 @@ public interface JsonSerializerInterface {
 		Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Pair.class, new PairSerializer())
                 .registerTypeAdapter(Pair.class, new PairDeserializer())
-                .excludeFieldsWithoutExposeAnnotation() // 只序列化标注了 @Expose 的字段
-                .setPrettyPrinting() // 美化输出
+                .excludeFieldsWithoutExposeAnnotation()
+                .setPrettyPrinting()
                 .create();
 		return gson.toJson(data);
 	}

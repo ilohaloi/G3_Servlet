@@ -31,6 +31,7 @@ public class GetOrderServlet extends HttpServlet implements JsonDeserializerInte
 		if(data==null)
 			return;
 		OrderService oService = new OrderService();
+		//TODO Redis
 		switch (data.getAction()) {
 		case "getOrders":
 			resp.getWriter().write(toJson(oService.getOrders(),true));
@@ -38,13 +39,6 @@ public class GetOrderServlet extends HttpServlet implements JsonDeserializerInte
 		case "getDetail":
 			resp.getWriter().write(toJson(oService.getOrderDetail(data.getIdentity())));
 			break;
-		case "getMembOrder":
-
-			break;
-		default:
-			break;
 		}
-
-
 	}
 }

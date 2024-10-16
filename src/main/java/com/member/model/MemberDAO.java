@@ -12,5 +12,5 @@ public interface MemberDAO {
 	MemberVO findByPK(Integer id);
 	List<MemberVO> getAll();
 
-	
+
 }
