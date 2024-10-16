@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.coupon.model.Cp;
 import com.coupon.model.CpDAO;
 import com.coupon.model.CpDAOHibernateImpl;
+import com.coupon.myutil.HibernateUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
-import com.myutil.HibernateUtil;
 
 @WebServlet("/getCoupon")
 public class GetCouponServlet extends HttpServlet {
