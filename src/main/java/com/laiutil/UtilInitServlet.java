@@ -15,8 +15,12 @@ public class UtilInitServlet implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		sce.getServletContext().setAttribute("redis", RedisUtil.getPool());
 		System.out.println("redis 建立成功");
-//		sce.getServletContext().setAttribute("vault", VaultUtil.getVault());
-//		System.out.println("vault 建立成功");
+
+		if(VaultUtil.getVault()!=null) {
+			sce.getServletContext().setAttribute("vault", VaultUtil.getVault());
+			System.out.println("vault 建立成功");
+		}
+
 		HibernateUtil.getSessionFactory();
 	}
 
@@ -24,7 +28,7 @@ public class UtilInitServlet implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent sce) {
 		RedisUtil.Release();
 		sce.getServletContext().removeAttribute("redis");
-//		sce.getServletContext().removeAttribute("vault");
+		sce.getServletContext().removeAttribute("vault");
 		HibernateUtil.Release();
 	}
 }
