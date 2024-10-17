@@ -1,4 +1,4 @@
-package com.laiutil;
+package com.outherutil;
 
 import java.util.concurrent.TimeUnit;
 

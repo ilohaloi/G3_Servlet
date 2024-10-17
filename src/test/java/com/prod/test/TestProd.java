@@ -3,8 +3,8 @@ package com.prod.test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.laiutil.HibernateUtil;
-import com.laiutil.redis.RedisUtil;
+import com.outherutil.HibernateUtil;
+import com.outherutil.redis.RedisUtil;
 import com.prod.control.ProdService;
 import com.prod.model.ProdDaoImpl;
 import com.prod.model.ProdVo;

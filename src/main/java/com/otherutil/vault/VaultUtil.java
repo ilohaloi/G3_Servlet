@@ -1,4 +1,4 @@
-package com.laiutil.vault;
+package com.otherutil.vault;
 
 import com.bettercloud.vault.Vault;
 import com.bettercloud.vault.VaultConfig;

@@ -10,8 +10,8 @@ import java.util.Map;
 
 import javax.servlet.http.Part;
 
-import com.laiutil.cloudinary.CloudinaryFunction;
-import com.laiutil.cloudinary.CloudinaryUtil;
+import com.outherutil.cloudinary.CloudinaryFunction;
+import com.outherutil.cloudinary.CloudinaryUtil;
 import com.prod.model.ProdDaoImpl;
 import com.prod.model.ProdVo;
 

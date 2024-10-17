@@ -1,4 +1,4 @@
-package com.laiutil;
+package com.outherutil;
 
 public class Tuple<K,V1,V2> {
 

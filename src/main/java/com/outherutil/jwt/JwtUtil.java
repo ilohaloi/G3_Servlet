@@ -1,4 +1,4 @@
-package com.laiutil.jwt;
+package com.outherutil.jwt;
 
 import java.security.PrivateKey;
 

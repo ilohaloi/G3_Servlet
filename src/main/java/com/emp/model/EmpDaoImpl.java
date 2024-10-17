@@ -4,7 +4,7 @@ package com.emp.model;
 import java.util.List;
 import java.util.Map;
 
-import com.laiutil.redis.RedisInterface;
+import com.outherutil.redis.RedisInterface;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

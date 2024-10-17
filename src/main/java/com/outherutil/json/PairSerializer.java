@@ -1,4 +1,4 @@
-package com.laiutil.json;
+package com.outherutil.json;
 
 import java.lang.reflect.Type;
 

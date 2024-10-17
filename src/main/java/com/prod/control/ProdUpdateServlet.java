@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.laiutil.WebUtil;
-import com.laiutil.json.JsonDeserializerInterface;
+import com.outherutil.WebUtil;
+import com.outherutil.json.JsonDeserializerInterface;
 import com.prod.model.ProdVo;
 
 
@@ -19,11 +19,7 @@ public class ProdUpdateServlet extends HttpServlet implements JsonDeserializerIn
 	 *
 	 */
 	private static final long serialVersionUID = 7430052710171805834L;
-	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
-		WebUtil.accessAllallow(arg0, arg1);
-		doPost(arg0, arg1);
-	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {

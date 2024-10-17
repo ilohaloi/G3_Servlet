@@ -1,4 +1,4 @@
-package com.laiutil.redis;
+package com.outherutil.redis;
 
 
 import redis.clients.jedis.JedisPool;
