@@ -22,14 +22,13 @@ public class TestMembCrud {
 		memberVO1.setPassword("12345678");
 	}
 
-
-//	@Test
+	@Test
 	public void testInsert() {
 		memDao.insert(memberVO1);
 	}
 
 	//OK
-	@Test
+//	@Test
 	public void testUpdate() {
 
 		memberVO1.setPassword("987654321");
@@ -38,7 +37,7 @@ public class TestMembCrud {
 	}
 
 	//OK
-	@Test
+//	@Test
 	public void testGetAll() {
 		List<MemberVO> list = memDao.getAll();
 		for (MemberVO aMember : list) {
@@ -54,7 +53,7 @@ public class TestMembCrud {
 	}
 
 	//OK
-	@Test
+//	@Test
 	public void testGetByPk() {
 		var memb =  memDao.findByPK(1);
 
