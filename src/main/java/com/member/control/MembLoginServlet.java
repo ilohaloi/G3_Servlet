@@ -13,22 +13,19 @@ import com.laiutil.json.JsonDeserializerInterface;
 @WebServlet("/memblogin")
 public class MembLoginServlet extends HttpServlet implements  JsonDeserializerInterface {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -2010470964896900381L;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		String username = req.getParameter("username");
+		String username = req.getParameter("email");
 		String password = req.getParameter("password");
 		System.out.println(username);
 		System.out.println(password);
 		String auth = "poko5488";
 
 		if(password.equals(auth)) {
-			resp.getWriter().write("succes");
+			resp.getWriter().write("success");
 		}
 	}
 }
