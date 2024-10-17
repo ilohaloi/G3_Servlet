@@ -19,29 +19,8 @@ public class AuthFilterServlet implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-    	HttpServletRequest req = (HttpServletRequest)request;
-    	HttpServletResponse resp = (HttpServletResponse)response;
-    	WebUtil.accessAllallow(req, resp);
-    	if("OPTIONS".equals(req.getMethod())) {
-    		chain.doFilter(req, response);
-    		return;
-    	}
-    	Cookie[] cookies = req.getCookies();
-
         System.out.println("Preprocessing request in AuthFilterServlet");
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                
-                if ("token".equals(cookie.getName())) {
-                   System.out.println("have cookie");
-                   break;
-                }
-            }
-        }
-
         chain.doFilter(request, response);
-
 
         System.out.println("Postprocessing response in AuthFilterServlet");
     }
