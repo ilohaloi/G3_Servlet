@@ -5,8 +5,8 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 
-import com.laiutil.Dao;
-import com.laiutil.HibernateUtil;
+import com.outherutil.Dao;
+import com.outherutil.HibernateUtil;
 public class OrderDaoImpl implements Dao{
 
 	public void insert(OrderListVo data) {

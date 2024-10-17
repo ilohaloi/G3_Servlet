@@ -1,9 +1,11 @@
-package com.laiutil.redis;
+package com.outherutil.redis;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.laiutil.Tuple;
+
+import com.outherutil.Tuple;
+
 import kotlin.Pair;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

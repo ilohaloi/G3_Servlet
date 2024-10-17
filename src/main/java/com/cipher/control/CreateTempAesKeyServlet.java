@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cipher.model.KeyFormatInterface;
 import com.cipher.model.KeyGenerateInterface;
-import com.laiutil.WebUtil;
-import com.laiutil.json.JsonSerializerInterface;
+import com.outherutil.WebUtil;
+import com.outherutil.json.JsonSerializerInterface;
 
 
 
@@ -25,11 +25,7 @@ public class CreateTempAesKeyServlet extends HttpServlet implements KeyGenerateI
 	 */
 	private static final long serialVersionUID = -5628461626877694871L;
 
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		WebUtil.accessAllallow(req, resp);
-		doPost(req, resp);
-	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

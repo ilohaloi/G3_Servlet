@@ -1,4 +1,4 @@
-package com.laiutil.vault;
+package com.otherutil.vault;
 
 import java.util.HashMap;
 import java.util.Map;

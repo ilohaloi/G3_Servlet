@@ -1,4 +1,4 @@
-package com.laiutil.cloudinary;
+package com.outherutil.cloudinary;
 
 import java.io.IOException;
 import com.cloudinary.Cloudinary;
