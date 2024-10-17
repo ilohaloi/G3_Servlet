@@ -38,6 +38,7 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 		VaultFuntion vFuntion = new VaultFuntion(vault, "keys/empKey");
 		EmpService eService = new EmpService();
 		if (!eService.login(emp, vFuntion.getAllData())) {
+			resp.setContentType("application/json; charset=UTF-8");
 			resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
 			resp.getWriter().write(createJsonKvObject("info", "帳號密碼輸入錯誤"));
 		} else {

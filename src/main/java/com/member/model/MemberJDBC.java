@@ -31,7 +31,6 @@ public class MemberJDBC implements MemberDAO{
 			PreparedStatement pstmt = null;
 
 			try {
-
 				Class.forName(driver);
 				con = DriverManager.getConnection(url, userid, passwd);
 				pstmt = con.prepareStatement(INSERT_STMT);
