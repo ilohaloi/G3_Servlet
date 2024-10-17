@@ -19,6 +19,9 @@
 		<mapping class="com.order.model.OrderListVo" />
 		<mapping class="com.order.model.OrderDetailVo" />
 		<mapping class="com.order.model.OrderDetailId" />
+
+		<mapping class="com.coupon.model.Cp" />
+
 	</session-factory>
 </hibernate-configuration>
 

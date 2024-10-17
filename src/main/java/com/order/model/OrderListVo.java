@@ -44,6 +44,7 @@ public class OrderListVo implements Serializable {
 	@Column(name = "memb_id")
 	private Integer membId;
 
+	@Expose
 	@Column(name = "order_time", insertable = false)
 	private Date time;
 
