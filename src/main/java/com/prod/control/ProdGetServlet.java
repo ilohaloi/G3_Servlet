@@ -37,6 +37,7 @@ public class ProdGetServlet extends HttpServlet implements JsonDeserializerInter
 		try {
 			ProdService pService = new ProdService();
 			JedisPool pool = (JedisPool)getServletContext().getAttribute("redis");
+			resp.setContentType("application/json; charset=UTF-8");
 			resp.getWriter().write(toJson(pService.getProds(pool),false));
 //			switch (webData.getAction()) {
 //

@@ -25,7 +25,6 @@ public class EmpRegisterServlet extends HttpServlet implements KeyGenerateInterf
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 
-		resp.setContentType("application/json");
 		EmpVo emp = (EmpVo)req.getAttribute("registerData");
 		EmpService eService = new EmpService();
 		KeyPair key = getRsakey();
@@ -37,6 +36,7 @@ public class EmpRegisterServlet extends HttpServlet implements KeyGenerateInterf
 		if(vault==null)
 			return;
 
+		resp.setContentType("application/json; charset=UTF-8");
 		//TODO 表層代碼精簡化
 		String eString = new String();
 		if(!eService.formatCheck(emp,eString)) {

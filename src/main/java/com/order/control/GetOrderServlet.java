@@ -32,6 +32,7 @@ public class GetOrderServlet extends HttpServlet implements JsonDeserializerInte
 			return;
 		OrderService oService = new OrderService();
 		//TODO Redis
+		resp.setContentType("application/json; charset=UTF-8");
 		switch (data.getAction()) {
 		case "getOrders":
 			resp.getWriter().write(toJson(oService.getOrders(),true));
