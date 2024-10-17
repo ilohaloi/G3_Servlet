@@ -10,6 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebFilter("/page/*")
 public class AuthFilterServlet implements Filter {
@@ -19,6 +20,8 @@ public class AuthFilterServlet implements Filter {
             throws IOException, ServletException {
 
     	HttpServletRequest req = (HttpServletRequest)request;
+    	HttpServletResponse resp = (HttpServletResponse)response;
+    	WebUtil.accessAllallow(req, resp);
     	if("OPTIONS".equals(req.getMethod())) {
     		chain.doFilter(req, response);
     		return;
@@ -29,7 +32,7 @@ public class AuthFilterServlet implements Filter {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                // 检查是否存在名为 "targetCookie" 的 Cookie
+                
                 if ("token".equals(cookie.getName())) {
                    System.out.println("have cookie");
                    break;
