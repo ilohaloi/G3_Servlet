@@ -45,11 +45,11 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 
 			String jwt = eService.createJwt(emp, new Pair<String, String>("role", "login"), 3600000);
 			Cookie cookie = new Cookie("token", jwt);
-
 			cookie.setPath("/");
 			cookie.setSecure(false);
 			cookie.setHttpOnly(true);
 			cookie.setDomain(req.getRemoteHost());
+
 			resp.addCookie(cookie);
 		}
 	}
