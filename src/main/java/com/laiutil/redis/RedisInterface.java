@@ -3,14 +3,13 @@ package com.laiutil.redis;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.laiutil.Tuple;
-
 import kotlin.Pair;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.params.ScanParams;
 import redis.clients.jedis.resps.ScanResult;
+
 
 public interface RedisInterface {
 

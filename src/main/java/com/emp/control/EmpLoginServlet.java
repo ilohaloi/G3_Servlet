@@ -15,6 +15,7 @@ import com.laiutil.json.JsonSerializerInterface;
 import com.laiutil.vault.VaultFuntion;
 
 import kotlin.Pair;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/emplogin")
 public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterface {
@@ -42,6 +43,7 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 			resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
 			resp.getWriter().write(createJsonKvObject("info", "帳號密碼輸入錯誤"));
 		} else {
+
 
 			String jwt = eService.createJwt(emp, new Pair<String, String>("role", "login"), 3600000);
 			Cookie cookie = new Cookie("token", jwt);
