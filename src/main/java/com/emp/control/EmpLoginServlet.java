@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bettercloud.vault.Vault;
-import com.laiutil.Tuple;
-import com.laiutil.json.JsonSerializerInterface;
-import com.laiutil.vault.VaultFuntion;
+import com.otherutil.vault.VaultFuntion;
+import com.outherutil.Tuple;
+import com.outherutil.json.JsonSerializerInterface;
 
 import kotlin.Pair;
 import redis.clients.jedis.JedisPool;

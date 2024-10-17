@@ -1,11 +1,11 @@
-package com.laiutil;
+package com.outherutil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import com.laiutil.redis.RedisUtil;
-import com.laiutil.vault.VaultUtil;
+import com.otherutil.vault.VaultUtil;
+import com.outherutil.redis.RedisUtil;
 
 
 @WebListener

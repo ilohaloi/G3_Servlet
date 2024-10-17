@@ -14,10 +14,10 @@ import com.cipher.model.KeyFormatInterface;
 import com.emp.model.EmpDaoImpl;
 import com.emp.model.EmpLoginVo;
 import com.emp.model.EmpVo;
-import com.laiutil.Tuple;
-import com.laiutil.json.JsonDeserializerInterface;
-import com.laiutil.jwt.JwtUtil;
-import com.laiutil.vault.VaultFuntion;
+import com.otherutil.vault.VaultFuntion;
+import com.outherutil.Tuple;
+import com.outherutil.json.JsonDeserializerInterface;
+import com.outherutil.jwt.JwtUtil;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
 
-import com.laiutil.Dao;
-import com.laiutil.HibernateUtil;
-import com.laiutil.redis.RedisInterface;
+import com.outherutil.Dao;
+import com.outherutil.HibernateUtil;
+import com.outherutil.redis.RedisInterface;
 
 import kotlin.Pair;
 import redis.clients.jedis.Jedis;

@@ -4,7 +4,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 
-import com.laiutil.HibernateUtil;
+import com.outherutil.HibernateUtil;
 
 public interface EmpInterface{
 	public default void insert(EmpVo emp) {

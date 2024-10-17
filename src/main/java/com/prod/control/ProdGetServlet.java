@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.cipher.model.WebDataVo;
-import com.laiutil.WebUtil;
-import com.laiutil.json.JsonDeserializerInterface;
-import com.laiutil.json.JsonSerializerInterface;
+import com.outherutil.json.JsonDeserializerInterface;
+import com.outherutil.json.JsonSerializerInterface;
 
 import redis.clients.jedis.JedisPool;
 @WebServlet("/prodget")
@@ -22,11 +21,6 @@ public class ProdGetServlet extends HttpServlet implements JsonDeserializerInter
 	 */
 	private static final long serialVersionUID = 2559350853892450921L;
 
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		WebUtil.accessAllallow(req, resp);
-		doPost(req, resp);
-	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

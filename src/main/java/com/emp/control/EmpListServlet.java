@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.laiutil.WebUtil;
-import com.laiutil.json.JsonSerializerInterface;
+import com.outherutil.WebUtil;
+import com.outherutil.json.JsonSerializerInterface;
 
 
 
@@ -21,11 +21,7 @@ public class EmpListServlet extends HttpServlet implements JsonSerializerInterfa
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		WebUtil.accessAllallow(req, resp);
-		doGet(req, resp);
-	}
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

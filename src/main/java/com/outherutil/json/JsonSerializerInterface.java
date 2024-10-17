@@ -1,4 +1,4 @@
-package com.laiutil.json;
+package com.outherutil.json;
 
 import java.util.LinkedHashMap;
 import java.util.List;

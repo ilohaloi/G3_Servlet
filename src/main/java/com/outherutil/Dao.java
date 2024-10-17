@@ -1,4 +1,4 @@
-package com.laiutil;
+package com.outherutil;
 
 import java.util.List;
 import org.hibernate.Session;

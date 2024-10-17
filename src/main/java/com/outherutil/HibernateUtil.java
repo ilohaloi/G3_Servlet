@@ -1,4 +1,4 @@
-package com.laiutil;
+package com.outherutil;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
