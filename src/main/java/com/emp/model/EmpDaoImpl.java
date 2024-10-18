@@ -19,13 +19,6 @@ public class EmpDaoImpl implements EmpInterface ,RedisInterface{
 
 	@Override
 	public void redisUpdate(JedisPool pool,Object data) {
-
-		try(Jedis jedis = pool.getResource()) {
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
 	}
 
 	@Override
@@ -64,8 +57,10 @@ public class EmpDaoImpl implements EmpInterface ,RedisInterface{
 	    throw new IllegalArgumentException("Invalid data type. Expected EmpVo.");
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public List<Object> redisGetAllByKey(JedisPool pool, String key) {
+	public List redisGetAllByKey(JedisPool pool, String folderName) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
