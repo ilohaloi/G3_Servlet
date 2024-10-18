@@ -21,15 +21,19 @@ public interface RedisInterface {
 	public default void redisInsert(JedisPool pool,Tuple<String, String, String> data,long expirMillis) {
 		try(Jedis jedis = pool.getResource()) {
 			jedis.hset(data.getK() + data.getV1(), "token",data.getV2());
-			jedis.expire(data.getK() + data.getV1(),expirMillis );
+			if(expirMillis>0)
+				jedis.expire(data.getK() + data.getV1(),expirMillis );
 		}
 	}
 	/**
 	 * 	物件插入
 	 * */
-	public default void redisInsert(JedisPool pool,String setName,Pair<String, Map<String,String>> data) {
+	public default void redisInsert(JedisPool pool,String setName,Pair<String, Map<String,String>> data,long expirMillis) {
 		try(Jedis jedis = pool.getResource()) {
 			jedis.hset(setName + data.component1(), data.component2());
+
+			if(expirMillis>0)
+				jedis.expire(setName + data.component1() ,expirMillis );
 		}
 	}
 
@@ -38,8 +42,8 @@ public interface RedisInterface {
 
 
 	public Object redisGetByKey(JedisPool pool,String key);
-	public List<Object> redisGetAllByKey(JedisPool pool,String key);
-
+	@SuppressWarnings("rawtypes")
+	public List redisGetAllByKey(JedisPool pool, String folderName);
 
 	public default List<String> keyScan(Jedis jedis,String key){
 		String cursor = "0";
