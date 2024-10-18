@@ -71,7 +71,7 @@ public class UpdateMemberServlet extends HttpServlet {
 		try {
 			memberjdbc.update(memberVO);
 			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.getWriter().write("{\"message\": \"成功修改優惠券！\"}");
+			resp.getWriter().write("{\"message\": \"成功修改會員資料！\"}");
 			System.out.println("成功修改會員資料");
 		} catch (Exception e) {
 			e.printStackTrace();

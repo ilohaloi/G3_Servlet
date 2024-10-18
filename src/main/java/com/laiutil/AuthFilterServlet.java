@@ -20,8 +20,8 @@ public class AuthFilterServlet implements Filter {
             throws IOException, ServletException {
 
         System.out.println("Preprocessing request in AuthFilterServlet");
+        WebUtil.accessAllallow((HttpServletRequest)request, (HttpServletResponse)response);
         chain.doFilter(request, response);
-
         System.out.println("Postprocessing response in AuthFilterServlet");
     }
 }
