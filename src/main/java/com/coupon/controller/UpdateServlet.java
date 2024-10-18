@@ -27,7 +27,7 @@ public class UpdateServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 跨域請求設定
 		resp.setHeader("Access-Control-Allow-Origin", "*");
-		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS"); // 加入 PUT 方法
 		resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 加入 Authorization 或其他需要的標頭
 
 		// 檢查 OPTIONS 請求
@@ -59,16 +59,17 @@ public class UpdateServlet extends HttpServlet {
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
 
-		// 自定義日期解析器  // 使用 DateTimeFormatter 來定義解析格式 yyyy-MM-dd'T'HH:mm
+		// 自定義日期解析器 // 使用 DateTimeFormatter 來定義解析格式 yyyy-MM-dd'T'HH:mm
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 		gsonBuilder.registerTypeAdapter(Timestamp.class,
 				(JsonDeserializer<Timestamp>) (jsonElement, typeOfT, context) -> {
 					LocalDateTime dateTime = LocalDateTime.parse(jsonElement.getAsString(), formatter);
-					return Timestamp.valueOf(dateTime);  // 將字符串轉換為 LocalDateTime，然後再轉換為 Timestamp
+					return Timestamp.valueOf(dateTime); // 將字符串轉換為 LocalDateTime，然後再轉換為 Timestamp
 				});
 
 		Gson gson = gsonBuilder.create();
 
+		resp.setContentType("application/json; charset=utf-8");
 		Cp cp = gson.fromJson(json, Cp.class);
 		if (cp == null || cp.getCoup_id() == null) {
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
