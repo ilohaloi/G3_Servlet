@@ -5,7 +5,7 @@ public class WebDataVo {
 	String identity;
 	String data;
 	String base64key;
-
+	String token;
 	public WebDataVo() {}
 
 	public WebDataVo(String action,String identity,String data, String key) {
@@ -45,6 +45,14 @@ public class WebDataVo {
 
 	public void setAction(String action) {
 		this.action = action;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

@@ -47,15 +47,15 @@ public class EmpRegisterServlet extends HttpServlet implements KeyGenerateInterf
 			resp.getWriter().write(createJsonKvObject("info", "帳號重複","color", "red"));
 			return;
 		}
-		else if(!eService.saveEmpDataToVault(emp, key.getPrivate(),vault , "keys/empKey")) {
+		else if(!eService.insertEmp(emp, key.getPrivate(),vault , "keys/empKey")) {
 			resp.getWriter().write(createJsonKvObject("info", "稍後在試 v","color", "red"));
 			return;
 		}
-		else if(!eService.saveEmpDataToDataBase(emp, key.getPublic())) {
+		else if(!eService.insertEmp(emp, key.getPublic())) {
 			resp.getWriter().write(createJsonKvObject("info", "稍後在試 d","color", "red"));
 			return;
 		}
-		else if(!eService.saveEmpDataToRedis((JedisPool)getServletContext().getAttribute("redis"), emp, key.getPublic())) {
+		else if(!eService.insertEmp((JedisPool)getServletContext().getAttribute("redis"), emp, key.getPublic())) {
 			resp.getWriter().write(createJsonKvObject("info", "稍後在試 j","color", "red"));
 			return;
 		}else {
