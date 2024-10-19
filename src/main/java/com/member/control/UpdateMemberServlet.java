@@ -59,13 +59,13 @@ public class UpdateMemberServlet extends HttpServlet {
 
         Gson gson = new GsonBuilder().create();
 
+<<<<<<< HEAD
         MemberVO memberVO = gson.fromJson(json, MemberVO.class);
         if (memberVO == null || memberVO.getId() == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("{\"error\": \"無法解析 JSON 資料，email 為空或無效\"}");
             return;
         }
-
         MemberJDBC memberjdbc = new MemberJDBC();
         try {
             memberjdbc.update(memberVO);
