@@ -65,6 +65,7 @@ public class UpdateMemberServlet extends HttpServlet {
             resp.getWriter().write("{\"error\": \"無法解析 JSON 資料，email 為空或無效\"}");
             return;
         }
+
         MemberJDBC memberjdbc = new MemberJDBC();
         try {
             memberjdbc.update(memberVO);

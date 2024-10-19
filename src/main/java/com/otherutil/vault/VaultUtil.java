@@ -6,6 +6,10 @@ import com.bettercloud.vault.VaultException;
 
 public class VaultUtil {
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://github.com/kiki77596/TIA103G3_Servlet.git
 	private static Vault vault = ValueInit();
 
 	public static Vault getVault() {

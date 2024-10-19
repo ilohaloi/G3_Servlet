@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import com.outherutil.json.JsonDeserializerInterface;
 
 @WebFilter("/*")
@@ -53,6 +54,3 @@ public class AuthFilterServlet implements Filter, JsonDeserializerInterface {
 
 
 //	}
-
-
-
