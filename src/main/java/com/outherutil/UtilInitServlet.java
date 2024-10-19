@@ -16,12 +16,11 @@ public class UtilInitServlet implements ServletContextListener {
 		sce.getServletContext().setAttribute("redis", RedisUtil.getPool());
 		System.out.println("redis 建立成功");
 
-
 		if(VaultUtil.getVault()!=null) {
 			sce.getServletContext().setAttribute("vault", VaultUtil.getVault());
 			System.out.println("vault 建立成功");
 		}
-		HibernateUtil.getSessionFactory();
+
 	}
 
 	@Override
