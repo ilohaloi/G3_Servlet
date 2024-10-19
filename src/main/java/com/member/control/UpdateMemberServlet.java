@@ -59,7 +59,6 @@ public class UpdateMemberServlet extends HttpServlet {
 
         Gson gson = new GsonBuilder().create();
 
-<<<<<<< HEAD
         MemberVO memberVO = gson.fromJson(json, MemberVO.class);
         if (memberVO == null || memberVO.getId() == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
