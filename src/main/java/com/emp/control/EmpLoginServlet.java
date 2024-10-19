@@ -46,9 +46,9 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 			resp.getWriter().write(createJsonKvObject("info", "帳號密碼輸入錯誤"));
 		} else {
 			HttpSession session = req.getSession();
-
 			eService.insertLoginAuth((JedisPool)getServletContext().getAttribute("redis"), emp.getK(),session.getId());
 			resp.getWriter().write(createJsonKvObject("token",session.getId()));
+
 		}
 	}
 }
