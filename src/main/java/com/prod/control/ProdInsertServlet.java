@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.laiutil.WebUtil;
-import com.laiutil.json.JsonSerializerInterface;
+import com.outherutil.WebUtil;
+import com.outherutil.json.JsonSerializerInterface;
 import com.prod.model.ProdVo;
 
 @WebServlet("/prodinsert")
@@ -24,13 +24,7 @@ public class ProdInsertServlet extends HttpServlet implements JsonSerializerInte
 	 *
 	 */
 	private static final long serialVersionUID = -3693841330979040890L;
-	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
 
-		WebUtil.accessAllallow(arg0, arg1);
-		doPost(arg0, arg1);
-
-	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

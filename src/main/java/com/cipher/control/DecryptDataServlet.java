@@ -15,9 +15,9 @@ import com.cipher.model.KeyGenerateInterface;
 import com.cipher.model.WebDataVo;
 import com.emp.control.EmpService;
 import com.emp.model.EmpVo;
-import com.laiutil.Tuple;
-import com.laiutil.json.JsonDeserializerInterface;
-import com.laiutil.json.JsonSerializerInterface;
+import com.outherutil.Tuple;
+import com.outherutil.json.JsonDeserializerInterface;
+import com.outherutil.json.JsonSerializerInterface;
 
 import redis.clients.jedis.JedisPool;
 
@@ -26,15 +26,6 @@ public class DecryptDataServlet extends HttpServlet
 		implements JsonDeserializerInterface, KeyFormatInterface, KeyGenerateInterface, CipherInterface ,JsonSerializerInterface{
 
 	private static final long serialVersionUID = -1390169436743831857L;
-
-	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-		resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-		resp.setHeader("Access-Control-Allow-Credentials", "true");
-		doPost(req, resp);
-	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

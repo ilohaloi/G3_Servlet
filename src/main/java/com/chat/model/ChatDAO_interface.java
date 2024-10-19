@@ -8,7 +8,8 @@ public interface ChatDAO_interface {
           public List<ChatVO> findByMembIdAndConvContent(Integer memb_id, String conv_content);
           public List<ChatVO> findByMembId(Integer memb_id);
           public List<ChatVO> getAll();
-          //¸U¥Î½Æ¦X¬d¸ß(¶Ç¤J°Ñ¼Æ«¬ºAMap)(¦^¶Ç List)
+          //è¬ç”¨è¤‡åˆæŸ¥è©¢(å‚³å…¥åƒæ•¸å‹æ…‹Map)(å›å‚³ List)
 //        public List<ChatVO> getAll(Map<String, String[]> map); 
 }
+
 

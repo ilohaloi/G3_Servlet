@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.cipher.model.WebDataVo;
-import com.laiutil.WebUtil;
-import com.laiutil.json.JsonDeserializerInterface;
-import com.laiutil.json.JsonSerializerInterface;
+import com.outherutil.WebUtil;
+import com.outherutil.json.JsonDeserializerInterface;
+import com.outherutil.json.JsonSerializerInterface;
 
 
 @WebServlet("/getorder")
@@ -32,6 +32,7 @@ public class GetOrderServlet extends HttpServlet implements JsonDeserializerInte
 			return;
 		OrderService oService = new OrderService();
 		//TODO Redis
+		resp.setContentType("application/json; charset=UTF-8");
 		switch (data.getAction()) {
 		case "getOrders":
 			resp.getWriter().write(toJson(oService.getOrders(),true));

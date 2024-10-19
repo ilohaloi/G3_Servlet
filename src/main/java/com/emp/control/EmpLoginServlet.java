@@ -8,13 +8,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 import com.bettercloud.vault.Vault;
-import com.laiutil.Tuple;
-import com.laiutil.json.JsonSerializerInterface;
-import com.laiutil.vault.VaultFuntion;
+import com.otherutil.vault.VaultFuntion;
+import com.outherutil.Tuple;
+import com.outherutil.json.JsonSerializerInterface;
 
 import kotlin.Pair;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/emplogin")
 public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterface {
@@ -38,18 +39,14 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 		VaultFuntion vFuntion = new VaultFuntion(vault, "keys/empKey");
 		EmpService eService = new EmpService();
 		if (!eService.login(emp, vFuntion.getAllData())) {
+			resp.setContentType("application/json; charset=UTF-8");
 			resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
 			resp.getWriter().write(createJsonKvObject("info", "帳號密碼輸入錯誤"));
 		} else {
+			HttpSession session = req.getSession();
+			eService.insertLoginAuth((JedisPool)getServletContext().getAttribute("redis"), emp.getK(),session.getId());
+			resp.getWriter().write(createJsonKvObject("token",session.getId()));
 
-			String jwt = eService.createJwt(emp, new Pair<String, String>("role", "login"), 3600000);
-			Cookie cookie = new Cookie("token", jwt);
-
-			cookie.setPath("/");
-			cookie.setSecure(false);
-			cookie.setHttpOnly(true);
-			cookie.setDomain(req.getRemoteHost());
-			resp.addCookie(cookie);
 		}
 	}
 }

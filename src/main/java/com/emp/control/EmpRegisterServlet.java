@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.bettercloud.vault.Vault;
 import com.cipher.model.KeyGenerateInterface;
 import com.emp.model.EmpVo;
-import com.laiutil.json.JsonSerializerInterface;
+import com.outherutil.json.JsonSerializerInterface;
+
 import redis.clients.jedis.JedisPool;
 
 
@@ -25,7 +26,6 @@ public class EmpRegisterServlet extends HttpServlet implements KeyGenerateInterf
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 
-		resp.setContentType("application/json");
 		EmpVo emp = (EmpVo)req.getAttribute("registerData");
 		EmpService eService = new EmpService();
 		KeyPair key = getRsakey();
@@ -37,6 +37,7 @@ public class EmpRegisterServlet extends HttpServlet implements KeyGenerateInterf
 		if(vault==null)
 			return;
 
+		resp.setContentType("application/json; charset=UTF-8");
 		//TODO 表層代碼精簡化
 		String eString = new String();
 		if(!eService.formatCheck(emp,eString)) {
@@ -46,15 +47,15 @@ public class EmpRegisterServlet extends HttpServlet implements KeyGenerateInterf
 			resp.getWriter().write(createJsonKvObject("info", "帳號重複","color", "red"));
 			return;
 		}
-		else if(!eService.saveEmpDataToVault(emp, key.getPrivate(),vault , "keys/empKey")) {
+		else if(!eService.insertEmp(emp, key.getPrivate(),vault , "keys/empKey")) {
 			resp.getWriter().write(createJsonKvObject("info", "稍後在試 v","color", "red"));
 			return;
 		}
-		else if(!eService.saveEmpDataToDataBase(emp, key.getPublic())) {
+		else if(!eService.insertEmp(emp, key.getPublic())) {
 			resp.getWriter().write(createJsonKvObject("info", "稍後在試 d","color", "red"));
 			return;
 		}
-		else if(!eService.saveEmpDataToRedis((JedisPool)getServletContext().getAttribute("redis"), emp, key.getPublic())) {
+		else if(!eService.insertEmp((JedisPool)getServletContext().getAttribute("redis"), emp, key.getPublic())) {
 			resp.getWriter().write(createJsonKvObject("info", "稍後在試 j","color", "red"));
 			return;
 		}else {
