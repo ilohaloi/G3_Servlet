@@ -70,7 +70,7 @@ public class ProdDaoImpl implements Dao ,RedisInterface{
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List redisGetAllByKey(JedisPool pool, String folderName) {
 		List<ProdVo> prods = new ArrayList<ProdVo>();
