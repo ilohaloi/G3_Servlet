@@ -10,6 +10,7 @@ import com.bettercloud.vault.response.LogicalResponse;
 import kotlin.Pair;
 
 public class VaultFuntion {
+
 	private Vault vault;
 	private String path;
 
