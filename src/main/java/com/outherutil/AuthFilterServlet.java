@@ -9,12 +9,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.cipher.model.WebDataVo;
+
 import com.outherutil.json.JsonDeserializerInterface;
-import redis.clients.jedis.JedisPool;
 
 @WebFilter("/*")
 public class AuthFilterServlet implements Filter, JsonDeserializerInterface {
+
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -48,5 +48,8 @@ public class AuthFilterServlet implements Filter, JsonDeserializerInterface {
 	        // 在验证通过后才调用 chain.doFilter
 	        chain.doFilter(request, response);
 		}
-//	}
-}
+
+	}
+
+
+
