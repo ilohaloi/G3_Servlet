@@ -50,6 +50,7 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 
 	@SuppressWarnings("unchecked")
 	@Override
+	// Tuple<String, String, PrivateKey> emp
 	public String createJwt(Object emp, Pair<String, String> claim, long expirMillis) {
 		Date now = new Date(System.currentTimeMillis());
 		Date exp = new Date(System.currentTimeMillis() + expirMillis);
@@ -93,7 +94,6 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 		return eDaoImpl.isAccountDuplication(emp.getAccount());
 	}
 
-	//TODO 專用excpion
 	public String getEmpBase64PubKey(JedisPool jpool,String username)throws Exception {
 		EmpVo emp = eDaoImpl.redisGetByKey(jpool, username);
 
@@ -110,18 +110,21 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 	public List<EmpVo> getAllEmpData(){
 		return eDaoImpl.getAll();
 	}
-	public boolean saveEmpDataToDataBase(EmpVo emp, PublicKey key) {
+
+	public boolean insertEmp(EmpVo emp, PublicKey key) {
 
 		emp.setPublicKey(getBase64FromKey(key));
 		emp.setPassword(encrypt(emp.getPassword(), key, RSA));
 		eDaoImpl.insert(emp);
 		return true;
 	}
-	public void saveTokenToRedis(JedisPool jpool,Tuple<String, String, String> data, long expirMillis) {
+
+	public void insertTokenToRedis(JedisPool jpool,Tuple<String, String, String> data, long expirMillis) {
 
 		eDaoImpl.redisInsert(jpool,data,expirMillis);
 	}
-	public boolean saveEmpDataToRedis(JedisPool jpool, EmpVo emp, PublicKey key) {
+
+	public boolean insertEmp(JedisPool jpool, EmpVo emp, PublicKey key) {
 
 		emp.setPublicKey(getBase64FromKey(key));
 		Pair<String, Map<String, String>> data = new Pair<String, Map<String, String>>(emp.getAccount(),
@@ -131,12 +134,11 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 		data.getSecond().put("pubKey", emp.getPublicKey());
 		data.getSecond().put("password", emp.getPassword());
 
-		eDaoImpl.redisInsert(jpool, "emp:", data);
+		eDaoImpl.redisInsert(jpool, "emp:", data,-1);
 		return true;
 	}
 
-	// "keys/empKey"
-	public boolean saveEmpDataToVault(EmpVo emp, PrivateKey key, Vault vault, String path) {
+	public boolean insertEmp(EmpVo emp, PrivateKey key, Vault vault, String path) {
 		vFuntion = new VaultFuntion(vault, path);
 		try {
 			vFuntion.update(new Pair<String, String>(emp.getAccount(), getBase64FromKey(key)));
@@ -145,5 +147,12 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public void insertLoginAuth(JedisPool jpool,String username,String session) {
+		Pair<String, Map<String, String>> data = new Pair<String, Map<String, String>>(username,
+				new HashMap<String, String>());
+		data.getSecond().put("token", session);
+		eDaoImpl.redisInsert(jpool,"login:", data,120);
 	}
 }
