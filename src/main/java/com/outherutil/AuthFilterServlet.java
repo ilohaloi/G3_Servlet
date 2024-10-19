@@ -24,29 +24,29 @@ public class AuthFilterServlet implements Filter, JsonDeserializerInterface {
 		HttpServletResponse resp = (HttpServletResponse) response;
 		WebUtil.accessAllallow(req, resp);
 
-		if ("OPTIONS".equals(req.getMethod())) {
-			chain.doFilter(request, response);
-			return;
-		}
-		else {
-
-			CachedBodyHttpServletRequest cachedRequest = new CachedBodyHttpServletRequest(req);
-
-	        WebDataVo data = readJsonFromBufferedReader(cachedRequest.getReader(), WebDataVo.class);
-
-	        if ("auth".equals(data.getAction())) {
-	            AuthService aService = new AuthService();
-	            JedisPool pool = (JedisPool) req.getServletContext().getAttribute("redis");
-
-	            if (!aService.authCheck(pool, data)) {
-	                // 如果认证失败，立即返回 401 错误
-	                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	                return;
-	            }
-	        }
+//		if ("OPTIONS".equals(req.getMethod())) {
+//			chain.doFilter(request, response);
+//			return;
+//		}
+//		else {
+//
+//			CachedBodyHttpServletRequest cachedRequest = new CachedBodyHttpServletRequest(req);
+//
+//	        WebDataVo data = readJsonFromBufferedReader(cachedRequest.getReader(), WebDataVo.class);
+//
+//	        if ("auth".equals(data.getAction())) {
+//	            AuthService aService = new AuthService();
+//	            JedisPool pool = (JedisPool) req.getServletContext().getAttribute("redis");
+//
+//	            if (!aService.authCheck(pool, data)) {
+//	                // 如果认证失败，立即返回 401 错误
+//	                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//	                return;
+//	            }
+//	        }
 
 	        // 在验证通过后才调用 chain.doFilter
-	        chain.doFilter(cachedRequest, response);
+	        chain.doFilter(request, response);
 		}
-	}
+//	}
 }
