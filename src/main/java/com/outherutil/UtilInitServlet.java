@@ -19,8 +19,6 @@ public class UtilInitServlet implements ServletContextListener {
 			sce.getServletContext().setAttribute("vault", VaultUtil.getVault());
 			System.out.println("vault 建立成功");
 		}
-
-
 	}
 
 	@Override
