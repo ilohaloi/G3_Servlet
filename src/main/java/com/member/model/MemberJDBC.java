@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 public class MemberJDBC implements MemberDAO {
@@ -278,5 +277,58 @@ public class MemberJDBC implements MemberDAO {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public MemberVO findByEmail(String email) {
+	    MemberVO memberVO = null;
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        Class.forName(driver);
+	        con = DriverManager.getConnection(url, userid, passwd);
+	        String GET_EMAIL = "SELECT * FROM member_data WHERE memb_email = ?";
+	        pstmt = con.prepareStatement(GET_EMAIL);
+	        pstmt.setString(1, email);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            memberVO = new MemberVO();
+	            memberVO.setId(rs.getInt("memb_id"));
+	            memberVO.setName(rs.getString("memb_name"));
+	            memberVO.setEmail(rs.getString("memb_email"));
+	            memberVO.setTell(rs.getString("memb_tell"));
+	            memberVO.setAddress(rs.getString("memb_address"));
+	            memberVO.setBirthday(rs.getDate("memb_birthday"));
+	            memberVO.setPassword(rs.getString("memb_password"));
+	        }
+	    } catch (ClassNotFoundException | SQLException e) {
+	        throw new RuntimeException("A database error occurred. " + e.getMessage());
+	    } finally {
+	        if (rs != null) {
+	            try {
+	                rs.close();
+	            } catch (SQLException se) {
+	                se.printStackTrace(System.err);
+	            }
+	        }
+	        if (pstmt != null) {
+	            try {
+	                pstmt.close();
+	            } catch (SQLException se) {
+	                se.printStackTrace(System.err);
+	            }
+	        }
+	        if (con != null) {
+	            try {
+	                con.close();
+	            } catch (Exception e) {
+	                e.printStackTrace(System.err);
+	            }
+	        }
+	    }
+	    return memberVO;
 	}
 }
