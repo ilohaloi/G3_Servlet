@@ -46,11 +46,11 @@ public class AuthFilterServlet implements Filter, JsonDeserializerInterface {
 //	            }
 //	        }
 
-	        // 在验证通过后才调用 chain.doFilter
-	        chain.doFilter(request, response);
-		}
-
+		// 在验证通过后才调用 chain.doFilter
+        chain.doFilter(request, response);
 	}
 
+}
 
-//	}
+
+//}
