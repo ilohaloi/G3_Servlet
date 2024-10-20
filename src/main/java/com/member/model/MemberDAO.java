@@ -12,5 +12,6 @@ public interface MemberDAO {
 	MemberVO findByPK(Integer id);
 	List<MemberVO> getAll();
 	public boolean isEmailExists(String email);
+	MemberVO findByEmail(String email);
 
 }

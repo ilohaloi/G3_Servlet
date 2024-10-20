@@ -1,6 +1,5 @@
 package com.coupon.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,11 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.coupon.model.Cp;
 import com.coupon.model.CpDAOHibernateImpl;
-import com.google.gson.Gson;
 
-@WebServlet("/deleteCoupon")
+@WebServlet("/deleteCoupon/*") // 使用 /* 來接收路徑參數
 public class DeleteServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +27,7 @@ public class DeleteServlet extends HttpServlet {
             return;
         }
 
+        // 呼叫 doDelete 方法
         doDelete(req, resp);
     }
 
@@ -37,46 +35,26 @@ public class DeleteServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
 
-        StringBuilder jsonBuilder = new StringBuilder();
-        String line;
-
-        try (BufferedReader br = req.getReader()) {
-            while ((line = br.readLine()) != null) {
-                jsonBuilder.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("{\"error\": \"伺服器讀取請求內容時出現錯誤\"}");
+        // 獲取 URL 中的優惠券 ID
+        String idParam = req.getPathInfo(); // 獲取路徑中的 ID 部分
+        if (idParam == null || idParam.isEmpty()) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"error\": \"無法找到要刪除的優惠券 ID\"}");
             return;
         }
 
-        String json = jsonBuilder.toString();
-        System.out.println("Received JSON for deletion: " + json);
-
-        Gson gson = new Gson();
-        Cp request = null;
-
+        // 解析 ID
+        int coup_id;
         try {
-            request = gson.fromJson(json, Cp.class);
-        } catch (Exception e) {
-            e.printStackTrace();
+            coup_id = Integer.parseInt(idParam.substring(1)); // 去掉開頭的斜杠
+        } catch (NumberFormatException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"無法解析 JSON 資料\"}");
-            return;
-        }
-
-        // 檢查接收到的 ID
-        System.out.println("Received coup_id for deletion: " + (request != null ? request.getCoup_id() : "null"));
-
-        if (request == null || request.getCoup_id() == null) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"無法解析 JSON 資料，coup_id 為空\"}");
+            resp.getWriter().write("{\"error\": \"無效的優惠券 ID\"}");
             return;
         }
 
         CpDAOHibernateImpl couponDAO = new CpDAOHibernateImpl();
-        int deleteStatus = couponDAO.delete(request.getCoup_id());
+        int deleteStatus = couponDAO.delete(coup_id);
 
         if (deleteStatus == 1) {
             resp.setContentType("application/json");
