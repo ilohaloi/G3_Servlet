@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- 配置数据库连接池 -->
+    <Resource
+        name="jdbc/TIA103G3"
+        auth="Container"
+        type="javax.sql.DataSource"
+        maxTotal="100"
+        maxIdle="30"
+        maxWaitMillis="10000"
+        username="root"
+        password="123456"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        url="jdbc:mysql://localhost:3307/CruiseShip?serverTimezone=Asia/Taipei"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+    />
+</Context>
