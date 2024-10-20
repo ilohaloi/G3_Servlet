@@ -9,17 +9,17 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 	String userid = "root";
 	String passwd = "123456";
 
-	// ¼W¥[¹ï¸Ü
+	// å¢åŠ å°è©±
 	private static final String INSERT_STMT = "INSERT INTO conversation_content (memb_id,empo_id,conv_speaking_time,conv_content) VALUES (?, ?, ?, ?)";
-	// ¬d¸ß©Ò¦³²á¤Ñ¬ö¿ı
+	// æŸ¥è©¢æ‰€æœ‰èŠå¤©ç´€éŒ„
 	private static final String GET_ALL_STMT = "SELECT memb_id,empo_id,conv_speaking_time,conv_content FROM conversation_content order by conv_speaking_time";
-	// ¬d¸ß¯S©w·|­ûªº¯S©w¹ï¸Ü
+	// æŸ¥è©¢ç‰¹å®šæœƒå“¡çš„ç‰¹å®šå°è©±
 	private static final String GET_ONE_CONV_ByOneMEMB_STMT = "SELECT memb_id, empo_id,conv_speaking_time,conv_content FROM conversation_content WHERE memb_id = ? AND conv_content LIKE ?";
-	// ¬d¸ß¯S©w·|­ûªº©Ò¦³¹ï¸Ü
+	// æŸ¥è©¢ç‰¹å®šæœƒå“¡çš„æ‰€æœ‰å°è©±
 	private static final String GET_ALL_CONV_ByOneMEMB_STMT = "SELECT memb_id,empo_id,conv_speaking_time,conv_content FROM conversation_content where memb_id = ? ";
 
-	// =======================¼W=============================================
-	// ¼W¥[¹ï¸Ü
+	// =======================å¢=============================================
+	// å¢åŠ å°è©±
 	@Override
 	public void insert(ChatVO chatVO) {
 
@@ -27,13 +27,13 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			// ¥[¸ü JDBC ÅX°Ê
+			// åŠ è¼‰ JDBC é©…å‹•
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 
-			// ·Ç³Æ SQL »y¥y
+			// æº–å‚™ SQL èªå¥
 			pstmt = con.prepareStatement(INSERT_STMT);
-			// ³]¸m°Ñ¼Æ
+			// è¨­ç½®åƒæ•¸
 			pstmt.setInt(1, chatVO.getMembId());
 			pstmt.setInt(2, chatVO.getEmpoId());
 			pstmt.setTimestamp(3, chatVO.getConvSpeakingTime());
@@ -66,13 +66,13 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 		}
 
 	}
-//=============================================¬d
+//=============================================æŸ¥
 	
-	// ¬d¸ß¯S©w·|­ûªº©Ò¦³¹ï¸Ü
+	// æŸ¥è©¢ç‰¹å®šæœƒå“¡çš„æ‰€æœ‰å°è©±
 	@Override
 	public List<ChatVO> findByMembId(Integer memb_id) {
 
-		// ©w¸qÅÜ¼Æ
+		// å®šç¾©è®Šæ•¸
 		List<ChatVO> chatList = new ArrayList<>();
 		ChatVO chatVO = null;
 		Connection con = null;
@@ -80,13 +80,13 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			// ¥[¸üJDBC
+			// åŠ è¼‰JDBC
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 
-			// ·Ç³ÆSQL
+			// æº–å‚™SQL
 			pstmt = con.prepareStatement(GET_ALL_CONV_ByOneMEMB_STMT);
-			// ³]¸m°Ñ¼Æ
+			// è¨­ç½®åƒæ•¸
 			pstmt.setInt(1, memb_id);
 
 			rs = pstmt.executeQuery();
@@ -135,12 +135,12 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 
 		
 	}
-//*********************§Ú¬O¶¡¹j*******************************************
-	// ¬d¸ß¯S©w·|­ûªº¯S©w¹ï¸Ü
+//*********************æˆ‘æ˜¯é–“éš”*******************************************
+	// æŸ¥è©¢ç‰¹å®šæœƒå“¡çš„ç‰¹å®šå°è©±
 	@Override
 	public List<ChatVO> findByMembIdAndConvContent(Integer memb_id, String conv_content) {
 
-		// ©w¸qÅÜ¼Æ
+		// å®šç¾©è®Šæ•¸
 		List<ChatVO> chatList = new ArrayList<>();
 		ChatVO chatVO = null;
 		Connection con = null;
@@ -148,20 +148,20 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			// ¥[¸ü JDBC ÅX°Ê
+			// åŠ è¼‰ JDBC é©…å‹•
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 
-			// ·Ç³Æ SQL »y¥y
+			// æº–å‚™ SQL èªå¥
 			pstmt = con.prepareStatement(GET_ONE_CONV_ByOneMEMB_STMT);
-			// ³]¸m°Ñ¼Æ
+			// è¨­ç½®åƒæ•¸
 			pstmt.setInt(1, memb_id);
 			pstmt.setString(2, "%" + conv_content + "%");
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// empVo ¤]ºÙ¬° Domain objects
+				// empVo ä¹Ÿç¨±ç‚º Domain objects
 				chatVO = new ChatVO();
 				chatVO.setMembId(rs.getInt("memb_id"));
 				chatVO.setEmpoId(rs.getInt("empo_id"));
@@ -202,13 +202,13 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 		}
 	}
 		
-	//*********************§Ú¬O¶¡¹j*******************************************
-	// ¬d¸ß¥ş³¡¹ï¸Ü
+	//*********************æˆ‘æ˜¯é–“éš”*******************************************
+	// æŸ¥è©¢å…¨éƒ¨å°è©±
 	
 	@Override
 	public List<ChatVO> getAll() {
 		
-		// ©w¸qÅÜ¼Æ
+		// å®šç¾©è®Šæ•¸
 		List<ChatVO> chatList = new ArrayList<ChatVO>();
 		ChatVO chatVO = null;
 		Connection con = null;
@@ -216,14 +216,14 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			// ¥[¸ü JDBC ÅX°Ê
+			// åŠ è¼‰ JDBC é©…å‹•
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// empVO ¤]ºÙ¬° Domain objects
+				// empVO ä¹Ÿç¨±ç‚º Domain objects
 				chatVO = new ChatVO();
 				chatVO.setMembId(rs.getInt("memb_id"));
 				chatVO.setEmpoId(rs.getInt("empo_id"));

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import com.bettercloud.vault.Vault;
 import com.otherutil.vault.VaultFuntion;
 import com.outherutil.Tuple;
@@ -45,9 +44,9 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 			resp.getWriter().write(createJsonKvObject("info", "帳號密碼輸入錯誤"));
 		} else {
 			HttpSession session = req.getSession();
-
 			eService.insertLoginAuth((JedisPool)getServletContext().getAttribute("redis"), emp.getK(),session.getId());
 			resp.getWriter().write(createJsonKvObject("token",session.getId()));
+
 		}
 	}
 }

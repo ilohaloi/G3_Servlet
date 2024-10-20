@@ -12,7 +12,7 @@ import com.chat.model.ChatVO;
 
 public class ChatDAO implements ChatDAO_interface {
 
-	// ¤@­ÓÀ³¥Îµ{¦¡¤¤,°w¹ï¤@­Ó¸ê®Æ®w ,¦@¥Î¤@­ÓDataSource§Y¥i
+	// ä¸€å€‹æ‡‰ç”¨ç¨‹å¼ä¸­,é‡å°ä¸€å€‹è³‡æ–™åº« ,å…±ç”¨ä¸€å€‹DataSourceå³å¯
 	private static DataSource ds = null;
 	static {
 		try {
@@ -23,19 +23,19 @@ public class ChatDAO implements ChatDAO_interface {
 		}
 	}
 
-	// ¼W¥[¹ï¸Ü
+	// å¢åŠ å°è©±
 	private static final String INSERT_STMT = "INSERT INTO conversation_content (memb_id,empo_id,conv_speaking_time,conv_content) VALUES (?, ?, ?, ?)";
-	// ¬d¸ß©Ò¦³²á¤Ñ¬ö¿ı
+	// æŸ¥è©¢æ‰€æœ‰èŠå¤©ç´€éŒ„
 	private static final String GET_ALL_STMT = "SELECT memb_id,empo_id,conv_speaking_time,conv_content FROM conversation_content order by conv_speaking_time";
-	// ¬d¸ß¯S©w·|­ûªº¯S©w¹ï¸Ü
+	// æŸ¥è©¢ç‰¹å®šæœƒå“¡çš„ç‰¹å®šå°è©±
 	private static final String GET_ONE_CONV_ByOneMEMB_STMT = "SELECT memb_id, empo_id,conv_speaking_time,conv_content FROM conversation_content WHERE memb_id = ? AND conv_content = ?";
-	// ¬d¸ß¯S©w·|­ûªº©Ò¦³¹ï¸Ü
+	// æŸ¥è©¢ç‰¹å®šæœƒå“¡çš„æ‰€æœ‰å°è©±
 	private static final String GET_ALL_CONV_ByOneMEMB_STMT = "SELECT memb_id,empo_id,con_speaking_time,conv_content FROM conversation_content where memb_id = ? ";
 
 	
 	
-	//*****************************§Ú¬OªÅ¦æ
-	// ´¡¤J¤@µ§·sªº ChatVO
+	//*****************************æˆ‘æ˜¯ç©ºè¡Œ
+	// æ’å…¥ä¸€ç­†æ–°çš„ ChatVO
 	@Override
 	public void insert(ChatVO chatVO) {
 
@@ -80,9 +80,9 @@ public class ChatDAO implements ChatDAO_interface {
 
 	}
 	
-//*****************************************§Ú¬OªÅ¦æ
+	//*****************************************æˆ‘æ˜¯ç©ºè¡Œ
 	
-	// ¬d¸ß¯S©w·|­û (memb_id) ªº©Ò¦³¹ï¸Ü°O¿ı
+		// æŸ¥è©¢ç‰¹å®šæœƒå“¡ (memb_id) çš„æ‰€æœ‰å°è©±è¨˜éŒ„
 	@Override
 	public List<ChatVO> findByMembId(Integer memb_id) {
 		
@@ -138,8 +138,8 @@ public class ChatDAO implements ChatDAO_interface {
 	}
 	
 	
-//*****************************§Ú¬OªÅ¦æ
-	// ¬d¸ß¯S©w·|­ûªº¯S©w¹ï¸Ü
+	//*****************************æˆ‘æ˜¯ç©ºè¡Œ
+		// æŸ¥è©¢ç‰¹å®šæœƒå“¡çš„ç‰¹å®šå°è©±
 	@Override
 	public List<ChatVO> findByMembIdAndConvContent(Integer memb_id, String conv_content) {
 		
@@ -160,7 +160,7 @@ public class ChatDAO implements ChatDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// deptVO ¤]ºÙ¬° Domain objects
+				// deptVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
 				chatVO = new ChatVO();
 				chatVO.setEmpoId(rs.getInt("emp_id"));
 				chatVO.setMembId(rs.getInt("memb_id"));
@@ -198,8 +198,8 @@ public class ChatDAO implements ChatDAO_interface {
 		return chatList;
 	}
 	
-	//*****************************************§Ú¬OªÅ¦æ
-	// ¬d¸ß©Ò¦³ ChatVO
+	//*****************************************æˆ‘æ˜¯ç©ºè¡Œ
+	// æŸ¥è©¢æ‰€æœ‰ ChatVO
 	@Override
 	public List<ChatVO> getAll() {
 		
@@ -257,4 +257,4 @@ public class ChatDAO implements ChatDAO_interface {
 }
 
 
-// ¥D¤èªk¡A´ú¸ÕCRUD¾Ş§@
+//ä¸»æ–¹æ³•ï¼Œæ¸¬è©¦CRUDæ“ä½œ
