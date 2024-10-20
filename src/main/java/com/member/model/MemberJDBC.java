@@ -16,13 +16,13 @@ public class MemberJDBC implements MemberDAO{
 		String passwd = "123456";
 
 		private static final String INSERT_STMT =
-			"INSERT INTO member_data (memb_id,memb_name,memb_email,memb_tell,memb_address,memb_birthday,memb_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO member_data (memb_name,memb_email,memb_tell,memb_address,memb_birthday,memb_password) VALUES (?, ?, ?, ?, ?, ?)";
 		private static final String GET_ALL_STMT =
 			"SELECT * FROM member_data order by memb_id";
 		private static final String GET_ONE_STMT =
 			"SELECT memb_id,memb_name,memb_email,memb_tell,memb_address,memb_birthday,memb_password FROM member_data where memb_id = ?";
 		private static final String UPDATE =
-				"UPDATE member_data set memb_name=?, memb_tell=?, memb_address=?, memb_password=? where memb_id = ?";
+			"UPDATE member_data set memb_name=?, memb_tell=?, memb_address=?, memb_password=? where memb_id = ?";
 
 		@Override
 		public void insert(MemberVO memberVO) {
@@ -31,20 +31,16 @@ public class MemberJDBC implements MemberDAO{
 			PreparedStatement pstmt = null;
 
 			try {
-
 				Class.forName(driver);
 				con = DriverManager.getConnection(url, userid, passwd);
 				pstmt = con.prepareStatement(INSERT_STMT);
 
-				//TODO ERROR ID 是空值
-				pstmt.setInt(1, memberVO.getId());
-
-				pstmt.setString(2, memberVO.getName());
-				pstmt.setString(3, memberVO.getEmail());
-				pstmt.setString(4, memberVO.getTell());
-				pstmt.setString(5, memberVO.getAddress());
-				pstmt.setDate(6, memberVO.getBirthday());
-				pstmt.setString(7, memberVO.getPassword());
+				pstmt.setString(1, memberVO.getName());
+				pstmt.setString(2, memberVO.getEmail());
+				pstmt.setString(3, memberVO.getTell());
+				pstmt.setString(4, memberVO.getAddress());
+				pstmt.setDate(5, memberVO.getBirthday());
+				pstmt.setString(6, memberVO.getPassword());
 
 				pstmt.executeUpdate();
 
