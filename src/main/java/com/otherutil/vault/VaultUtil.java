@@ -5,6 +5,7 @@ import com.bettercloud.vault.VaultConfig;
 import com.bettercloud.vault.VaultException;
 
 public class VaultUtil {
+
 	private static Vault vault = ValueInit();
 
 	public static Vault getVault() {
