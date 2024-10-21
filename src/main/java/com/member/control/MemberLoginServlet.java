@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.member.model.MemberJDBC;
@@ -71,9 +69,16 @@ public class MemberLoginServlet extends HttpServlet {
 
         // 驗證會員資料
         MemberJDBC memberJDBC = new MemberJDBC();
-        MemberVO dbMember = memberJDBC.findByEmail(memberVO.getEmail());
+        MemberVO dbMember;
 
-        if (dbMember != null && BCrypt.checkpw(memberVO.getPassword(), dbMember.getPassword())) {
+        try {
+            dbMember = memberJDBC.findByEmail(memberVO.getEmail());
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"error\": \"伺服器錯誤，請稍後再試。\"}");
+            return;
+        }
+        if (dbMember.getPassword().equals(memberVO.getPassword())){
             // 登入成功，建立新會話
             HttpSession session = req.getSession(false);
             if (session != null) {
@@ -83,11 +88,11 @@ public class MemberLoginServlet extends HttpServlet {
             session.setAttribute("member", dbMember);
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("{\"message\": \"登入成功。\"}");
+            resp.getWriter().write("{\"success\": \"登入成功。\"}");
         } else {
             // 登入失敗
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            resp.getWriter().write("{\"error\": \"登入失敗。\"}");
+            resp.getWriter().write("{\"error\": \"登入失敗，電子郵件或密碼錯誤。\"}");
         }
     }
 
