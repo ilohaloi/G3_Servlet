@@ -80,5 +80,3 @@ public class CpDAOHibernateImpl implements Dao {
 		return null; // 找不到
 	}
 }
-
-
