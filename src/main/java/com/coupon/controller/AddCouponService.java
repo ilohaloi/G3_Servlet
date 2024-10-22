@@ -64,9 +64,9 @@ public class AddCouponService extends HttpServlet {
 		Gson gson = gsonBuilder.create();
 		Cp cp = gson.fromJson(json, Cp.class);
 
-		// 在此處確保coup_name是基於自定義規則的隨機碼
+		// 在此處確保coup_code是基於自定義規則的隨機碼
 		if (cp != null) {
-			cp.setCoup_name(generateCustomRandomName());
+			cp.setCoup_code(generateCustomRandomName());
 		}
 
 		// 檢查 cp 是否為 null 及 ID 是否存在

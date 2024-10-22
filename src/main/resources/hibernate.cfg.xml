@@ -21,6 +21,8 @@
 		<mapping class="com.order.model.OrderDetailId" />
 
 		<mapping class="com.coupon.model.Cp" />
+		<mapping class="com.user_coup.model.UserCoupon" />
+
 
 	</session-factory>
 </hibernate-configuration>

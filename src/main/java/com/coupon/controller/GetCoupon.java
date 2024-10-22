@@ -20,8 +20,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 
 @WebServlet("/getCoupon")
-public class GetCouponServlet extends HttpServlet {
-    private static final long serialVersionUID = -5337326634130632679L;
+public class GetCoupon extends HttpServlet {
+    private static final long serialVersionUID = -5337326934130632679L;
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
