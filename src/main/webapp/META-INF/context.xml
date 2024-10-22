@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-    <!-- 配置数据库连接池 -->
     <Resource
         name="jdbc/TIA103G3"
         auth="Container"
