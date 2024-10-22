@@ -19,95 +19,93 @@ import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@ServerEndpoint("/FriendWS/{userName}")
+@ServerEndpoint("/ChatWS/{userName}")
 public class ChatWebSocket {
 
-    private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
-    private final Gson gson = new Gson();
+	private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
+	private final Gson gson = new Gson();
 
-    @OnOpen
-    public void onOpen(@PathParam("userName") String userName, Session userSession) throws IOException {
-        try (Jedis jedis = jedisPool.getResource()) {
-            // «O¦s·sªº Session ¨ì Redis
-            jedis.set("session:" + userName, userSession.getId());
-            System.out.println("¥Î¤á " + userName + " ¤w³s±µ");
+	@OnOpen
+	public void onOpen(@PathParam("userName") String userName, Session userSession) throws IOException {
+		try (Jedis jedis = jedisPool.getResource()) {
+			// ä¿å­˜æ–°çš„ Session åˆ° Redis
+			jedis.set("session:" + userName, userSession.getId());
+			System.out.println("ç”¨æˆ¶ " + userName + " å·²é€£æ¥");
 
-            // ¸ü¤J¨Ãµo°e¥¼Åª°T®§
-            List<String> unreadMessages = jedis.lrange("unread:" + userName, 0, -1);
-            for (String message : unreadMessages) {
-                userSession.getAsyncRemote().sendText(message);
-            }
+			// è¼‰å…¥ä¸¦ç™¼é€æœªè®€è¨Šæ¯
+			List<String> unreadMessages = jedis.lrange("unread:" + userName, 0, -1);
+			for (String message : unreadMessages) {
+				userSession.getAsyncRemote().sendText(message);
+			}
 
-            // ²MªÅ¥¼Åª°T®§¼Ğ°O
-            jedis.del("unread:" + userName);
-        }
-    }
+			// æ¸…ç©ºæœªè®€è¨Šæ¯æ¨™è¨˜
+			jedis.del("unread:" + userName);
+		}
+	}
 
-    @OnMessage
-    public void onMessage(String message, Session userSession) {
-        ChatVO chatMessage = gson.fromJson(message, ChatVO.class);
+	@OnMessage
+	public void onMessage(String message, Session userSession) {
+		ChatVO chatMessage = gson.fromJson(message, ChatVO.class);
 
-        try (Jedis jedis = jedisPool.getResource()) {
-            // ®Ú¾Ú Redis ¤¤ªº session ¹ïÀ³¨Ó§PÂ_µo°eªÌ
-            String senderName = getUserNameBySession(userSession);  // ¨ú±oµo°eªÌªº¦WºÙ
-            String receiverId;
-            int senderId;
+		try (Jedis jedis = jedisPool.getResource()) {
+			// æ ¹æ“š Redis ä¸­çš„ session å°æ‡‰ä¾†åˆ¤æ–·ç™¼é€è€…
+			String senderName = getUserNameBySession(userSession); // å–å¾—ç™¼é€è€…çš„åç¨±
+			String receiverId;
+			int senderId;
 
-            if (String.valueOf(chatMessage.getEmpoId()).equals(senderName)) {
-                senderId = chatMessage.getEmpoId();  // µo°eªÌ¬O­û¤u
-                receiverId = String.valueOf(chatMessage.getMembId());  // ±µ¦¬ªÌ¬O·|­û
-            } else {
-                senderId = chatMessage.getMembId();  // µo°eªÌ¬O·|­û
-                receiverId = String.valueOf(chatMessage.getEmpoId());  // ±µ¦¬ªÌ¬O­û¤u
-            }
+			if (String.valueOf(chatMessage.getEmpoId()).equals(senderName)) {
+				senderId = chatMessage.getEmpoId(); // ç™¼é€è€…æ˜¯å“¡å·¥
+				receiverId = String.valueOf(chatMessage.getMembId()); // æ¥æ”¶è€…æ˜¯æœƒå“¡
+			} else {
+				senderId = chatMessage.getMembId(); // ç™¼é€è€…æ˜¯æœƒå“¡
+				receiverId = String.valueOf(chatMessage.getEmpoId()); // æ¥æ”¶è€…æ˜¯å“¡å·¥
+			}
 
-            // ½T©w¹ï¸Ü°O¿ıªº key
-            String conversationKey = "chat:" + senderId + "-" + receiverId;
+			// ç¢ºå®šå°è©±è¨˜éŒ„çš„ key
+			String conversationKey = "chat:" + senderId + "-" + receiverId;
 
-            // ±N°T®§Âà¬° JSON ¨Ã¦s¤J Redis ¹ï¸Ü¬ö¿ı
-            String chatContent = gson.toJson(chatMessage);
-            jedis.rpush(conversationKey, chatContent);
+			// å°‡è¨Šæ¯è½‰ç‚º JSON ä¸¦å­˜å…¥ Redis å°è©±ç´€éŒ„
+			String chatContent = gson.toJson(chatMessage);
+			jedis.rpush(conversationKey, chatContent);
 
-            // ¹Á¸Õµo°e°T®§µ¹±µ¦¬ªÌ
-            Optional<String> receiverSessionId = Optional.ofNullable(jedis.get("session:" + receiverId));
-            receiverSessionId.ifPresentOrElse(
-                sessionId -> sendMessageToSession(sessionId, chatContent),
-                () -> jedis.rpush("unread:" + receiverId, chatContent)  // ­Y±µ¦¬ªÌ¤£¦b½u«h«O¦s¬°¥¼Åª
-            );
-        }
-    }
+			// å˜—è©¦ç™¼é€è¨Šæ¯çµ¦æ¥æ”¶è€…
+			Optional<String> receiverSessionId = Optional.ofNullable(jedis.get("session:" + receiverId));
+			receiverSessionId.ifPresentOrElse(sessionId -> sendMessageToSession(sessionId, chatContent),
+					() -> jedis.rpush("unread:" + receiverId, chatContent) // è‹¥æ¥æ”¶è€…ä¸åœ¨ç·šå‰‡ä¿å­˜ç‚ºæœªè®€
+			);
+		}
+	}
 
-
-    private Object sendMessageToSession(String sessionId, String chatContent) {
+	private Object sendMessageToSession(String sessionId, String chatContent) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@OnError
-    public void onError(Session userSession, Throwable e) {
-        System.err.println("Error: " + e.getMessage());
-        e.printStackTrace();
-    }
+	public void onError(Session userSession, Throwable e) {
+		System.err.println("Error: " + e.getMessage());
+		e.printStackTrace();
+	}
 
-    @OnClose
-    public void onClose(Session userSession, CloseReason reason) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            String userName = getUserNameBySession(userSession);
-            if (userName != null) {
-                jedis.del("session:" + userName);
-                System.out.println("User " + userName + " disconnected: " + reason.getCloseCode());
-            }
-        }
-    }
+	@OnClose
+	public void onClose(Session userSession, CloseReason reason) {
+		try (Jedis jedis = jedisPool.getResource()) {
+			String userName = getUserNameBySession(userSession);
+			if (userName != null) {
+				jedis.del("session:" + userName);
+				System.out.println("User " + userName + " disconnected: " + reason.getCloseCode());
+			}
+		}
+	}
 
-    private String getUserNameBySession(Session userSession) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            for (String key : jedis.keys("session:*")) {
-                if (jedis.get(key).equals(userSession.getId())) {
-                    return key.replace("session:", "");
-                }
-            }
-        }
-        return null;
-    }
+	private String getUserNameBySession(Session userSession) {
+		try (Jedis jedis = jedisPool.getResource()) {
+			for (String key : jedis.keys("session:*")) {
+				if (jedis.get(key).equals(userSession.getId())) {
+					return key.replace("session:", "");
+				}
+			}
+		}
+		return null;
+	}
 }
