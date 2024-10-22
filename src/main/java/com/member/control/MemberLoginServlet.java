@@ -25,6 +25,7 @@ public class MemberLoginServlet extends HttpServlet {
         // 跨域請求設定
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         // 處理 OPTIONS 預檢請求
