@@ -27,7 +27,6 @@ public class UpdateServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //		// 跨域請求設定
 		resp.setHeader("Access-Control-Allow-Origin", "*");
-
 		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 		resp.setHeader("Access-Control-Allow-Headers", "Content-Type , Authorization"); // 加入 Authorization 或其他需要的標頭
 
