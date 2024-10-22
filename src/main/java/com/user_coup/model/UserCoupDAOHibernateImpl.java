@@ -1,18 +1,19 @@
-package com.coupon.model;
-
-import org.hibernate.Session;
-import com.coupon.myutil.HibernateUtil;
+package com.user_coup.model;
 
 import java.util.List;
 
-public class CpDAOHibernateImpl implements CpDAO {
+import org.hibernate.Session;
+
+import com.coupon.myutil.HibernateUtil;
+
+public class UserCoupDAOHibernateImpl implements UserCoupDAO {
 
 	@Override
-	public int add(Cp cp) {
+	public int add(UserCoupon userCoup) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.save(cp);
+			session.save(userCoup);
 			session.getTransaction().commit();
 			return 1; // 成功
 		} catch (Exception e) {
@@ -23,11 +24,11 @@ public class CpDAOHibernateImpl implements CpDAO {
 	}
 
 	@Override
-	public int update(Cp cp) {
+	public int update(UserCoupon userCoup) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.update(cp);
+			session.update(userCoup);
 			session.getTransaction().commit();
 			return 1; // 成功
 		} catch (Exception e) {
@@ -38,13 +39,13 @@ public class CpDAOHibernateImpl implements CpDAO {
 	}
 
 	@Override
-	public int delete(Integer id) {
+	public int delete(Integer no) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Cp cp = session.get(Cp.class, id);
-			if (cp != null) {
-				session.delete(cp);
+			UserCoupon uc = session.get(UserCoupon.class, no);
+			if (uc != null) {
+				session.delete(uc);
 				session.getTransaction().commit();
 				return 1; // 成功刪除
 			} else {
@@ -58,13 +59,13 @@ public class CpDAOHibernateImpl implements CpDAO {
 	}
 
 	@Override
-	public Cp findByPK(Integer id) {
+	public UserCoupon findByPK(Integer no) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Cp cp = session.get(Cp.class, id);
+			UserCoupon uc = session.get(UserCoupon.class, no);
 			session.getTransaction().commit();
-			return cp;
+			return uc;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -73,11 +74,11 @@ public class CpDAOHibernateImpl implements CpDAO {
 	}
 
 	@Override
-	public List<Cp> getAll() {
+	public List<UserCoupon> getAll() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			List<Cp> list = session.createQuery("from Cp", Cp.class).list();
+			List<UserCoupon> list = session.createQuery("from UserCoupon", UserCoupon.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {
@@ -86,4 +87,5 @@ public class CpDAOHibernateImpl implements CpDAO {
 		}
 		return null; // 找不到
 	}
+
 }
