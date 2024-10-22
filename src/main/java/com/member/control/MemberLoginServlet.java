@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +51,7 @@ public class MemberLoginServlet extends HttpServlet {
             }
         } catch (IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"無效的 JSON 格式。\"}");
+            resp.getWriter().write("{\"error\": \"\u7121\u6548\u7684 JSON \u683c\u5f0f\u3002\"}");
             return;
         }
 
@@ -63,7 +64,7 @@ public class MemberLoginServlet extends HttpServlet {
             memberVO = gson.fromJson(json, MemberVO.class);
         } catch (JsonSyntaxException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"無效的 JSON 格式。\"}");
+            resp.getWriter().write("{\"error\": \"\u7121\u6548\u7684 JSON \u683c\u5f0f\u3002\"}");
             return;
         }
 
@@ -75,11 +76,11 @@ public class MemberLoginServlet extends HttpServlet {
             dbMember = memberJDBC.findByEmail(memberVO.getEmail());
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("{\"error\": \"伺服器錯誤，請稍後再試。\"}");
+            resp.getWriter().write("{\"error\": \"\u4f7f\u670d\u5668\u932f\u8aa4\uff0c\u8acb\u7a0d\u5f8c\u518d\u8a66\u3002\"}");
             return;
         }
-        if (dbMember.getPassword().equals(memberVO.getPassword())){
-            // 登入成功，建立新會話
+        if (dbMember.getPassword().equals(memberVO.getPassword())) {
+            // 登入成功，建立新會議
             HttpSession session = req.getSession(false);
             if (session != null) {
                 session.invalidate();
@@ -87,12 +88,18 @@ public class MemberLoginServlet extends HttpServlet {
             session = req.getSession(true);
             session.setAttribute("member", dbMember);
 
+            // 設置 Cookie
+            Cookie memberCookie = new Cookie("memberEmail", dbMember.getEmail());
+            memberCookie.setHttpOnly(true);
+            memberCookie.setMaxAge(60 * 60 * 24); // Cookie 有效期為 1 天
+            resp.addCookie(memberCookie);
+
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("{\"success\": \"登入成功。\"}");
+            resp.getWriter().write("{\"success\": \"\u767b\u5165\u6210\u529f\u3002\"}");
         } else {
             // 登入失敗
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            resp.getWriter().write("{\"error\": \"登入失敗，電子郵件或密碼錯誤。\"}");
+            resp.getWriter().write("{\"error\": \"\u767b\u5165\u5931\u6557\uff0c\u96fb\u5b50\u90f5\u4ef6\u6216\u5bc6\u78bc\u932f\u8aa4\u3002\"}");
         }
     }
 

@@ -27,6 +27,7 @@ public class MemberRegisterServlet extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+       
         // 處理 OPTIONS 預檢請求
         if (req.getMethod().equalsIgnoreCase("OPTIONS")) {
             resp.setStatus(HttpServletResponse.SC_OK);
