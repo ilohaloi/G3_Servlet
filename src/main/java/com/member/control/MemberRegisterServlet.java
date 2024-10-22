@@ -27,6 +27,7 @@ public class MemberRegisterServlet extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+       
         // 處理 OPTIONS 預檢請求
         if (req.getMethod().equalsIgnoreCase("OPTIONS")) {
             resp.setStatus(HttpServletResponse.SC_OK);
@@ -41,7 +42,7 @@ public class MemberRegisterServlet extends HttpServlet {
         // 設置請求與響應的編碼格式
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
-
+        
         // 讀取 JSON 資料
         StringBuilder jsonBuilder = new StringBuilder();
         String line;
@@ -56,7 +57,7 @@ public class MemberRegisterServlet extends HttpServlet {
         }
 
         String json = jsonBuilder.toString();
-
+        
         // 將 JSON 轉換為 MemberVO 物件
         Gson gson = new Gson();
         MemberVO memberVO;
@@ -69,7 +70,7 @@ public class MemberRegisterServlet extends HttpServlet {
         }
 
         // 檢查資料是否完整
-        if (memberVO.getName() == null || memberVO.getEmail() == null || memberVO.getPassword() == null) {
+        if (memberVO.getEmail() == null || memberVO.getPassword() == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("{\"error\": \"資料不完整，請檢查必填欄位。\"}");
             return;
@@ -83,9 +84,11 @@ public class MemberRegisterServlet extends HttpServlet {
             return;
         }
 
-        // 使用BCrypt加密密碼
-        String hashedPassword = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
-        memberVO.setPassword(hashedPassword);
+//      // 使用BCrypt加密密碼
+//      String hashedPassword = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
+//      memberVO.setPassword(hashedPassword);
+	    String password = memberVO.getPassword();
+	    memberVO.setPassword(password);
 
         // 插入會員資料到資料庫
         try {
