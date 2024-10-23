@@ -12,8 +12,23 @@ public class CpDAOHibernateImpl implements Dao {
 	public <T> void update(int id, T data) {
 		// TODO Auto-generated method stub
 
-	}
 
+	}
+	@Override
+	public int add(Cp cp) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.save(cp);
+			session.getTransaction().commit();
+			return 1; // 成功
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}
+		return -1; // 失敗
+
+	}
 
 	@Override
 	public int update(Cp cp) {
@@ -80,3 +95,4 @@ public class CpDAOHibernateImpl implements Dao {
 		return null; // 找不到
 	}
 }
+
