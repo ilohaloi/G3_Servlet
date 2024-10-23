@@ -23,10 +23,11 @@ public class MemberLoginServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 跨域請求設定
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Credentials", "true");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+        resp.setHeader("Access-Control-Allow-Credentials", "true"); // 允許傳送 Cookie
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // 允許的 HTTP 方法
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 允許的請求標頭
+
 
         // 處理 OPTIONS 預檢請求
         if (req.getMethod().equalsIgnoreCase("OPTIONS")) {
@@ -88,15 +89,22 @@ public class MemberLoginServlet extends HttpServlet {
             }
             session = req.getSession(true);
             session.setAttribute("member", dbMember);
+            
+            // 獲取 sessionId
+            @SuppressWarnings("unused")
+			String sessionId = session.getId();
 
             // 設置 Cookie
             Cookie memberCookie = new Cookie("memberEmail", dbMember.getEmail());
             memberCookie.setHttpOnly(true);
-            memberCookie.setMaxAge(60 * 60 * 24); // Cookie 有效期為 1 天
+            memberCookie.setSecure(false); 
+            memberCookie.setPath("/"); // 使其在整個應用程序內有效
+            memberCookie.setMaxAge(60 * 60 * 24 *1000); // Cookie 有效期為 1 天
             resp.addCookie(memberCookie);
 
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write("{\"success\": \"\u767b\u5165\u6210\u529f\u3002\"}");
+            
         } else {
             // 登入失敗
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
