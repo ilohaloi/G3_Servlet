@@ -2,18 +2,10 @@ package com.coupon.model;
 
 import org.hibernate.Session;
 import com.coupon.myutil.HibernateUtil;
-import com.outherutil.Dao;
-
 import java.util.List;
 
-public class CpDAOHibernateImpl implements Dao {
+public class CpDAOHibernateImpl implements CpDAO {
 
-	@Override
-	public <T> void update(int id, T data) {
-		// TODO Auto-generated method stub
-
-
-	}
 	@Override
 	public int add(Cp cp) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
