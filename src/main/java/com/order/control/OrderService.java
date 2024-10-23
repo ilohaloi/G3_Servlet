@@ -3,6 +3,7 @@ package com.order.control;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.addroute.model.TravelOrder;
 import com.order.model.OrderDaoImpl;
 import com.order.model.OrderDetailVo;
 import com.order.model.OrderListVo;
@@ -63,5 +64,15 @@ public class OrderService implements JsonDeserializerInterface, JsonSerializerIn
 		oDetail.setProds(prodsList);
 
 		return oDetail;
+	}
+
+	public void processOrder(TravelOrder order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void close() {
+		// TODO Auto-generated method stub
+		
 	}
 }

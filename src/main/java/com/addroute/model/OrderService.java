@@ -1,4 +1,4 @@
-package com.addroute.control;
+package com.addroute.model;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,4 +24,9 @@ public class OrderService {
     public void close() {
         sessionFactory.close();
     }
+
+	public void processOrder(com.addroute.model.TravelOrder order) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -22,6 +22,11 @@
 
 		<mapping class="com.coupon.model.Cp" />
 		<mapping class="com.user_coup.model.UserCoupon" />
+		<mapping class="com.addroute.model.Route"/>
+		<mapping class="com.addroute.model.ShipSchedule"/>
+		<mapping class="com.addroute.model.TravelOrder"/>
+		
+		
 
 
 	</session-factory>
