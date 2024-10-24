@@ -7,11 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import kotlin.Pair;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 public class RouteDAO implements RouteDAO_interface {
 	// 一個應用程式中,針對一個資料庫 ,共用一個DataSource即可
@@ -27,7 +32,9 @@ public class RouteDAO implements RouteDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT route_id,route_name,route_depiction,route_days,route_price FROM route where route_id = ?";
 	private static final String DELETE = "DELETE FROM route where route_id = ?";
 	private static final String UPDATE = "UPDATE route set route_name=?, route_depiction=?, route_days=?, route_price=? where route_id = ?";
-
+	
+	
+	
 	@Override
 	public void insert(RouteVO routeVO) {
 
