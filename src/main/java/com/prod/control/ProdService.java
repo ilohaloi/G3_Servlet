@@ -47,25 +47,28 @@ public class ProdService implements CloudinaryFunction {
 		pDaoImpl.insert(prod);
 	}
 
-	public void insert(JedisPool pool	, List<ProdVo> prod) {
+	public void insert(JedisPool pool, List<ProdVo> prod) {
+		//第一個string是裝PK用的,第二個是KEY,第三個是VALUE
 		List<Pair<String,Map<String,String>>> data = new ArrayList<Pair<String,Map<String,String>>>();
 		prod.forEach(p->{
+			
 			Map<String, String> element = new HashMap<String, String>();
+			//要輸入鍵對值
 			element.put("name", p.getName());
 			element.put("categroy",p.getCategory());
 			element.put("price", String.valueOf(p.getPrice()));
 			element.put("stock", String.valueOf(p.getStock()));
-
+			//三個if不需要
 			if(p.getImg1()!=null)
 				element.put("img1", p.getImg1());
 			if(p.getImg2()!=null)
 				element.put("img2", p.getImg2());
 			if(p.getImg3()!=null)
 				element.put("img3", p.getImg3());
-
+			//三個if不需要										//改這段(String.valueOf(p.getId())
 			data.add(new Pair<String,Map<String,String>>(String.valueOf(p.getId()),element));
 		});
-		pDaoImpl.redisInsert(pool,"prod:", data);
+		pDaoImpl.redisInsert(pool,"prod:", data);//"prod:"冒號前的字要改資料夾名
 	}
 
 	public void update(ProdVo prod) {
