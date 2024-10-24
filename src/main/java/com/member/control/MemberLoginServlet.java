@@ -14,9 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.member.model.MemberJDBC;
 import com.member.model.MemberVO;
+import com.outherutil.json.JsonSerializerInterface;
+
+import redis.clients.jedis.Jedis;
 
 @WebServlet("/MemberLogin")
-public class MemberLoginServlet extends HttpServlet {
+public class MemberLoginServlet extends HttpServlet implements JsonSerializerInterface {
 
     private static final long serialVersionUID = 5673675033351078850L;
 
@@ -27,7 +30,6 @@ public class MemberLoginServlet extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Credentials", "true"); // 允許傳送 Cookie
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // 允許的 HTTP 方法
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 允許的請求標頭
-
 
         // 處理 OPTIONS 預檢請求
         if (req.getMethod().equalsIgnoreCase("OPTIONS")) {
@@ -53,7 +55,7 @@ public class MemberLoginServlet extends HttpServlet {
             }
         } catch (IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"\u7121\u6548\u7684 JSON \u683c\u5f0f\u3002\"}");
+            resp.getWriter().write("{\"error\": \"無效的 JSON 格式。\"}");
             return;
         }
 
@@ -66,7 +68,7 @@ public class MemberLoginServlet extends HttpServlet {
             memberVO = gson.fromJson(json, MemberVO.class);
         } catch (JsonSyntaxException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"\u7121\u6548\u7684 JSON \u683c\u5f0f\u3002\"}");
+            resp.getWriter().write("{\"error\": \"無效的 JSON 格式。\"}");
             return;
         }
 
@@ -78,37 +80,27 @@ public class MemberLoginServlet extends HttpServlet {
             dbMember = memberJDBC.findByEmail(memberVO.getEmail());
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("{\"error\": \"\u4f7f\u670d\u5668\u932f\u8aa4\uff0c\u8acb\u7a0d\u5f8c\u518d\u8a66\u3002\"}");
+            resp.getWriter().write("{\"error\": \"使服器錯誤，請稍後再試。\"}");
             return;
         }
-        if (dbMember.getPassword().equals(memberVO.getPassword())) {
-            // 登入成功，建立新會議
-            HttpSession session = req.getSession(false);
-            if (session != null) {
-                session.invalidate();
-            }
-            session = req.getSession(true);
-            session.setAttribute("member", dbMember);
-            
-            // 獲取 sessionId
-            @SuppressWarnings("unused")
-			String sessionId = session.getId();
 
-            // 設置 Cookie
-            Cookie memberCookie = new Cookie("memberEmail", dbMember.getEmail());
-            memberCookie.setHttpOnly(true);
-            memberCookie.setSecure(false); 
-            memberCookie.setPath("/"); // 使其在整個應用程序內有效
-            memberCookie.setMaxAge(60 * 60 * 24 *1000); // Cookie 有效期為 1 天
-            resp.addCookie(memberCookie);
+        if (dbMember != null && dbMember.getPassword().equals(memberVO.getPassword())) {
+            // 登入成功，將會員 email 加入 Redis
+            Jedis jedis = new Jedis("localhost", 6380);
+            try {
+                String redisKey = "session:member:" + dbMember.getId();
+                jedis.set(redisKey, dbMember.getEmail());
+                jedis.expire(redisKey, 1800); // 設置過期時間為 30 分鐘
+            } finally {
+                jedis.close();
+            }
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("{\"success\": \"\u767b\u5165\u6210\u529f\u3002\"}");
-            
+            resp.getWriter().write(createJsonKvObject("email", dbMember.getEmail()));
         } else {
             // 登入失敗
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            resp.getWriter().write("{\"error\": \"\u767b\u5165\u5931\u6557\uff0c\u96fb\u5b50\u90f5\u4ef6\u6216\u5bc6\u78bc\u932f\u8aa4\u3002\"}");
+            resp.getWriter().write(createJsonKvObject("message", "帳號密碼輸入錯誤"));
         }
     }
 
