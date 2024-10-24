@@ -2,89 +2,88 @@ package com.addroute.model;
 
 import javax.persistence.*;
 
+import com.coupon.controller.GetCoupon;
+import com.user_coup.model.UserCoupon;
+
+import java.io.Serializable;
+
 @Entity
 @Table(name = "travel_order")
-public class TravelOrder {
+public class TravelOrder implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int trav_orde_id;
-
-    @Column(name = "trav_orde_status")
-    private String travOrdeStatus;
-
-    @Column(name = "room_amount")
-    private int roomAmount;
-
-    @Column(name = "trav_orde_amount")
-    private String travOrdeAmount;
-
-    @ManyToOne
-    @JoinColumn(name = "memb_id", nullable = false)
-    private int member;
+    @Column(name = "trav_orde_id")
+    private int travOrdeId;
 
     @ManyToOne
     @JoinColumn(name = "ship_id", nullable = false)
     private ShipSchedule shipSchedule;
 
     @ManyToOne
-    @JoinColumn(name = "coup_id", nullable = true)
-    private int coupon;
+    @JoinColumn(name = "coup_id", nullable = true)  // 如果優惠券是可選的，這裡可以允許為空
+    private GetCoupon coupon;  // 這裡使用 Coupon 類，而不是 int
 
-	public int getTrav_orde_id() {
-		return trav_orde_id;
-	}
+    @Column(name = "trav_orde_status", nullable = false)
+    private String travOrdeStatus;
 
-	public void setTrav_orde_id(int trav_orde_id) {
-		this.trav_orde_id = trav_orde_id;
-	}
+    @Column(name = "room_amount", nullable = false)
+    private int roomAmount;
 
-	public String getTravOrdeStatus() {
-		return travOrdeStatus;
-	}
+    @Column(name = "trav_orde_amount", nullable = false)
+    private String travOrdeAmount;
 
-	public void setTravOrdeStatus(String travOrdeStatus) {
-		this.travOrdeStatus = travOrdeStatus;
-	}
+    // Getter 和 Setter 方法
+    public int getTravOrdeId() {
+        return travOrdeId;
+    }
 
-	public int getRoomAmount() {
-		return roomAmount;
-	}
+    public void setTravOrdeId(int travOrdeId) {
+        this.travOrdeId = travOrdeId;
+    }
 
-	public void setRoomAmount(int roomAmount) {
-		this.roomAmount = roomAmount;
-	}
+    public ShipSchedule getShipSchedule() {
+        return shipSchedule;
+    }
 
-	public String getTravOrdeAmount() {
-		return travOrdeAmount;
-	}
+    public void setShipSchedule(ShipSchedule shipSchedule) {
+        this.shipSchedule = shipSchedule;
+    }
 
-	public void setTravOrdeAmount(String travOrdeAmount) {
-		this.travOrdeAmount = travOrdeAmount;
-	}
+    public GetCoupon getCoupon() {
+        return coupon;
+    }
 
-	public int getMember() {
-		return member;
-	}
+    public void setCoupon(GetCoupon coupon) {
+        this.coupon = coupon;
+    }
 
-	public void setMember(int member) {
-		this.member = member;
-	}
+    public String getTravOrdeStatus() {
+        return travOrdeStatus;
+    }
 
-	public ShipSchedule getShipSchedule() {
-		return shipSchedule;
-	}
+    public void setTravOrdeStatus(String travOrdeStatus) {
+        this.travOrdeStatus = travOrdeStatus;
+    }
 
-	public void setShipSchedule(ShipSchedule shipSchedule) {
-		this.shipSchedule = shipSchedule;
-	}
+    public int getRoomAmount() {
+        return roomAmount;
+    }
 
-	public int getCoupon() {
-		return coupon;
-	}
+    public void setRoomAmount(int roomAmount) {
+        this.roomAmount = roomAmount;
+    }
 
-	public void setCoupon(int coupon) {
-		this.coupon = coupon;
+    public String getTravOrdeAmount() {
+        return travOrdeAmount;
+    }
+
+    public void setTravOrdeAmount(String travOrdeAmount) {
+        this.travOrdeAmount = travOrdeAmount;
+    }
+
+	public void setCustomerName(String customerName) {
+		// TODO Auto-generated method stub
+		
 	}
-    
-    
 }

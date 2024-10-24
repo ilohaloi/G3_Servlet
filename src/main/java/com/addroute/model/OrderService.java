@@ -29,4 +29,9 @@ public class OrderService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public ShipSchedule findShipScheduleByJourney(String journey) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
