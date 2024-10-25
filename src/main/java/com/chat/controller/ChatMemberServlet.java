@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+@WebServlet("/ChatMember")
 public class ChatMemberServlet extends HttpServlet{
 	
 	//從 Session 中取得會員 ID
@@ -23,8 +24,11 @@ public class ChatMemberServlet extends HttpServlet{
 			
 			try(PrintWriter out = res.getWriter()){
 				HttpSession session = req.getSession(false);
+				//下面這行改成redis版
+				
 				Integer memb_id = (Integer) session.getAttribute("memb_id");
 				
+				//
 				if(memb_id != null) {
 					out.print("{\"memb_id\": "+ memb_id + "}");
 				} else {
