@@ -1,6 +1,10 @@
 package com.chat.model;
 
 import java.util.*;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
 import java.sql.*;
 
 public class ChatJDBCDAO implements ChatDAO_interface {
@@ -268,3 +272,6 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 		return chatList;
 	}
 }
+
+//try(Jedis jedis = pool.getResource())
+//(JedisPool)getServletContext().getAttribute("redis")
