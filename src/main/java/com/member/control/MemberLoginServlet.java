@@ -4,32 +4,32 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.member.model.MemberJDBC;
 import com.member.model.MemberVO;
 import com.outherutil.json.JsonSerializerInterface;
+import com.outherutil.redis.RedisUtil;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/MemberLogin")
 public class MemberLoginServlet extends HttpServlet implements JsonSerializerInterface {
 
     private static final long serialVersionUID = 5673675033351078850L;
+    private static JedisPool pool = RedisUtil.getPool();
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 跨域請求設定
-        resp.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-        resp.setHeader("Access-Control-Allow-Credentials", "true"); // 允許傳送 Cookie
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // 允許的 HTTP 方法
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // 允許的請求標頭
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type"); // 允許的請求標頭
 
         // 處理 OPTIONS 預檢請求
         if (req.getMethod().equalsIgnoreCase("OPTIONS")) {
@@ -84,16 +84,20 @@ public class MemberLoginServlet extends HttpServlet implements JsonSerializerInt
             return;
         }
 
-        if (dbMember != null && dbMember.getPassword().equals(memberVO.getPassword())) {
+        if (dbMember.getPassword().equals(memberVO.getPassword())) {
             // 登入成功，將會員 email 加入 Redis
-            Jedis jedis = new Jedis("localhost", 6380);
-            try {
+        	
+            
+            try (Jedis jedis = pool.getResource()) {
                 String redisKey = "session:member:" + dbMember.getId();
                 jedis.set(redisKey, dbMember.getEmail());
                 jedis.expire(redisKey, 1800); // 設置過期時間為 30 分鐘
-            } finally {
-                jedis.close();
+            } catch (Exception e) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"error\": \"Redis 服務器錯誤，請稍後再試。\"}");
+                return;
             }
+
 
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(createJsonKvObject("email", dbMember.getEmail()));
