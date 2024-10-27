@@ -2,18 +2,20 @@ package com.chat.jedis;
 
 import java.util.List;
 
+import com.outherutil.redis.RedisUtil;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 public class JedisHandleMessage {
 
     // 使用 Jedis 連線池
-    private static JedisPool pool = JedisPoolUtil.getJedisPool();
+    private static JedisPool pool = RedisUtil.getPool();
 
     // 根據發送者與接收者的 ID 取得歷史訊息
     public static List<String> getHistoryMsg(Integer senderId, Integer receiverId) {
         String key = buildConversationKey(senderId, receiverId); // 建立對話鍵
-
+        
         try (Jedis jedis = pool.getResource()) {
             return jedis.lrange(key, 0, -1);  // 取得所有歷史訊息
         }

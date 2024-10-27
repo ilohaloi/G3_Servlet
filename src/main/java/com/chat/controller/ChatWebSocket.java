@@ -12,6 +12,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import javax.websocket.server.ServerEndpointConfig.Configurator;
 
 import com.chat.model.ChatVO;
 import com.google.gson.Gson;
@@ -19,7 +20,7 @@ import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@ServerEndpoint("/ChatWS/{userName}")
+@ServerEndpoint(value = "/ChatWS/{userName}") //
 public class ChatWebSocket {
 
 	private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
@@ -40,6 +41,8 @@ public class ChatWebSocket {
 
 			// 清空未讀訊息標記
 			jedis.del("unread:" + userName);
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 
@@ -73,6 +76,8 @@ public class ChatWebSocket {
 			receiverSessionId.ifPresentOrElse(sessionId -> sendMessageToSession(sessionId, chatContent),
 					() -> jedis.rpush("unread:" + receiverId, chatContent) // 若接收者不在線則保存為未讀
 			);
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 
@@ -105,6 +110,8 @@ public class ChatWebSocket {
 					return key.replace("session:", "");
 				}
 			}
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 		return null;
 	}
