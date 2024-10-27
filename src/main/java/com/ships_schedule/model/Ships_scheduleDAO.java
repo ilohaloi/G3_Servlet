@@ -25,11 +25,11 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 	String userid = "root";
 	String passwd = "123456";
 
-	private static final String INSERT_STMT = "INSERT INTO ships_schedule (route_id,ship_status,ship_shipping_time,ship_shipping_dock,ship_rooms_booked)VALUES (?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO ships_schedule (route_id,ship_status,ship_shipping_time,ship_shipping_dock,ship_rooms_type,ship_rooms_booked)VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT * FROM ships_schedule order by ship_id";
-	private static final String GET_ONE_STMT = "SELECT ship_id,route_id,ship_status,ship_shipping_time,ship_shipping_dock,ship_rooms_booked FROM ships_schedule where ship_id = ?";
+	private static final String GET_ONE_STMT = "SELECT ship_id,route_id,ship_status,ship_shipping_time,ship_shipping_dock,ships_rooms_type,ship_rooms_booked FROM ships_schedule where ship_id = ?";
 	private static final String DELETE = "DELETE FROM ships_schedule where ship_id = ?";
-	private static final String UPDATE = "UPDATE ships_schedule set route_id=?, ship_status=?, ship_shipping_time=?, ship_shipping_dock=?, ship_rooms_booked=? where ship_id = ?";
+	private static final String UPDATE = "UPDATE ships_schedule set route_id=?, ship_status=?, ship_shipping_time=?, ship_shipping_dock=?,ships_rooms_type=?, ship_rooms_booked=? where ship_id = ?";
 
 	@Override
 	public void insert(Ships_scheduleVO ships_scheduleVO) {
@@ -47,7 +47,8 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 			pstmt.setString(2, ships_scheduleVO.getStatus());
 			pstmt.setDate(3, ships_scheduleVO.getShipping_time());// 上面要import java.sql.Date;
 			pstmt.setString(4, ships_scheduleVO.getShipping_dock());
-			pstmt.setInt(5, ships_scheduleVO.getRooms_booked());
+			pstmt.setInt(5, ships_scheduleVO.getRooms_type());
+			pstmt.setInt(6, ships_scheduleVO.getRooms_booked());
 
 			pstmt.executeUpdate();
 
@@ -90,8 +91,9 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 			pstmt.setString(2, ships_scheduleVO.getStatus());
 			pstmt.setDate(3, ships_scheduleVO.getShipping_time());// 上面要import java.sql.Date;
 			pstmt.setString(4, ships_scheduleVO.getShipping_dock());
-			pstmt.setInt(5, ships_scheduleVO.getRooms_booked());
-			pstmt.setInt(6, ships_scheduleVO.getShip_id());//注意PK是放在最後!!!
+			pstmt.setInt(5, ships_scheduleVO.getRooms_type());
+			pstmt.setInt(6, ships_scheduleVO.getRooms_booked());
+			pstmt.setInt(7, ships_scheduleVO.getShip_id());//注意PK是放在最後!!!
 			int i = pstmt.executeUpdate();
 			System.out.print("更新" + i +"筆資料");
 			// Handle any driver errors
@@ -181,6 +183,7 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				ships_scheduleVO.setStatus(rs.getString("ship_status"));
 				ships_scheduleVO.setShipping_time(rs.getDate("ship_shipping_time"));
 				ships_scheduleVO.setShipping_dock(rs.getString("ship_shipping_dock"));
+				ships_scheduleVO.setRooms_type(rs.getInt("ship_rooms_type"));
 				ships_scheduleVO.setRooms_booked(rs.getInt("ship_rooms_booked"));
 				System.out.print("查詢成功");
 			}
@@ -239,6 +242,7 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				ships_scheduleVO.setStatus(rs.getString("ship_status"));
 				ships_scheduleVO.setShipping_time(rs.getDate("ship_shipping_time"));
 				ships_scheduleVO.setShipping_dock(rs.getString("ship_shipping_dock"));
+				ships_scheduleVO.setRooms_type(rs.getInt("ship_rooms_type"));
 				ships_scheduleVO.setRooms_booked(rs.getInt("ship_rooms_booked"));
 				list.add(ships_scheduleVO); // Store the row in the list
 			}
