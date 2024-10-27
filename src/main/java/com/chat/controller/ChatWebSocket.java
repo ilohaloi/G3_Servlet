@@ -3,6 +3,7 @@ package com.chat.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
@@ -20,27 +21,30 @@ import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@ServerEndpoint(value = "/ChatWS/{userName}") //
+@ServerEndpoint(value = "/ChatWS/{userId}") //
 public class ChatWebSocket {
 
+	private static ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
 	private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
 	private final Gson gson = new Gson();
 
 	@OnOpen
-	public void onOpen(@PathParam("userName") String userName, Session userSession) throws IOException {
+	public void onOpen(@PathParam("userId") String userId, Session userSession) throws IOException {
 		try (Jedis jedis = jedisPool.getResource()) {
-			// 保存新的 Session 到 Redis
-			jedis.set("session:" + userName, userSession.getId());
-			System.out.println("用戶 " + userName + " 已連接");
+			userSession.getBasicRemote().sendText("歡迎 " + userId + " 加入聊天室！");
+			// 保存新的 Session 到 Redis db(5)
+			jedis.select(5);
+			jedis.set("chat:member:" + userId, userSession.getId());
+			System.out.println("用戶 " + userId + " 已連接");
 
 			// 載入並發送未讀訊息
-			List<String> unreadMessages = jedis.lrange("unread:" + userName, 0, -1);
+			List<String> unreadMessages = jedis.lrange("unread:" + userId, 0, -1);
 			for (String message : unreadMessages) {
 				userSession.getAsyncRemote().sendText(message);
 			}
 
 			// 清空未讀訊息標記
-			jedis.del("unread:" + userName);
+			jedis.del("unread:" + userId);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -49,7 +53,12 @@ public class ChatWebSocket {
 	@OnMessage
 	public void onMessage(String message, Session userSession) {
 		ChatVO chatMessage = gson.fromJson(message, ChatVO.class);
-
+		System.out.println("訊息" + message);
+		System.out.println("session:"+userSession.getId());
+//		userSession.getBasicRemote().sendText("歡迎加入聊天室！");
+		
+		
+		
 		try (Jedis jedis = jedisPool.getResource()) {
 			// 根據 Redis 中的 session 對應來判斷發送者
 			String senderName = getUserNameBySession(userSession); // 取得發送者的名稱
