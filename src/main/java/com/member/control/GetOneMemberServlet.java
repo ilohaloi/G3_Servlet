@@ -6,30 +6,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.member.model.MemberJDBC;
 import com.member.model.MemberVO;
+import com.outherutil.json.JsonDeserializerInterface;
 
 @WebServlet("/getOneMember")
-public class GetOneMemberServlet extends HttpServlet {
+public class GetOneMemberServlet extends HttpServlet implements JsonDeserializerInterface{
 
     private static final long serialVersionUID = 1L;
     private MemberJDBC memberJDBC = new MemberJDBC();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Set CORS headers
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // Set response content type
+    	// Set response content type
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
-
-        // Get email parameter from the request
-        String email = req.getParameter("email");
+        
+     // Get email parameter from the request
+       MemberVO membVo = readJsonFromBufferedReader(req.getReader(), MemberVO.class);
+        
+        String email = membVo.getEmail();
         if (email == null || email.isEmpty()) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("{\"error\":\"Email parameter is missing\"}");
@@ -42,7 +42,7 @@ public class GetOneMemberServlet extends HttpServlet {
         // If member not found, return error message
         if (member == null) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            resp.getWriter().write("{\"error\":\"Member not found\"}");
+            resp.getWriter().write("{\"error\":\"找不到會員\"}");
             return;
         }
 

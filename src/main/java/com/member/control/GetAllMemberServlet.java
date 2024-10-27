@@ -21,16 +21,6 @@ public class GetAllMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = -5337326634130632679L;
 
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		resp.setHeader("Access-Control-Allow-Origin", "*");
-		resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-		resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-		doGet(req, resp);
-	}
-
-	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
