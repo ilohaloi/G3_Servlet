@@ -18,6 +18,7 @@ public class Test_Ships_schedule {
 //		ships_scheduleVO.setStatus("行駛中");//船舶狀態		
 //		ships_scheduleVO.setShipping_time(data);//出航時間
 //		ships_scheduleVO.setShipping_dock("台中港");//碼頭
+//		ships_scheduleVO.setRooms_type(2);
 //		ships_scheduleVO.setRooms_booked(5);//預訂房間數	
 //		
 //		Ships_scheduleDAO ships_scheduleDAO = new Ships_scheduleDAO();
@@ -25,17 +26,18 @@ public class Test_Ships_schedule {
 		
         
 		//更改資料,若有欄位未改會變空值
-//		Ships_scheduleVO ships_scheduleVO = new Ships_scheduleVO();
-//		Date data = new Date(System.currentTimeMillis());//獲取當前時間 		
-//		ships_scheduleVO.setShip_id(5);
-//		ships_scheduleVO.setRoute_id(2);
-//		ships_scheduleVO.setStatus("停駛");//船舶狀態		
-//		ships_scheduleVO.setShipping_time(data);
-//		ships_scheduleVO.setShipping_dock("高雄港");//碼頭
-//		ships_scheduleVO.setRooms_booked(8);//預訂房間數	
-//	
-//		Ships_scheduleDAO ships_scheduleDAO = new Ships_scheduleDAO();
-//		ships_scheduleDAO.update(ships_scheduleVO);
+		Ships_scheduleVO ships_scheduleVO = new Ships_scheduleVO();
+		Date data = new Date(System.currentTimeMillis());//獲取當前時間 		
+		ships_scheduleVO.setShip_id(5);
+		ships_scheduleVO.setRoute_id(2);
+		ships_scheduleVO.setStatus("停駛");//船舶狀態		
+		ships_scheduleVO.setShipping_time(data);
+		ships_scheduleVO.setShipping_dock("高雄港");//碼頭
+		ships_scheduleVO.setRooms_type(4);
+		ships_scheduleVO.setRooms_booked(8);//預訂房間數	
+	
+		Ships_scheduleDAO ships_scheduleDAO = new Ships_scheduleDAO();
+		ships_scheduleDAO.update(ships_scheduleVO);
 		
 		//刪除-填寫的ship_id
 //		Ships_scheduleDAO ships_scheduleDAO = new Ships_scheduleDAO();
@@ -54,6 +56,7 @@ public class Test_Ships_schedule {
 //			System.out.print(ships_scheduleVO.getStatus() + ",");
 //			System.out.print(ships_scheduleVO.getShipping_dock() + ",");
 //			System.out.print(ships_scheduleVO.getShipping_time() + ",");
+//			System.out.print(ships_scheduleVO.getRooms_type()+ ",");
 //			System.out.print(ships_scheduleVO.getRooms_booked());
 //			System.out.println();
 //		}
