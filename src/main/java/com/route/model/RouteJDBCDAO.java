@@ -12,15 +12,15 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 	String passwd = "123456";
 
 	private static final String INSERT_STMT = 
-			"INSERT INTO route (name,depiction,days,price) VALUES (?, ?, ?, ?, ?, ?)";
+			"INSERT INTO route (route_name,route_depiction,route_days,route_price,route_image)VALUES (?, ?, ?, ?, ?)";
 		private static final String GET_ALL_STMT = 
-			"SELECT id,name,depiction,days,price FROM route order by id";
+			"SELECT * FROM route order by route_id";
 		private static final String GET_ONE_STMT = 
-			"SELECT id,name,depiction,days,price FROM route where id = ?";
+			"SELECT route_id,route_name,route_depiction,route_days,route_price,route_image FROM route where route_id = ?";
 		private static final String DELETE = 
-			"DELETE FROM route where id = ?";
+			"DELETE FROM route where route_id = ?";
 		private static final String UPDATE = 
-			"UPDATE route set name=?, depiction=?, days=?, price=? where id = ?";
+			"UPDATE route set route_name=?, route_depiction=?, route_days=?, route_price=?, route_image=? where route_id = ?";
 
 	@Override
 	public void insert(RouteVO routeVO) {
@@ -38,6 +38,7 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 			pstmt.setString(2, routeVO.getDepiction());
 			pstmt.setInt(3, routeVO.getDays());
 			pstmt.setInt(4, routeVO.getPrice());
+			pstmt.setString(5, routeVO.getImage());
 
 			pstmt.executeUpdate();
 
@@ -81,11 +82,12 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, routeVO.getId());
-			pstmt.setString(2, routeVO.getName());
-			pstmt.setString(3, routeVO.getDepiction());
-			pstmt.setInt(4, routeVO.getDays());
-			pstmt.setInt(5, routeVO.getPrice());
+			pstmt.setString(1, routeVO.getName());
+			pstmt.setString(2, routeVO.getDepiction());
+			pstmt.setInt(3, routeVO.getDays());
+			pstmt.setInt(4, routeVO.getPrice());
+			pstmt.setString(5, routeVO.getImage());
+			pstmt.setInt(6, routeVO.getId());//注意PK是放在最後!!!
 
 			pstmt.executeUpdate();
 
@@ -182,11 +184,12 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects
 				routeVO = new RouteVO();
-				routeVO.setId(rs.getInt("id"));
-				routeVO.setName(rs.getString("name"));
-				routeVO.setDepiction(rs.getString("depiction"));
-				routeVO.setPrice(rs.getInt("price"));
-				routeVO.setDays(rs.getInt("days"));
+				routeVO.setId(rs.getInt("route_id"));
+				routeVO.setName(rs.getString("route_name"));
+				routeVO.setDepiction(rs.getString("route_depiction"));
+				routeVO.setPrice(rs.getInt("route_price"));
+				routeVO.setDays(rs.getInt("route_days"));
+				routeVO.setImage(rs.getString("route_image"));
 			}
 
 			// Handle any driver errors
@@ -243,11 +246,12 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 			while (rs.next()) {
 				// empVO 也稱為 Domain objects
 				routeVO = new RouteVO();
-				routeVO.setId(rs.getInt("id"));
-				routeVO.setName(rs.getString("name"));
-				routeVO.setDepiction(rs.getString("setDepiction"));
-				routeVO.setPrice(rs.getInt("price"));
-				routeVO.setDays(rs.getInt("days"));
+				routeVO.setId(rs.getInt("route_id"));
+				routeVO.setName(rs.getString("route_name"));
+				routeVO.setDepiction(rs.getString("route_depiction"));
+				routeVO.setPrice(rs.getInt("route_price"));
+				routeVO.setDays(rs.getInt("route_days"));
+				routeVO.setImage(rs.getString("route_image"));
 				list.add(routeVO); // Store the row in the list
 			}
 
@@ -297,6 +301,7 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 		routeVO.setDepiction("沖繩");
 		routeVO.setDays(5);
 		routeVO.setPrice(10000);
+		routeVO.setImage("圖片");
 		routeJDBCDAO.insert(routeVO);
 
 		// 修改
@@ -306,7 +311,7 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 		routeVO1.setDepiction("沖繩");
 		routeVO1.setDays(5);
 		routeVO1.setPrice(10000);
-		
+		routeVO1.setImage("圖片2");
 		routeJDBCDAO.update(routeVO);
 		// 刪除
 		routeJDBCDAO.delete(2);
@@ -318,7 +323,7 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 		System.out.print(routeVO2.getDepiction() + ",");
 		System.out.print(routeVO2.getPrice() + ",");
 		System.out.print(routeVO2.getDays() + ",");
-		
+		System.out.print(routeVO2.getImage() + ",");
 		System.out.println("---------------------");
 
 		// 查詢
@@ -328,8 +333,8 @@ public class RouteJDBCDAO implements RouteDAO_interface{
 			System.out.print(aRoute.getName() + ",");
 			System.out.print(aRoute.getDepiction() + ",");
 			System.out.print(aRoute.getPrice() + ",");
-			System.out.print(aRoute.getDays() + ",\t");
-			
+			System.out.print(aRoute.getDays() + ",");
+			System.out.print(aRoute.getImage() + ",\t");
 			System.out.println();
 		}
 	}

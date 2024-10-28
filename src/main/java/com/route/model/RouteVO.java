@@ -17,8 +17,19 @@ public class RouteVO implements Serializable {
 	private String depiction;
 	private Integer days;
 	private Integer price;
+	private String image;
 	
 	
+	public String getImage() {
+		return image;
+	}
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -72,7 +83,7 @@ public class RouteVO implements Serializable {
 	@Override
 	public String toString() {
 		return "RouteVO [id=" + id + ", name=" + name + ", depiction=" + depiction + ", days=" + days + ", price="
-				+ price + "]";
+				+ price + ", image=" + image + "]";
 	}
 	
 	

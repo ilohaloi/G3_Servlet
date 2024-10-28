@@ -27,11 +27,11 @@ public class RouteDAO implements RouteDAO_interface {
 	
 	
 
-	private static final String INSERT_STMT = "INSERT INTO route (route_name,route_depiction,route_days,route_price)VALUES (?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO route (route_name,route_depiction,route_days,route_price,route_image)VALUES (?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT * FROM route order by route_id";
-	private static final String GET_ONE_STMT = "SELECT route_id,route_name,route_depiction,route_days,route_price FROM route where route_id = ?";
+	private static final String GET_ONE_STMT = "SELECT route_id,route_name,route_depiction,route_days,route_price,route_image FROM route where route_id = ?";
 	private static final String DELETE = "DELETE FROM route where route_id = ?";
-	private static final String UPDATE = "UPDATE route set route_name=?, route_depiction=?, route_days=?, route_price=? where route_id = ?";
+	private static final String UPDATE = "UPDATE route set route_name=?, route_depiction=?, route_days=?, route_price=?, route_image=? where route_id = ?";
 	
 	
 	
@@ -53,6 +53,7 @@ public class RouteDAO implements RouteDAO_interface {
 			pstmt.setString(2, routeVO.getDepiction());
 			pstmt.setInt(3, routeVO.getDays());
 			pstmt.setInt(4, routeVO.getPrice());
+			pstmt.setString(5, routeVO.getImage());
 
 			pstmt.executeUpdate();
 
@@ -96,7 +97,8 @@ public class RouteDAO implements RouteDAO_interface {
 			pstmt.setString(2, routeVO.getDepiction());
 			pstmt.setInt(3, routeVO.getDays());
 			pstmt.setInt(4, routeVO.getPrice());
-			pstmt.setInt(5, routeVO.getId());//注意PK是放在最後!!!
+			pstmt.setString(5, routeVO.getImage());
+			pstmt.setInt(6, routeVO.getId());//注意PK是放在最後!!!
 			
 			pstmt.executeUpdate();
 			int i = pstmt.executeUpdate();
@@ -188,6 +190,7 @@ public class RouteDAO implements RouteDAO_interface {
 				routeVO.setDepiction(rs.getString("route_depiction"));
 				routeVO.setPrice(rs.getInt("route_price"));
 				routeVO.setDays(rs.getInt("route_days"));
+				routeVO.setImage(rs.getString("route_image"));
 				System.out.print("查詢成功");
 			}
 
@@ -245,6 +248,7 @@ public class RouteDAO implements RouteDAO_interface {
 				routeVO.setDepiction(rs.getString("route_depiction"));
 				routeVO.setPrice(rs.getInt("route_price"));
 				routeVO.setDays(rs.getInt("route_days"));
+				routeVO.setImage(rs.getString("route_image"));
 				list.add(routeVO); // Store the row in the list
 				System.out.print("查詢成功");
 			}
