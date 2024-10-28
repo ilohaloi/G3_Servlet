@@ -18,7 +18,6 @@ public class UpdateMemberServlet extends HttpServlet {
 
     private static final long serialVersionUID = 5673675033351078850L;
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -41,12 +40,13 @@ public class UpdateMemberServlet extends HttpServlet {
         String json = jsonBuilder.toString();
         System.out.println("Received JSON: " + json);
 
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        // 使用自訂日期格式 yyyy/MM/dd
+        Gson gson = new GsonBuilder().setDateFormat("yyyy:MM:dd").create();
 
         MemberVO memberVO = gson.fromJson(json, MemberVO.class);
         if (memberVO == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"無法解析 JSON 資料，email 為空或無效\"}");
+            resp.getWriter().write("{\"error\": \"無法解析 JSON 資料，ID 為空或無效\"}");
             return;
         }
 
@@ -63,7 +63,7 @@ public class UpdateMemberServlet extends HttpServlet {
             System.out.println("修改會員資料失敗");
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
