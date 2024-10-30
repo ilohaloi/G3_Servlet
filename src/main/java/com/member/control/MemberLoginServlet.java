@@ -94,7 +94,7 @@ public class MemberLoginServlet extends HttpServlet implements JsonSerializerInt
         	
             
             try (Jedis jedis = pool.getResource()) {
-                String redisKey = "session:member:" + dbMember.getId();
+                String redisKey = "member:" + dbMember.getId();
                 jedis.set(redisKey, String.valueOf(dbMember.getId()));
                 jedis.expire(redisKey, 1800); // 設置過期時間為 30 分鐘
                 System.out.print("ID已存入Redis");
