@@ -92,5 +92,4 @@ public class UserCoupon {
 		return "Cp{" + "coup_no=" + coup_no + ", memb_id='" + memb_id + '\'' + ", coup_id='" + coup_id + '\''
 				+ ", coup_issueDate=" + coup_issue_date + ", coup_expiryDate=" + coup_expiry_date + '}';
 	}
-
 }

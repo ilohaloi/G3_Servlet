@@ -2,6 +2,8 @@ package com.member.control;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -64,6 +66,7 @@ public class MemberLoginServlet extends HttpServlet implements JsonSerializerInt
         // 將 JSON 轉換為 MemberVO 物件
         Gson gson = new Gson();
         MemberVO memberVO;
+        
         try {
             memberVO = gson.fromJson(json, MemberVO.class);
         } catch (JsonSyntaxException e) {
@@ -87,20 +90,24 @@ public class MemberLoginServlet extends HttpServlet implements JsonSerializerInt
         if (dbMember.getPassword().equals(memberVO.getPassword())) {
             // 登入成功，將會員 email 加入 Redis
         	
+        	System.out.print("密碼符合");
+        	
             
             try (Jedis jedis = pool.getResource()) {
                 String redisKey = "session:member:" + dbMember.getId();
-                jedis.set(redisKey, dbMember.getEmail());
+                jedis.set(redisKey, String.valueOf(dbMember.getId()));
                 jedis.expire(redisKey, 1800); // 設置過期時間為 30 分鐘
+                System.out.print("ID已存入Redis");
             } catch (Exception e) {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.getWriter().write("{\"error\": \"Redis 服務器錯誤，請稍後再試。\"}");
+                System.out.print("ID沒有存入Redis");
                 return;
             }
 
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write(createJsonKvObject("email", dbMember.getEmail()));
+            resp.getWriter().write(createJsonKvObject("id", String.valueOf(dbMember.getId())));
         } else {
             // 登入失敗
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
