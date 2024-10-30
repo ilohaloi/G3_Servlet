@@ -16,7 +16,30 @@ public class Travel_orderVO {
 	private int coup_id;
 	private String trav_orde_status;
 	private int room_amount;
+	private int room_type;
 	private String trav_orde_amount;
+	private String selectedFilter;
+	private String searchQuery;
+	
+	
+	public int getRoom_type() {
+		return room_type;
+	}
+	public void setRoom_type(int room_type) {
+		this.room_type = room_type;
+	}
+	public String getSelectedFilter() {
+		return selectedFilter;
+	}
+	public void setSelectedFilter(String selectedFilter) {
+		this.selectedFilter = selectedFilter;
+	}
+	public String getSearchQuery() {
+		return searchQuery;
+	}
+	public void setSearchQuery(String searchQuery) {
+		this.searchQuery = searchQuery;
+	}
 	public int getId() {
 		return id;
 	}
