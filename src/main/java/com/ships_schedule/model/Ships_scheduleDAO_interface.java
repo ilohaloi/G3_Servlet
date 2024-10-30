@@ -9,5 +9,6 @@ public interface Ships_scheduleDAO_interface {
     public void update(Ships_scheduleVO ships_scheduleVO);
     public void delete(Integer ships_scheduleVO);
     public Ships_scheduleVO findByPrimaryKey(Integer ships_scheduleVO);
+    public List<Ships_scheduleVO> search(String columnName,String vaule);
     public List<Ships_scheduleVO> getAll();
 }

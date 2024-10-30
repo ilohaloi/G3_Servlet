@@ -18,6 +18,28 @@ public class RouteVO implements Serializable {
 	private Integer days;
 	private Integer price;
 	private String image;
+	private String selectedFilter;
+	private String searchQuery;
+	public String getSearchQuery() {
+		return searchQuery;
+	}
+
+
+	public void setSearchQuery(String searchQuery) {
+		this.searchQuery = searchQuery;
+	}
+
+
+	public String getSelectedFilter() {
+		return selectedFilter;
+	}
+
+
+	public void setSelectedFilter(String selectedFilter) {
+		this.selectedFilter = selectedFilter;
+	}
+
+
 	
 	
 	public String getImage() {
