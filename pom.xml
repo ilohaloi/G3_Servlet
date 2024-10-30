@@ -10,7 +10,13 @@
 	<packaging>war</packaging>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
+
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.mindrot</groupId>
 			<artifactId>jbcrypt</artifactId>
@@ -132,8 +138,6 @@
 			<artifactId>javax.websocket-api</artifactId>
 			<version>1.1</version>
 		</dependency>
-
-
 
 
 	</dependencies>
