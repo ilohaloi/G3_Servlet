@@ -34,8 +34,75 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 	private static final String DELETE = "DELETE FROM ships_schedule where ship_id = ?";
 	private static final String UPDATE = "UPDATE ships_schedule set route_id=?, ship_status=?, ship_shipping_time=?, ship_shipping_dock=?, ship_rooms_booked=? where ship_id = ?";
 	private static final String SEARCH_STMT = "SELECT * FROM ships_schedule where";
+	private static final String SEARCH_ROOMS = "SELECT * from ships_schedule where ship_rooms_booked > ? and route_id = ?";
 	
 	
+	@Override
+	public List<Ships_scheduleVO> searchRoom(int ship_rooms_booked,int route_id) {
+		List<Ships_scheduleVO> list = new ArrayList<Ships_scheduleVO>();
+		Ships_scheduleVO ships_scheduleVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			String srString = SEARCH_ROOMS;
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			
+			
+				srString = "SELECT * from ships_schedule where ship_rooms_booked > ? and route_id = ?";
+				pstmt = con.prepareStatement(srString);
+				pstmt.setInt(1, Integer.valueOf(ship_rooms_booked));
+				pstmt.setInt(2, Integer.valueOf(route_id));
+			
+			
+			
+			pstmt.execute();
+			rs = pstmt.getResultSet();
+			List<Ships_scheduleVO> schedulelist = new ArrayList<Ships_scheduleVO>();
+			while (rs.next()) {
+				// empVo 也稱為 Domain objects
+				ships_scheduleVO = new Ships_scheduleVO();
+				ships_scheduleVO.setRooms_booked(rs.getInt("ship_rooms_booked"));
+				ships_scheduleVO.setRoute_id(rs.getInt("route_id"));				
+				schedulelist.add(ships_scheduleVO);
+				System.out.print("查詢成功");
+			}
+			return schedulelist;
+			
+			
+		} catch (SQLException | ClassNotFoundException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
+	}
 	
 	@Override
 	public List<Ships_scheduleVO> search(String columnName,String value) {
@@ -83,7 +150,7 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				pstmt.setInt(1, Integer.valueOf(value));
 				break;		
 			default:
-				pstmt = con.prepareStatement("SELECT * FROM ships_schedule");
+				
 				break;		
 			}
 			
