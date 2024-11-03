@@ -52,7 +52,7 @@ public class Ships_scheduleServlet extends HttpServlet {
 
 		String jsonString = gson.toJson(books);
 		resp.getWriter().write(jsonString);
-		System.out.println("資料已成功發送到前端囉~~");
+		System.out.println("資料發送到前端~~");
 
 	}
 

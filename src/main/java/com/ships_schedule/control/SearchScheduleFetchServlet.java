@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.outherutil.json.JsonDeserializerInterface;
 import com.outherutil.json.JsonSerializerInterface;
@@ -36,7 +37,14 @@ public class SearchScheduleFetchServlet extends HttpServlet implements JsonDeser
 			var schedulelist =  ships_scheduleDAO.search(schedule.getSelectedFilter(),schedule.getSearchQuery());
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().write(toJson(schedulelist,false));
+			
+			Gson gson = new GsonBuilder()
+					.setDateFormat("yyyy-MM-dd")
+					.create();
+			
+			
+			
+			resp.getWriter().write(gson.toJson(schedulelist));
 			schedulelist.forEach(e->{
 				System.out.println(e);
 			});
