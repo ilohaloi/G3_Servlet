@@ -98,7 +98,7 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 				travel_orderVO.setCoup_id(rs.getInt("coup_id"));
 				travel_orderVO.setTrav_orde_status(rs.getString("trav_orde_status"));
 				travel_orderVO.setRoom_amount(rs.getInt("room_amount"));
-				travel_orderVO.setRoom_type(rs.getInt("room_type"));
+				travel_orderVO.setRoom_type(rs.getString("room_type"));
 				travel_orderVO.setTrav_orde_amount(rs.getString("trav_orde_amount"));
 				orderlist.add(travel_orderVO);
 				System.out.print("查詢成功");
@@ -154,7 +154,7 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 			pstmt.setInt(3, travel_orderVO.getCoup_id());
 			pstmt.setString(4, travel_orderVO.getTrav_orde_status());
 			pstmt.setInt(5, travel_orderVO.getRoom_amount());
-			pstmt.setInt(6, travel_orderVO.getRoom_type());
+			pstmt.setString(6, travel_orderVO.getRoom_type());
 			pstmt.setString(7, travel_orderVO.getTrav_orde_amount());
 			pstmt.executeUpdate();
 
@@ -198,7 +198,7 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 			pstmt.setInt(3, travel_orderVO.getCoup_id());
 			pstmt.setString(4, travel_orderVO.getTrav_orde_status());
 			pstmt.setInt(5, travel_orderVO.getRoom_amount());
-			pstmt.setInt(6, travel_orderVO.getRoom_type());
+			pstmt.setString(6, travel_orderVO.getRoom_type());
 			pstmt.setString(7, travel_orderVO.getTrav_orde_amount());
 			pstmt.setInt(8, travel_orderVO.getId());//注意PK是放在最後!!!
 			int i = pstmt.executeUpdate();
@@ -291,7 +291,7 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 				travel_orderVO.setCoup_id(rs.getInt("coup_id"));
 				travel_orderVO.setTrav_orde_status(rs.getString("trav_orde_status"));
 				travel_orderVO.setRoom_amount(rs.getInt("room_amount"));
-				travel_orderVO.setRoom_type(rs.getInt("Room_type"));
+				travel_orderVO.setRoom_type(rs.getString("Room_type"));
 				travel_orderVO.setTrav_orde_amount(rs.getString("trav_orde_amount"));
 				System.out.print("查詢成功");
 			}
@@ -351,7 +351,7 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 				travel_orderVO.setCoup_id(rs.getInt("coup_id"));
 				travel_orderVO.setTrav_orde_status(rs.getString("trav_orde_status"));
 				travel_orderVO.setRoom_amount(rs.getInt("room_amount"));
-				travel_orderVO.setRoom_type(rs.getInt("Room_type"));
+				travel_orderVO.setRoom_type(rs.getString("Room_type"));
 				travel_orderVO.setTrav_orde_amount(rs.getString("trav_orde_amount"));
 				list.add(travel_orderVO); // Store the row in the list
 			}

@@ -16,16 +16,17 @@ public class Travel_orderVO {
 	private int coup_id;
 	private String trav_orde_status;
 	private int room_amount;
-	private int room_type;
+	private String room_type;
 	private String trav_orde_amount;
 	private String selectedFilter;
 	private String searchQuery;
 	
 	
-	public int getRoom_type() {
+	
+	public String getRoom_type() {
 		return room_type;
 	}
-	public void setRoom_type(int room_type) {
+	public void setRoom_type(String room_type) {
 		this.room_type = room_type;
 	}
 	public String getSelectedFilter() {
@@ -85,9 +86,10 @@ public class Travel_orderVO {
 	@Override
 	public String toString() {
 		return "Travel_orderVO [id=" + id + ", memb_id=" + memb_id + ", ship_id=" + ship_id + ", coup_id=" + coup_id
-				+ ", trav_orde_status=" + trav_orde_status + ", room_amount=" + room_amount + ", trav_orde_amount="
-				+ trav_orde_amount + "]";
+				+ ", trav_orde_status=" + trav_orde_status + ", room_amount=" + room_amount + ", room_type=" + room_type
+				+ ", trav_orde_amount=" + trav_orde_amount + "]";
 	}
+	
 	
 	
 	
