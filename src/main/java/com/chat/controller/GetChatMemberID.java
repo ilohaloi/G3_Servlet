@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@WebServlet("/api/GetList")
+@WebServlet("/api/chat/member")
 public class GetChatMemberID extends HttpServlet {
     private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
 
