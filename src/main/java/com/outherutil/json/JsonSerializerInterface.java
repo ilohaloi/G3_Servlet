@@ -18,7 +18,7 @@ public interface JsonSerializerInterface {
 		data.forEach(job::addProperty);
 		return toJson(job);
 	}
-
+	
 	public default String createJsonKvObject(String...data) {
 		Map<String,String> respData= new LinkedHashMap<>();
 		for (int i = 0; i < data.length; i+=2) {

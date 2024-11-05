@@ -82,9 +82,12 @@ public class ProdDaoImpl implements Dao ,RedisInterface{
 				//搜尋 key 裡面的所有kv
                 Map<String, String> prodData = jedis.hgetAll(id);
                 ProdVo prod = new ProdVo(prodData);
+                
+                
                 prod.setId(Integer.valueOf(id.substring(5)));
                 prods.add(prod);
-            }
+            
+			}
 		}
 		return prods;
 	}

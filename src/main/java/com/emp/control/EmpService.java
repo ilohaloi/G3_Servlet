@@ -79,6 +79,7 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 
 				EmpLoginVo login =  jsonToObject(decrypt(loginData.getV1(), targetData.getSecond(), RSA), EmpLoginVo.class);
 				loginData.setV2(targetData.getSecond());
+				
 				return login.getPassword().equals(dataBaseEmp.getPassword())? true : false;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -127,6 +128,7 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 	public boolean insertEmp(JedisPool jpool, EmpVo emp, PublicKey key) {
 
 		emp.setPublicKey(getBase64FromKey(key));
+		
 		Pair<String, Map<String, String>> data = new Pair<String, Map<String, String>>(emp.getAccount(),
 				new HashMap<String, String>());
 
