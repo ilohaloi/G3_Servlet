@@ -14,10 +14,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 
+import com.prod.control.ProdElementStringDefine;
+
 @Entity
 @Table(name = "products")
 @Access(AccessType.FIELD)
-public class ProdVo  implements Serializable{
+public class ProdVo  implements Serializable,ProdElementStringDefine{
 
 	/**
 	 *
@@ -34,6 +36,9 @@ public class ProdVo  implements Serializable{
 
 	@Column(name = "prod_category")
 	private String category;
+
+	@Column(name ="pord_describe")
+	private String describe;
 
 	@Column(name = "prod_stock")
 	private Integer stock;
@@ -68,8 +73,8 @@ public class ProdVo  implements Serializable{
 		this.img3 = img3;
 	}
 	public ProdVo(HttpServletRequest req) {
-		name = req.getParameter("name");
-		category = req.getParameter("category");
+		name = req.getParameter(prodName);
+		category = req.getParameter(prodCategory);
 		stock = Integer.valueOf(req.getParameter("stock"));
 		price = Integer.valueOf(req.getParameter("price"));
 	}
@@ -77,26 +82,26 @@ public class ProdVo  implements Serializable{
 	public ProdVo(Map<String , String> data) {
 		data.forEach((k,v)->{
 			switch (k) {
-            case "name":
-                name = (String) v;
+            case prodName:
+                name = v;
                 break;
-            case "category":
-                category = (String) v;
+            case prodCategory:
+                category = v;
                 break;
-            case "stock":
+            case prodStock:
                 stock = Integer.valueOf(v);
                 break;
-            case "price":
+            case prodPrice:
                 price = Integer.valueOf(v);
                 break;
-            case "img1":
-                img1 = (String) v;
+            case prodImg1:
+                img1 = v;
                 break;
-            case "img2":
-                img2 = (String) v;
+            case prodImg2:
+                img2 = v;
                 break;
-            case "img3":
-                img3 = (String) v;
+            case prodImg3:
+                img3 = v;
                 break;
 			}
 		});

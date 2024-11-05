@@ -17,9 +17,7 @@ public class EmpDaoImpl implements EmpInterface ,RedisInterface{
 		return getByAccount(account)!=null?true:false;
 	}
 
-	@Override
-	public void redisUpdate(JedisPool pool,Object data) {
-	}
+
 
 	@Override
 	public void redisSetExpire(JedisPool pool,String key, int timeSec) {

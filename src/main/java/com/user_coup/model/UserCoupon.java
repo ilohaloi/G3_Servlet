@@ -30,6 +30,9 @@ public class UserCoupon {
 	@Column(name = "coup_expiry_date")
 	private Timestamp coup_expiry_date; // 使用 Timestamp
 
+	@Column(name = "coup_is_used")
+	private Integer coup_is_used;
+
 	// Constructor
 	public UserCoupon() {
 		// 這裡不再生成隨機名稱
@@ -74,6 +77,14 @@ public class UserCoupon {
 
 	public void setCoup_expiry_date(Timestamp coup_expiry_date) {
 		this.coup_expiry_date = coup_expiry_date;
+	}
+
+	public Integer getCoup_is_used() {
+		return coup_is_used;
+	}
+
+	public void setCoup_is_used(Integer coup_is_used) {
+		this.coup_is_used = coup_is_used;
 	}
 
 	@Override

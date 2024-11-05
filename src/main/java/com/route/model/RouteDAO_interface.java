@@ -12,7 +12,9 @@ public interface RouteDAO_interface {
 
 	public void update(RouteVO routeVO);
 
-	public void delete(Integer routeVO);
+	public void delete(Integer id);
+	
+	public List<RouteVO> search(String columnName,String vaule);
 
 	public RouteVO findByPrimaryKey(Integer routeVO);
 

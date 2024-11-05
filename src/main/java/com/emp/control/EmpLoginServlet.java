@@ -33,11 +33,11 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 		if (vault == null)
 			return;
 
-
 		// 帳號 密碼 私鑰
 		Tuple<String, String, PrivateKey> emp = (Tuple<String, String, PrivateKey>) req.getAttribute("loginData");
 		VaultFuntion vFuntion = new VaultFuntion(vault, "keys/empKey");
 		EmpService eService = new EmpService();
+
 		if (!eService.login(emp, vFuntion.getAllData())) {
 			resp.setContentType("application/json; charset=UTF-8");
 			resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
@@ -46,7 +46,7 @@ public class EmpLoginServlet extends HttpServlet implements JsonSerializerInterf
 			HttpSession session = req.getSession();
 			eService.insertLoginAuth((JedisPool)getServletContext().getAttribute("redis"), emp.getK(),session.getId());
 			resp.getWriter().write(createJsonKvObject("token",session.getId()));
-
 		}
+
 	}
 }

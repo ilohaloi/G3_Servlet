@@ -69,6 +69,9 @@ public class OrderDetailVo implements Serializable{
 		this.price = prodPrice;
 	}
 
+
+
+
 	public OrderListVo getOrder() {
 		return order;
 	}

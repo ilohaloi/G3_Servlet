@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cipher.model.KeyFormatInterface;
 import com.cipher.model.KeyGenerateInterface;
-import com.outherutil.WebUtil;
 import com.outherutil.json.JsonSerializerInterface;
 
 
@@ -27,11 +26,9 @@ public class CreateTempAesKeyServlet extends HttpServlet implements KeyGenerateI
 
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		SecretKey key = getAesKey()!=null?getAesKey():null;
 		Map<String,String> n = new HashMap<String, String>();
-		System.out.println(getBase64FromKey(key));
 		n.put("key", getBase64FromKey(key));
 		String jsonString = createJsonKvObject(n);
 		System.out.println("獲取key了");
