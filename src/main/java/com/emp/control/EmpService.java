@@ -73,7 +73,7 @@ public class EmpService implements KeyFormatInterface, CipherInterface, JwtUtil 
 		if (vaultData.containsKey(loginData.getK())) {
 			try {
 				targetData = new Pair<String, PrivateKey>(loginData.getK(),
-						(PrivateKey) getRsaKeyFromBase64(vaultData.get(loginData.getK()), "private"));
+						(PrivateKey) getRsaKeyFromBase64(vaultData.get(loginData.getK()), sraType.PRIVATE));
 				var dataBaseEmp = eDaoImpl.getByAccount(loginData.getK());
 				dataBaseEmp.setPassword(decrypt(dataBaseEmp.getPassword(), targetData.getSecond(), RSA));
 

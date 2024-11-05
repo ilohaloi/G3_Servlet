@@ -13,22 +13,18 @@ public class Travel_orderVO {
 	private int id;
 	private int memb_id;
 	private int ship_id;
-	private int coup_id;
+	private int coup_no;
 	private String trav_orde_status;
-	private int room_amount;
 	private String room_type;
-	private String trav_orde_amount;
+	private int room_amount;
+
+	private int trav_orde_amount;
 	private String selectedFilter;
 	private String searchQuery;
-	
-	
-	
-	public String getRoom_type() {
-		return room_type;
-	}
-	public void setRoom_type(String room_type) {
-		this.room_type = room_type;
-	}
+
+
+
+
 	public String getSelectedFilter() {
 		return selectedFilter;
 	}
@@ -41,6 +37,7 @@ public class Travel_orderVO {
 	public void setSearchQuery(String searchQuery) {
 		this.searchQuery = searchQuery;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -60,10 +57,10 @@ public class Travel_orderVO {
 		this.ship_id = ship_id;
 	}
 	public int getCoup_id() {
-		return coup_id;
+		return coup_no;
 	}
 	public void setCoup_id(int coup_id) {
-		this.coup_id = coup_id;
+		this.coup_no = coup_id;
 	}
 	public String getTrav_orde_status() {
 		return trav_orde_status;
@@ -77,20 +74,24 @@ public class Travel_orderVO {
 	public void setRoom_amount(int room_amount) {
 		this.room_amount = room_amount;
 	}
-	public String getTrav_orde_amount() {
+	public int getTrav_orde_amount() {
 		return trav_orde_amount;
 	}
-	public void setTrav_orde_amount(String trav_orde_amount) {
+	public void setTrav_orde_amount(int trav_orde_amount) {
 		this.trav_orde_amount = trav_orde_amount;
 	}
 	@Override
 	public String toString() {
-		return "Travel_orderVO [id=" + id + ", memb_id=" + memb_id + ", ship_id=" + ship_id + ", coup_id=" + coup_id
-				+ ", trav_orde_status=" + trav_orde_status + ", room_amount=" + room_amount + ", room_type=" + room_type
-				+ ", trav_orde_amount=" + trav_orde_amount + "]";
+
+		return "Travel_orderVO [id=" + id + ", memb_id=" + memb_id + ", ship_id=" + ship_id + ", coup_id=" + coup_no
+				+ ", trav_orde_status=" + trav_orde_status + ", room_amount=" + room_amount + ", trav_orde_amount="
+				+ trav_orde_amount + "]";
 	}
-	
-	
-	
-	
+	public String getRoom_type() {
+		return room_type;
+	}
+	public void setRoom_type(String room_type) {
+		this.room_type = room_type;
+	}
+
 }

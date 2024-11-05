@@ -6,17 +6,18 @@ import java.util.List;
 
 public class Ships_scheduleVO {
 
-	
+
 
 	private int ship_id;  	     //船隻編號
 	private int route_id; 	     //航線名稱
 	private	String status;	     //航班狀態
 	private Date shipping_time;  //出港時間
 	private	String shipping_dock;//駁船地點
+
 	private int rooms_booked;	 //已定房間
 	private String selectedFilter;
 	private String searchQuery;
-	
+
 	public String getSelectedFilter() {
 		return selectedFilter;
 	}
@@ -29,8 +30,8 @@ public class Ships_scheduleVO {
 	public void setSearchQuery(String searchQuery) {
 		this.searchQuery = searchQuery;
 	}
-	
-	
+
+
 	public int getShip_id() {
 		return ship_id;
 	}
@@ -72,10 +73,8 @@ public class Ships_scheduleVO {
 		return "Ships_scheduleVO [ship_id=" + ship_id + ", route_id=" + route_id + ", status=" + status
 				+ ", shipping_time=" + shipping_time + ", shipping_dock=" + shipping_dock + ", rooms_booked="
 				+ rooms_booked + "]";
-	}
-	
 
-	
-	
-	
+	}
+
+
 }

@@ -35,6 +35,9 @@ public class ProdVo  implements Serializable{
 	@Column(name = "prod_category")
 	private String category;
 
+	@Column(name ="prod_describe")
+	private String describe;
+
 	@Column(name = "prod_stock")
 	private Integer stock;
 

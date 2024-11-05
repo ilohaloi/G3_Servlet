@@ -25,7 +25,6 @@ public class DecryptDataServlet extends HttpServlet
 		implements JsonDeserializerInterface, KeyFormatInterface, KeyGenerateInterface, CipherInterface ,JsonSerializerInterface{
 
 	private static final long serialVersionUID = -1390169436743831857L;
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -35,7 +34,6 @@ public class DecryptDataServlet extends HttpServlet
 
 		try {
 			String decryptData = null;
-
 			switch (data.getAction()) {
 			case "empReg":
 				decryptData = decrypt(data.getData(),getAesKeyFromBase64(data.getKey()),AES);
@@ -48,8 +46,7 @@ public class DecryptDataServlet extends HttpServlet
 				req.setAttribute("loginData", loginData);
 				req.getRequestDispatcher("/emplogin").forward(req, resp);
 				break;
-
-				//TODO 切割出去 有問題
+				//TODO 切割出去
 			case"getEmpPubKey":
 				EmpService eService = new EmpService();
 				try {
