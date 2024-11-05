@@ -14,36 +14,50 @@ import redis.clients.jedis.resps.ScanResult;
 
 
 public interface RedisInterface {
-
+	public final Long NO_TTL = -1L;
 	 /**
 	  * 單筆插入
 	  * */
-	public default void redisInsert(JedisPool pool,Tuple<String, String, String> data,long expirMillis) {
+	public default void redisInsert(JedisPool pool,Tuple<String, String, String> data,long expirSec) {
 		try(Jedis jedis = pool.getResource()) {
 			jedis.hset(data.getK() + data.getV1(), "token",data.getV2());
-			if(expirMillis>0)
-				jedis.expire(data.getK() + data.getV1(),expirMillis );
+			if(expirSec != NO_TTL)
+				jedis.expire(data.getK() + data.getV1(),expirSec);
 		}
 	}
 	/**
 	 * 	物件插入
 	 * */
-	public default void redisInsert(JedisPool pool,String setName,Pair<String, Map<String,String>> data,long expirMillis) {
+	public default void redisInsert(JedisPool pool,String unionName,Pair<String, Map<String,String>> data,long secMillis) {
 		try(Jedis jedis = pool.getResource()) {
-			jedis.hset(setName + data.component1(), data.component2());
+			jedis.hset(unionName + data.component1(), data.component2());
 
-			if(expirMillis>0)
-				jedis.expire(setName + data.component1() ,expirMillis );
+			if(secMillis != NO_TTL)
+				jedis.expire(unionName + data.component1() ,secMillis );
 		}
 	}
 
-	public void redisUpdate(JedisPool pool,Object data);
+	/**
+	 * 	復數物件插入
+	 * */
+	public default void redisInsert(JedisPool pool,String unionName,List<Pair<String, Map<String,String>>> data,long secMillis) {
+		try(Jedis jedis = pool.getResource()) {
+
+			data.forEach(p->{
+				jedis.hset(unionName + p.component1(), p.component2());
+				if(secMillis!=NO_TTL){
+					jedis.expire(unionName+p.component1(),secMillis);
+				}
+			});
+		}
+	}
+
 	public void redisSetExpire(JedisPool pool,String key,int timeSec);
 
 
 	public Object redisGetByKey(JedisPool pool,String key);
-	@SuppressWarnings("rawtypes")
-	public List redisGetAllByKey(JedisPool pool, String folderName);
+
+	public List<?> redisGetAllByKey(JedisPool pool, String folderName);
 
 	public default List<String> keyScan(Jedis jedis,String key){
 		String cursor = "0";

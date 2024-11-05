@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.order.model.WebOrder;
+import com.order.dto.WebOrder;
 import com.outherutil.WebUtil;
 import com.outherutil.json.JsonDeserializerInterface;
 
@@ -31,7 +31,7 @@ public class InsertOrderServlet extends HttpServlet implements JsonDeserializerI
 		if(webData==null)
 			return;
 		OrderService oService = new OrderService();
-		oService.insertOrder(webData);
+		oService.insert(webData);
 
 	}
 }

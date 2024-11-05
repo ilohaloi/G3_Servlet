@@ -41,7 +41,7 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 
 	@Override
 	public List<Ships_scheduleVO> searchRoom(int ship_rooms_booked,int route_id) {
-		List<Ships_scheduleVO> list = new ArrayList<Ships_scheduleVO>();
+
 		Ships_scheduleVO ships_scheduleVO = null;
 
 		Connection con = null;
@@ -108,7 +108,7 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 
 	@Override
 	public List<Ships_scheduleVO> search(String columnName,String value) {
-		List<Ships_scheduleVO> list = new ArrayList<Ships_scheduleVO>();
+
 		Ships_scheduleVO ships_scheduleVO = null;
 
 

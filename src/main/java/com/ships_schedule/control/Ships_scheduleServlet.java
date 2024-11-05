@@ -40,7 +40,7 @@ public class Ships_scheduleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		resp.setCharacterEncoding("UTF-8");// 讓中文不亂碼
-		
+
 		resp.setContentType("application/json");
 		Ships_scheduleDAO ships_scheduleDAO = new Ships_scheduleDAO();
 		List<Ships_scheduleVO> books = ships_scheduleDAO.getAll();
