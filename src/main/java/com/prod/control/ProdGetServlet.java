@@ -22,22 +22,23 @@ public class ProdGetServlet extends HttpServlet implements JsonDeserializerInter
 	private static final long serialVersionUID = 2559350853892450921L;
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		WebDataVo webData = readJsonFromBufferedReader(req.getReader(),WebDataVo.class);
-		if(webData==null)
+		String action = (String)req.getParameter("action");
+		if(action==null)
 			return;
 
 		try {
 			ProdService pService = new ProdService();
 			JedisPool pool = (JedisPool)getServletContext().getAttribute("redis");
 			resp.setContentType("application/json; charset=UTF-8");
-			switch (webData.getAction()) {
+			switch (action) {
 			case "getAllprod":
 				resp.getWriter().write(toJson(pService.getProds(pool),false));
 				break;
 			case "getProd":
-				resp.getWriter().write(toJson(pService.getProd(pool,webData.getIdentity()),false));
+				String id = (String)req.getParameter("identity");
+				resp.getWriter().write(toJson(pService.getProd(pool,id),false));
 				break;
 			}
 		} catch (Exception e) {

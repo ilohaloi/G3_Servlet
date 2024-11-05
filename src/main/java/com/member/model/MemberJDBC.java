@@ -17,7 +17,7 @@ public class MemberJDBC implements MemberDAO {
 	private static final String INSERT_STMT = "INSERT INTO member_data (memb_name,memb_email,memb_tell,memb_address,memb_birthday,memb_password) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT * FROM member_data order by memb_id";
 	private static final String GET_ONE_STMT = "SELECT memb_id,memb_name,memb_email,memb_tell,memb_address,memb_birthday,memb_password FROM member_data where memb_id = ?";
-	private static final String UPDATE = "UPDATE member_data set memb_name=?, memb_tell=?, memb_address=?, memb_password=? where memb_id = ?";
+	private static final String UPDATE = "UPDATE member_data set memb_name=?, memb_tell=?, memb_address=?, memb_password=? ,memb_birthday=? where memb_id = ?";
 	private static final String CHECK_EMAIL_EXISTS = "SELECT memb_id FROM member_data WHERE memb_email = ?";
 
 	@Override
@@ -82,7 +82,8 @@ public class MemberJDBC implements MemberDAO {
 			pstmt.setString(2, memberVO.getTell());
 			pstmt.setString(3, memberVO.getAddress());
 			pstmt.setString(4, memberVO.getPassword());
-			pstmt.setInt(5, memberVO.getId());
+			pstmt.setDate(5, memberVO.getBirthday());
+			pstmt.setInt(6, memberVO.getId());
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
@@ -330,5 +331,41 @@ public class MemberJDBC implements MemberDAO {
 	        }
 	    }
 	    return memberVO;
+	}
+	
+	public boolean updatePasswordByEmail(String email, String newPassword) {
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+
+	    try {
+	        Class.forName(driver);
+	        con = DriverManager.getConnection(url, userid, passwd);
+	        String UPDATE_PASSWORD = "UPDATE member_data SET memb_password = ? WHERE memb_email = ?";
+	        pstmt = con.prepareStatement(UPDATE_PASSWORD);
+	        pstmt.setString(1, newPassword);
+	        pstmt.setString(2, email);
+	        int rowCount = pstmt.executeUpdate();
+	        return rowCount > 0;
+
+	    } catch (ClassNotFoundException e) {
+	        throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+	    } catch (SQLException se) {
+	        throw new RuntimeException("A database error occurred. " + se.getMessage());
+	    } finally {
+	        if (pstmt != null) {
+	            try {
+	                pstmt.close();
+	            } catch (SQLException se) {
+	                se.printStackTrace(System.err);
+	            }
+	        }
+	        if (con != null) {
+	            try {
+	                con.close();
+	            } catch (Exception e) {
+	                e.printStackTrace(System.err);
+	            }
+	        }
+	    }
 	}
 }

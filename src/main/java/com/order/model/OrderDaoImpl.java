@@ -1,13 +1,20 @@
 package com.order.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Query;
 
 import org.hibernate.Session;
 
 import com.outherutil.Dao;
 import com.outherutil.HibernateUtil;
-public class OrderDaoImpl implements Dao{
+import com.outherutil.redis.RedisInterface;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+public class OrderDaoImpl implements Dao, RedisInterface {
 
 	public void insert(OrderListVo data) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -92,5 +99,36 @@ public class OrderDaoImpl implements Dao{
 		    e.printStackTrace();
 		    return null;
 		}
+	}
+
+	@Override
+	public void redisSetExpire(JedisPool pool, String key, int timeSec) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Object redisGetByKey(JedisPool pool, String key) {
+		try(Jedis jedis = pool.getResource()) {
+			Map<String, String>orderData = jedis.hgetAll(key);
+			OrderListVo order = new OrderListVo(orderData);
+			order.setOrid(Integer.valueOf(key.substring(6)));
+			return order;
+		}
+	}
+
+	@Override
+	public List<OrderListVo> redisGetAllByKey(JedisPool pool, String folderName) {
+		List<OrderListVo> orders = new ArrayList<OrderListVo>();
+		try(Jedis jedis = pool.getResource()){
+			var keys = keyScan(jedis, folderName);
+			for (String id : keys) {
+				Map<String, String> orderData = jedis.hgetAll(id);
+				OrderListVo order = new OrderListVo(orderData);
+				order.setOrid(Integer.valueOf(id.substring(6)));
+				orders.add(order);
+			}
+		}
+		return orders;
 	}
 }

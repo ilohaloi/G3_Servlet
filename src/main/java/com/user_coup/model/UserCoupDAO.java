@@ -1,5 +1,6 @@
 package com.user_coup.model;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface UserCoupDAO {
@@ -13,4 +14,7 @@ public interface UserCoupDAO {
 	UserCoupon findByPK(Integer no);
 
 	List<UserCoupon> getAll();
+
+	List<UserCoupon> getCoupons(Integer memberId, Integer couponId, Timestamp issueDateStart, Timestamp issueDateEnd,
+			Boolean isUsed);
 }

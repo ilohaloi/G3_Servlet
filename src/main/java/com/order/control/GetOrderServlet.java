@@ -13,6 +13,8 @@ import com.outherutil.WebUtil;
 import com.outherutil.json.JsonDeserializerInterface;
 import com.outherutil.json.JsonSerializerInterface;
 
+import redis.clients.jedis.JedisPool;
+
 
 @WebServlet("/getorder")
 public class GetOrderServlet extends HttpServlet implements JsonDeserializerInterface ,JsonSerializerInterface{
@@ -20,25 +22,25 @@ public class GetOrderServlet extends HttpServlet implements JsonDeserializerInte
 	 *
 	 */
 	private static final long serialVersionUID = 4918568443458431677L;
+
 	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
-		WebUtil.accessAllallow(arg0, arg1);
-		doPost(arg0, arg1);
-	}
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		WebDataVo data =  readJsonFromBufferedReader(req.getReader(), WebDataVo.class);
-		if(data==null)
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String action = (String)req.getParameter("action");
+		if(action==null)
 			return;
+
 		OrderService oService = new OrderService();
-		//TODO Redis
 		resp.setContentType("application/json; charset=UTF-8");
-		switch (data.getAction()) {
+
+		var redis = (JedisPool)getServletContext().getAttribute("redis");
+
+		switch (action) {
 		case "getOrders":
-			resp.getWriter().write(toJson(oService.getOrders(),true));
+			resp.getWriter().write(toJson(oService.getOrders(redis),true));
 			break;
 		case "getDetail":
-			resp.getWriter().write(toJson(oService.getOrderDetail(data.getIdentity())));
+			String id = (String)req.getParameter("identity");
+			resp.getWriter().write(toJson(oService.getOrderDetail(id)));
 			break;
 		}
 	}

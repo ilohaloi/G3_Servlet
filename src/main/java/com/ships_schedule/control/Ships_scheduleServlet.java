@@ -40,7 +40,7 @@ public class Ships_scheduleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		resp.setCharacterEncoding("UTF-8");// 讓中文不亂碼
-		
+
 		resp.setContentType("application/json");
 		Ships_scheduleDAO ships_scheduleDAO = new Ships_scheduleDAO();
 		List<Ships_scheduleVO> books = ships_scheduleDAO.getAll();
@@ -52,7 +52,7 @@ public class Ships_scheduleServlet extends HttpServlet {
 
 		String jsonString = gson.toJson(books);
 		resp.getWriter().write(jsonString);
-		System.out.println("資料已成功發送到前端囉~~");
+		System.out.println("資料發送到前端~~");
 
 	}
 

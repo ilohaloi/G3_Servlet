@@ -8,16 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.outherutil.WebUtil;
 import com.outherutil.json.JsonSerializerInterface;
 import com.prod.model.ProdVo;
 
 @WebServlet("/prodinsert")
 @MultipartConfig(
-	    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-	    maxFileSize = 1024 * 1024 * 10,      // 10MB
-	    maxRequestSize = 1024 * 1024 * 30    // 50MB
+	    fileSizeThreshold = 1024 * 1024 * 2,
+	    maxFileSize = 1024 * 1024 * 10,
+	    maxRequestSize = 1024 * 1024 * 30
 	)
 public class ProdInsertServlet extends HttpServlet implements JsonSerializerInterface {
 	/**

@@ -17,8 +17,41 @@ public class RouteVO implements Serializable {
 	private String depiction;
 	private Integer days;
 	private Integer price;
+	private String image;
+	private String selectedFilter;
+	private String searchQuery;
+	public String getSearchQuery() {
+		return searchQuery;
+	}
+
+
+	public void setSearchQuery(String searchQuery) {
+		this.searchQuery = searchQuery;
+	}
+
+
+	public String getSelectedFilter() {
+		return selectedFilter;
+	}
+
+
+	public void setSelectedFilter(String selectedFilter) {
+		this.selectedFilter = selectedFilter;
+	}
+
+
 	
 	
+	public String getImage() {
+		return image;
+	}
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -72,7 +105,7 @@ public class RouteVO implements Serializable {
 	@Override
 	public String toString() {
 		return "RouteVO [id=" + id + ", name=" + name + ", depiction=" + depiction + ", days=" + days + ", price="
-				+ price + "]";
+				+ price + ", image=" + image + "]";
 	}
 	
 	

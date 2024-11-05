@@ -12,6 +12,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 public interface KeyFormatInterface {
 
+	enum sraType {
+		PRIVATE,PUNLIC
+	}
+
+
 	public default SecretKey getAesKeyFromBase64(String base64Key) throws Exception {
 		byte[] decodedKey = Base64.getDecoder().decode(base64Key); // 解码 Base64 字符串
 		return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); // 创建 AES SecretKey
@@ -21,14 +26,14 @@ public interface KeyFormatInterface {
 		byte[] KeyBytes = key.getEncoded();
 		return Base64.getEncoder().encodeToString(KeyBytes);
 	}
-	public default Key getRsaKeyFromBase64(String base64Key, String sraKeytype) throws Exception {
+	public default Key getRsaKeyFromBase64(String base64Key, sraType sraKeytype) throws Exception {
 		byte[] keyBytes = Base64.getDecoder().decode(base64Key);
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 		switch (sraKeytype) {
-		case "private":
+		case PRIVATE:
 			PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(keyBytes);
 			return keyFactory.generatePrivate(privateSpec);
-		case "public":
+		case PUNLIC:
 			X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(keyBytes);
 			return keyFactory.generatePublic(publicSpec);
 

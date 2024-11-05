@@ -1,7 +1,9 @@
-package com.order.model;
+package com.order.dto;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
+import com.order.model.OrderDetailVo;
+import com.order.model.OrderListVo;
 
 import kotlin.Pair;
 

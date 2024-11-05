@@ -8,8 +8,6 @@ import org.hibernate.Session;
 import com.outherutil.Dao;
 import com.outherutil.HibernateUtil;
 import com.outherutil.redis.RedisInterface;
-
-import kotlin.Pair;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -39,21 +37,6 @@ public class ProdDaoImpl implements Dao ,RedisInterface{
 		}
 	}
 
-
-	public void redisInsert(JedisPool pool,String folderName,List<Pair<String, Map<String,String>>> data) {
-		try(Jedis jedis = pool.getResource()) {
-			data.forEach(p->{
-				jedis.hset(folderName + p.component1(), p.component2());
-			});
-		}
-	}
-
-	@Override
-	public void redisUpdate(JedisPool pool, Object data) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public void redisSetExpire(JedisPool pool, String key, int timeSec) {
 		// TODO Auto-generated method stub
@@ -61,18 +44,18 @@ public class ProdDaoImpl implements Dao ,RedisInterface{
 	}
 
 	@Override
-	public Object redisGetByKey(JedisPool pool, String id) {
+	public Object redisGetByKey(JedisPool pool, String key) {
 		try(Jedis jedis = pool.getResource()){
-			Map<String, String> prodData = jedis.hgetAll(id);
+			Map<String, String> prodData = jedis.hgetAll(key);
 			ProdVo prod = new ProdVo(prodData);
-			 prod.setId(Integer.valueOf(id.substring(5)));
+			prod.setId(Integer.valueOf(key.substring(5)));
 			return prod;
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+
 	@Override
-	public List redisGetAllByKey(JedisPool pool, String folderName) {
+	public List<ProdVo> redisGetAllByKey(JedisPool pool, String folderName) {
 		List<ProdVo> prods = new ArrayList<ProdVo>();
 		try(Jedis jedis = pool.getResource()){
 			//搜尋 prod: 所有的key
@@ -91,4 +74,10 @@ public class ProdDaoImpl implements Dao ,RedisInterface{
 		}
 		return prods;
 	}
+
+
+
+
+
+
 }

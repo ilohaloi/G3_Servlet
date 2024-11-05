@@ -21,23 +21,6 @@ public class MemberRegisterServlet extends HttpServlet {
     private static final long serialVersionUID = 5673675033351078850L;
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 跨域請求設定
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-       
-        // 處理 OPTIONS 預檢請求
-        if (req.getMethod().equalsIgnoreCase("OPTIONS")) {
-            resp.setStatus(HttpServletResponse.SC_OK);
-            return;
-        }
-        
-        super.service(req, resp);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 設置請求與響應的編碼格式
         req.setCharacterEncoding("UTF-8");

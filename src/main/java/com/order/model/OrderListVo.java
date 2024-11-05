@@ -1,8 +1,10 @@
 package com.order.model;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -17,13 +19,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.dialect.identity.H2FinalTableIdentityColumnSupport;
+
 import com.google.gson.annotations.Expose;
 import com.prod.model.ProdVo;
 
 @Entity
 @Table(name = "order_list")
 @Access(AccessType.FIELD)
-public class OrderListVo implements Serializable {
+public class OrderListVo implements Serializable ,OrderElementStringDefine{
 
 	/**
 	 *
@@ -36,7 +40,7 @@ public class OrderListVo implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orid;
 
-	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@BatchSize(size = 10)
 	private List<OrderDetailVo> orderDetails;
 
@@ -46,7 +50,7 @@ public class OrderListVo implements Serializable {
 
 	@Expose
 	@Column(name = "order_time", insertable = false)
-	private Date time;
+	private Timestamp time;
 
 	@Expose
 	@Column(name = "order_status")
@@ -76,9 +80,8 @@ public class OrderListVo implements Serializable {
 	@Column(name = "order_amount")
 	private Integer amount;
 
-
 	@Transient
-	private	List<ProdVo> prods;
+	private List<ProdVo> prods;
 
 
 
@@ -86,7 +89,7 @@ public class OrderListVo implements Serializable {
 		super();
 	}
 
-	public OrderListVo(Integer id, Integer membId, Date time, String status, String payment, String name, String email,
+	public OrderListVo(Integer id, Integer membId, Timestamp time, String status, String payment, String name, String email,
 			String tell, String addr, Integer amount, List<OrderDetailVo> orderDetails) {
 		super();
 		this.orid = id;
@@ -102,6 +105,45 @@ public class OrderListVo implements Serializable {
 		this.orderDetails = orderDetails;
 	}
 
+	public OrderListVo(Map<String, String> data) {
+		;
+
+		data.forEach((k, v) -> {
+			switch (k) {
+			case orderId:
+				orid = Integer.valueOf(v);
+				break;
+			case memberId:
+				membId = Integer.valueOf(v);
+				break;
+			case orderTime:
+				time = Timestamp.valueOf(v);
+				break;
+			case orderStauts:
+				status = v;
+				break;
+			case orderPayment:
+				payment = v;
+				break;
+			case custName:
+				name = v;
+				break;
+			case custEmail:
+				email = v;
+				break;
+			case custTell:
+				tell = v;
+				break;
+			case delAddr:
+				addr = v;
+				break;
+			case orderAmount:
+				amount = Integer.valueOf(v);
+				break;
+			}
+		});
+	}
+
 	public Integer getOrid() {
 		return orid;
 	}
@@ -110,7 +152,7 @@ public class OrderListVo implements Serializable {
 		return membId;
 	}
 
-	public Date getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 
@@ -158,7 +200,7 @@ public class OrderListVo implements Serializable {
 		this.membId = membId;
 	}
 
-	public void setTime(Date time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 
@@ -204,5 +246,7 @@ public class OrderListVo implements Serializable {
 				+ payment + ", name=" + name + ", email=" + email + ", tell=" + tell + ", addr=" + addr + ", amount="
 				+ amount + "]";
 	}
+
+
 
 }

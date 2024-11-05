@@ -14,8 +14,9 @@ public class UtilInitServlet implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		sce.getServletContext().setAttribute("redis", RedisUtil.getPool());
-		System.out.println("redis 建立成功");
 
+		System.out.println("redis 建立成功" + RedisUtil.getPool().getResource().ping());
+		HibernateUtil.getSessionFactory();
 		if(VaultUtil.getVault()!=null) {
 			sce.getServletContext().setAttribute("vault", VaultUtil.getVault());
 			System.out.println("vault 建立成功");

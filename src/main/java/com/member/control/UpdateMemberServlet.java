@@ -19,23 +19,6 @@ public class UpdateMemberServlet extends HttpServlet {
     private static final long serialVersionUID = 5673675033351078850L;
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 跨域請求設定
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-        resp.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-        // 檢查 OPTIONS 請求
-        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
-            resp.setStatus(HttpServletResponse.SC_OK);
-            return; // 不處理請求，直接返回
-        }
-
-        // 呼叫父類別的 service 方法，將控制交給 doPost()
-        super.service(req, resp);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
@@ -57,12 +40,13 @@ public class UpdateMemberServlet extends HttpServlet {
         String json = jsonBuilder.toString();
         System.out.println("Received JSON: " + json);
 
-        Gson gson = new GsonBuilder().create();
+        // 使用自訂日期格式 yyyy/MM/dd
+        Gson gson = new GsonBuilder().setDateFormat("yyyy:MM:dd").create();
 
         MemberVO memberVO = gson.fromJson(json, MemberVO.class);
-        if (memberVO == null || memberVO.getId() == null) {
+        if (memberVO == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\": \"無法解析 JSON 資料，email 為空或無效\"}");
+            resp.getWriter().write("{\"error\": \"無法解析 JSON 資料，ID 為空或無效\"}");
             return;
         }
 
@@ -78,5 +62,12 @@ public class UpdateMemberServlet extends HttpServlet {
             resp.getWriter().write("{\"error\": \"修改會員資料失敗，請稍後再試\"}");
             System.out.println("修改會員資料失敗");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.getWriter().write("<h1>會員修改資料</h1>");
     }
 }
