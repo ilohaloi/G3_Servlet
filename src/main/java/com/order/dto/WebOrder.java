@@ -1,6 +1,8 @@
-package com.order.model;
+package com.order.dto;
 
 import java.util.List;
+
+import com.order.model.OrderListVo;
 import com.prod.model.ProdVo;
 
 public class WebOrder {

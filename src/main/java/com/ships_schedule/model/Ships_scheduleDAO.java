@@ -28,18 +28,20 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 	String userid = "root";
 	String passwd = "123456";
 
+
 	private static final String INSERT_STMT = "INSERT INTO ships_schedule (route_id,ship_status,ship_shipping_time,ship_shipping_dock,ship_rooms_booked)VALUES (?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT * FROM ships_schedule order by ship_id";
 	private static final String GET_ONE_STMT = "SELECT ship_id,route_id,ship_status,ship_shipping_time,ship_shipping_dock,ship_rooms_booked FROM ships_schedule where ship_id = ?";
 	private static final String DELETE = "DELETE FROM ships_schedule where ship_id = ?";
 	private static final String UPDATE = "UPDATE ships_schedule set route_id=?, ship_status=?, ship_shipping_time=?, ship_shipping_dock=?, ship_rooms_booked=? where ship_id = ?";
 	private static final String SEARCH_STMT = "SELECT * FROM ships_schedule where";
+
 	private static final String SEARCH_ROOMS = "SELECT * from ships_schedule where ship_rooms_booked > ? and route_id = ?";
-	
-	
+
+
 	@Override
 	public List<Ships_scheduleVO> searchRoom(int ship_rooms_booked,int route_id) {
-		List<Ships_scheduleVO> list = new ArrayList<Ships_scheduleVO>();
+
 		Ships_scheduleVO ships_scheduleVO = null;
 
 		Connection con = null;
@@ -51,15 +53,15 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 			String srString = SEARCH_ROOMS;
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			
-			
+
+
 				srString = "SELECT * from ships_schedule where ship_rooms_booked > ? and route_id = ?";
 				pstmt = con.prepareStatement(srString);
 				pstmt.setInt(1, Integer.valueOf(ship_rooms_booked));
 				pstmt.setInt(2, Integer.valueOf(route_id));
-			
-			
-			
+
+
+
 			pstmt.execute();
 			rs = pstmt.getResultSet();
 			List<Ships_scheduleVO> schedulelist = new ArrayList<Ships_scheduleVO>();
@@ -67,13 +69,13 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				// empVo 也稱為 Domain objects
 				ships_scheduleVO = new Ships_scheduleVO();
 				ships_scheduleVO.setRooms_booked(rs.getInt("ship_rooms_booked"));
-				ships_scheduleVO.setRoute_id(rs.getInt("route_id"));				
+				ships_scheduleVO.setRoute_id(rs.getInt("route_id"));
 				schedulelist.add(ships_scheduleVO);
 				System.out.print("查詢成功");
 			}
 			return schedulelist;
-			
-			
+
+
 		} catch (SQLException | ClassNotFoundException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
@@ -100,14 +102,15 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				}
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	@Override
 	public List<Ships_scheduleVO> search(String columnName,String value) {
-		List<Ships_scheduleVO> list = new ArrayList<Ships_scheduleVO>();
+
 		Ships_scheduleVO ships_scheduleVO = null;
+
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -143,17 +146,19 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				searchStatementString+= " ship_shipping_dock Like ?";
 				pstmt = con.prepareStatement(searchStatementString);
 				pstmt.setString(1, "%" + value + "%");
-				break;	
+				break;
 			case "rooms_booked":
 				searchStatementString+= " ship_rooms_booked = ?";
 				pstmt = con.prepareStatement(searchStatementString);
 				pstmt.setInt(1, Integer.valueOf(value));
-				break;		
+				break;
 			default:
-				
-				break;		
+
+				pstmt = con.prepareStatement("SELECT * FROM ships_schedule");
+				break;
+
 			}
-			
+
 			pstmt.execute();
 			rs = pstmt.getResultSet();
 			List<Ships_scheduleVO> schedulelist = new ArrayList<Ships_scheduleVO>();
@@ -170,8 +175,8 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				System.out.print("查詢成功");
 			}
 			return schedulelist;
-			
-			
+
+
 		} catch (SQLException | ClassNotFoundException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
@@ -198,8 +203,8 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 				}
 			}
 		}
-		
-		
+
+
 	}
 	@Override
 	public void insert(Ships_scheduleVO ships_scheduleVO) {
@@ -215,7 +220,7 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 			pstmt = con.prepareStatement(INSERT_STMT);
 			pstmt.setInt(1, ships_scheduleVO.getRoute_id());
 			pstmt.setString(2, ships_scheduleVO.getStatus());
-			pstmt.setDate(3, ships_scheduleVO.getShipping_time());// 上面要import java.sql.Date;
+			pstmt.setDate(3, ships_scheduleVO.getShipping_time()); // 上面要import java.sql.Date;
 			pstmt.setString(4, ships_scheduleVO.getShipping_dock());
 			pstmt.setInt(5, ships_scheduleVO.getRooms_booked());
 

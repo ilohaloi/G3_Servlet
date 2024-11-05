@@ -3,12 +3,22 @@ package com.user_coup.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.Transient;
+import javax.sound.midi.VoiceStatus;
+
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.resource.beans.internal.FallbackBeanInstanceProducer;
+import org.hibernate.stat.SecondLevelCacheStatistics;
 
 import com.coupon.myutil.HibernateUtil;
+import com.emp.model.EmpVo;
 
 public class UserCoupDAOHibernateImpl implements UserCoupDAO {
+
+	//Coupon
+	public final Integer USED = 1;
+	public final Integer UN_USED = 0;
 
 	@Override
 	public int add(UserCoupon userCoup) {
@@ -109,20 +119,18 @@ public class UserCoupDAOHibernateImpl implements UserCoupDAO {
 				hql += " AND coup_id = :couponId";
 				System.out.println("查詢條件 - couponId: " + couponId);
 			}
-			
+
 			if (issueDateStart != null && issueDateEnd != null) {
-			    hql += " AND coup_issue_date BETWEEN :issueDateStart AND :issueDateEnd"; // 包含開始與結束日期
-			    System.out.println("查詢條件 - issueDate (包含當日): " + issueDateStart + " 至 " + issueDateEnd);
-			}
-			else if (issueDateStart != null) {
+				hql += " AND coup_issue_date BETWEEN :issueDateStart AND :issueDateEnd"; // 包含開始與結束日期
+				System.out.println("查詢條件 - issueDate (包含當日): " + issueDateStart + " 至 " + issueDateEnd);
+			} else if (issueDateStart != null) {
 				hql += " AND coup_issue_date >= :issueDateStart"; // 包含開始日期
 				System.out.println("查詢條件 - issueDateStart (包含當日): " + issueDateStart);
-			}
-			else if (issueDateEnd != null) {
+			} else if (issueDateEnd != null) {
 				hql += " AND coup_expiry_date <= :issueDateEnd"; // 包含結束日期
 				System.out.println("查詢條件 - issueDateEnd (包含當日): " + issueDateEnd);
 			}
-			
+
 			if (isUsed != null) {
 				hql += " AND coup_is_used = :isUsed";
 				System.out.println("查詢條件 - isUsed: " + isUsed);
@@ -155,6 +163,24 @@ public class UserCoupDAOHibernateImpl implements UserCoupDAO {
 			session.getTransaction().rollback();
 		}
 		return null;
+	}
+
+	public void updateCouponUsed(Integer no) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+
+			UserCoupon coupon = session.get(UserCoupon.class, no);
+			if(coupon!=null) {
+				coupon.setCoup_is_used(USED);
+				session.update(coupon);
+			}
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		}
 	}
 
 }

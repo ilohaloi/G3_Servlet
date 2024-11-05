@@ -79,7 +79,11 @@ public class InsertTravel_orderFetchServlet extends HttpServlet {
 		//插入
 		Travel_orderDAO travel_orderDAO = new Travel_orderDAO();
 		travel_orderDAO.insert(travel_order);
-		
+
+		if(travel_order.getCoup_id()!=0) {
+			req.setAttribute("couponId", travel_order.getCoup_id());
+			req.getRequestDispatcher("/cuponUpdate").forward(req, resp);
+		}
 	}
 }
 
