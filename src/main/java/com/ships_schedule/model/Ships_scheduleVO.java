@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Ships_scheduleVO {
 
-<<<<<<< Updated upstream
+
 	private int ship_id; // 船隻編號
 	private int route_id; // 航線名稱
 	private String status; // 航班狀態
@@ -31,17 +31,7 @@ public class Ships_scheduleVO {
 	public void setSearchQuery(String searchQuery) {
 		this.searchQuery = searchQuery;
 	}
-=======
 
-
-	private int ship_id;  	     //船隻編號
-	private int route_id; 	     //航線名稱
-	private	String status;	     //航班狀態
-	private Date shipping_time;  //出港時間
-	private	String shipping_dock;//駁船地點
-	private int rooms_booked;	 //已定房間總數
-
->>>>>>> Stashed changes
 
 	public int getShip_id() {
 		return ship_id;

@@ -56,23 +56,7 @@ public class OrderService implements JsonDeserializerInterface, JsonSerializerIn
 					String.valueOf(o.getAmount()));
 			data.add(new Pair<>(String.valueOf(o.getOrid()), element));
 		});
-		oDaoImpl.redisInsert(pool, REDIS_ORDER_FOLDER_NAME, data, 1 * 60);
-
-		List<Pair<String, Map<String, String>>> orderDetails = new ArrayList<Pair<String, Map<String, String>>>();
-		orders.forEach(o -> {
-			var ods = o.getOrderDetails();
-			Map<String, String> od = new TreeMap<String, String>();
-			for (var p : ods) {
-
-				String id = String.valueOf(p.getProd().getId());
-				od.put(prodId + id, id);
-				od.put(prodName + id, p.getProd().getName());
-				od.put(prodPrice +  id, String.valueOf(p.getPrice()));
-			}
-			orderDetails.add(new Pair<>(String.valueOf(o.getOrid()), od));
-		});
-
-		oDaoImpl.redisInsert(pool, "orderDetail:", orderDetails, RedisInterface.NO_TTL);
+		oDaoImpl.redisInsert(pool, REDIS_ORDER_FOLDER_NAME, data, 2 * 60);
 	}
 
 	public List<OrderListVo> getOrders(JedisPool pool) {
