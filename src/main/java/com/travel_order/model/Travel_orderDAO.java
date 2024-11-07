@@ -26,7 +26,7 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT * FROM travel_order where trav_orde_id = ?";
 
 	private static final String DELETE = "DELETE FROM travel_order where trav_orde_id = ?";
-	private static final String UPDATE = "UPDATE travel_order set  memb_id=?, ship_id=?, coup_id=?, trav_orde_status=? ,room_amount=? ,room_type=?,trav_orde_amount=? where trav_orde_id = ?";
+	private static final String UPDATE = "UPDATE travel_order set  memb_id=?, ship_id=?, coup_no=?, trav_orde_status=? ,room_amount=? ,room_type=?,trav_orde_amount=? where trav_orde_id = ?";
 	private static final String SEARCH_STMT = "SELECT * FROM travel_order where";
 
 	@Override
@@ -364,7 +364,7 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 				travel_orderVO.setId(rs.getInt("trav_orde_id"));
 				travel_orderVO.setMemb_id(rs.getInt("memb_id"));
 				travel_orderVO.setShip_id(rs.getInt("ship_id"));
-				travel_orderVO.setCoup_id(rs.getInt("coup_id"));
+				travel_orderVO.setCoup_id(rs.getInt("coup_no"));
 				travel_orderVO.setTrav_orde_status(rs.getString("trav_orde_status"));
 				travel_orderVO.setRoom_type(rs.getString("room_type"));
 				travel_orderVO.setRoom_amount(rs.getInt("room_amount"));

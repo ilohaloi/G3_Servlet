@@ -3,6 +3,7 @@ package com.user_coup.dto;
 import java.sql.Timestamp;
 
 public class WebMembCoupDto {
+
 	private Integer id;
 	private String coupName;
 	private Timestamp expiryDate;

@@ -52,7 +52,7 @@ public class ProdService implements CloudinaryFunction, ProdElementStringDefine{
 			//三個if不需要										//改這段(String.valueOf(p.getId())
 			data.add(new Pair<String,Map<String,String>>(String.valueOf(p.getId()),element));
 		});
-		pDaoImpl.redisInsert(pool,"prod:", data,RedisInterface.NO_TTL);//"prod:"冒號前的字要改資料夾名
+		pDaoImpl.redisInsert(pool,"prod:", data,2 * 60);//"prod:"冒號前的字要改資料夾名
 	}
 
 	public List<ProdVo> getProds(JedisPool pool){
@@ -75,7 +75,14 @@ public class ProdService implements CloudinaryFunction, ProdElementStringDefine{
 		}
 		return prod;
 	}
+	public List<ProdVo> getMultipleQuery(List<String>query, List<String> value) {
+		Map<String,String> quertMap = new HashMap<String, String>();
 
+		for (int i = 0; i < query.size(); i++) {
+			quertMap.put(query.get(i),value.get(i));
+		}
+		return pDaoImpl.getMultipleQuery(quertMap);
+	}
 
 
 	public void update(ProdVo prod) {

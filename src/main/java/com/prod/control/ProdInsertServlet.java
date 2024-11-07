@@ -27,10 +27,12 @@ public class ProdInsertServlet extends HttpServlet implements JsonSerializerInte
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		try {
-		ProdService pService = new ProdService();
+			ProdService pService = new ProdService();
+			System.out.println("123");
 			ProdVo prod = new ProdVo(req);
 			pService.uploadImgs(req.getParts(), prod);
 			pService.insert(prod);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			resp.setContentType("application/json");
