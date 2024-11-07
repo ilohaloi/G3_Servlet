@@ -90,9 +90,9 @@ public class MemberLoginServlet extends HttpServlet implements JsonSerializerInt
         if (dbMember.getPassword().equals(memberVO.getPassword())) {
             // 登入成功，將會員 email 加入 Redis
         	
+
         	System.out.print("密碼符合");
         	
-            
             try (Jedis jedis = pool.getResource()) {
                 String redisKey = "member:" + dbMember.getId();
                 jedis.set(redisKey, String.valueOf(dbMember.getId()));
