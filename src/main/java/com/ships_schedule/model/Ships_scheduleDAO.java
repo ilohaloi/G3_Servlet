@@ -1,7 +1,7 @@
 package com.ships_schedule.model;
 
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,16 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.criteria.From;
-import javax.sql.DataSource;
 
-import org.hibernate.sql.Select;
-
-import com.route.model.RouteDAO_interface;
-import com.route.model.RouteVO;
 
 //控制中心,增刪改查的方法
 public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
@@ -27,7 +18,6 @@ public class Ships_scheduleDAO implements Ships_scheduleDAO_interface {
 	String url = "jdbc:mysql://localhost:3307/CruiseShip?serverTimezone=Asia/Taipei";
 	String userid = "root";
 	String passwd = "123456";
-
 
 	private static final String INSERT_STMT = "INSERT INTO ships_schedule (route_id,ship_status,ship_shipping_time,ship_shipping_dock,ship_rooms_booked)VALUES (?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT * FROM ships_schedule order by ship_id";
