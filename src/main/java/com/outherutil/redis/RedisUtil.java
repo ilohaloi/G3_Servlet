@@ -11,11 +11,11 @@ public class RedisUtil {
 	 public static JedisPool getPool() {
 		 return jedisPool;
 	 }
-	 private static JedisPool createConnectionPool(int conAmount, int post) {
+	 private static JedisPool createConnectionPool(int conAmount, int port) {
 		    JedisPoolConfig poolConfig = new JedisPoolConfig();
 	        poolConfig.setMaxTotal(conAmount); // 設定最大連線數
 	    	System.out.println("redis 建立成功");
-	        return new JedisPool(poolConfig, "localhost", post);
+	        return new JedisPool(poolConfig, "localhost", port);
 	 }
 	 public static void Release() {
 		 if(jedisPool!=null)

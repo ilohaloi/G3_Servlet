@@ -15,6 +15,8 @@ public class WebChatDto implements Serializable {
 	@Expose
 	private Integer id;
 	@Expose
+	private String name;
+	@Expose
 	private String receiver;
 	@Expose
 	private String sender;
@@ -81,5 +83,13 @@ public class WebChatDto implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

@@ -24,11 +24,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.member.model.MemberJDBC;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import com.outherutil.json.JsonDeserializerInterface;
+import com.outherutil.json.JsonSerializerInterface;
 import com.outherutil.redis.RedisUtil;
 
 import okhttp3.Request;
@@ -37,7 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ServerEndpoint(value = "/ChatWS/{userId}") //
-public class ChatWebSocket implements JsonDeserializerInterface{
+public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerInterface{
 
 	private static ConcurrentHashMap<String, Session> online_list = new ConcurrentHashMap<>();
 	private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
@@ -65,17 +67,8 @@ public class ChatWebSocket implements JsonDeserializerInterface{
 
 	@OnMessage
 	public void onMessage(String message, Session userSession) throws IOException {
-//		ChatVO chatMessage = gson.fromJson(message, ChatVO.class);
 
-//		String[] parts = message.split(":", 2);
-//		String id = parts[0]; // 使用者 ID 或接收者
-//		String json_str = parts[1]; // 訊息內容
-//
-//		System.out.println("訊息" + message);
-//		System.out.println("session:" + userSession);
-//		System.out.println("userId:" + userId);
-			
-		
+				
 		System.out.println(message);
 		
 		
@@ -103,14 +96,21 @@ public class ChatWebSocket implements JsonDeserializerInterface{
 
 					        if (memberSession != null && memberSession.isOpen()) {
 					            memberSession.getBasicRemote().sendText(content.getContent());
+					            userSession.getBasicRemote().sendText(createJsonKvObject("id","employ",
+										"data",content.getContent()));
 					            System.out.println("訊息成功傳送給會員 " + targetMemberId);
 					        } else {
-					            userSession.getBasicRemote().sendText("會員 " + targetMemberId + " 目前不在線上。");
+					        	
+					        	
+					        	userSession.getBasicRemote().sendText(createJsonKvObject("context","會員 " + targetMemberId + " 目前不在線上。","id","employ",
+					        			"data",content.getContent()));
+					            
 					        }
 					        
 						break;
 					case "member":
-						receiver_sessionSession.getBasicRemote().sendText(content.getContent());
+						receiver_sessionSession.getBasicRemote().sendText(createJsonKvObject("id","member",
+								"data",content.getContent()));
 						break;
 					default:
 						break;
@@ -127,13 +127,17 @@ public class ChatWebSocket implements JsonDeserializerInterface{
 
 		}		
 	
-
+		
+		MemberJDBC mb = new MemberJDBC();
+		content.setName(mb.findByPK(content.getId()).getName());
+		
+		
 		try (Jedis jedis = jedisPool.getResource()) {
 //	        try (Jedis jedis = RedisUtil.getPool().getResource()) {
 			jedis.select(5); // 選擇 Redis 的第 5 個資料庫
 
 			// 使用 id 作為鍵，將欄位資料存入 Redis
-			jedis.rpush("chat:history:" + content.getId() ,message );
+			jedis.rpush("chat:history:" + content.getId() ,toJson(content, false));
 //	            jedis.del("chat:history:" + id);
 
 			System.out.println("訊息已成功儲存到 Redis。");
