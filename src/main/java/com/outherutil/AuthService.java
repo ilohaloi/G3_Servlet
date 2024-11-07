@@ -24,12 +24,6 @@ public class AuthService implements RedisInterface {
 	}
 
 	@Override
-	public void redisUpdate(JedisPool pool, Object data) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void redisSetExpire(JedisPool pool, String key, int timeSec) {
 		// TODO Auto-generated method stub
 

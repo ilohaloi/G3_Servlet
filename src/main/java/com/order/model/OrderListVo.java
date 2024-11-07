@@ -38,7 +38,7 @@ public class OrderListVo implements Serializable ,OrderElementStringDefine{
 	@Column(name = "order_id")
 	@Expose
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer orid;
+	private Integer orId;
 
 	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@BatchSize(size = 10)
@@ -92,7 +92,7 @@ public class OrderListVo implements Serializable ,OrderElementStringDefine{
 	public OrderListVo(Integer id, Integer membId, Timestamp time, String status, String payment, String name, String email,
 			String tell, String addr, Integer amount, List<OrderDetailVo> orderDetails) {
 		super();
-		this.orid = id;
+		this.orId = id;
 		this.membId = membId;
 		this.time = time;
 		this.status = status;
@@ -111,7 +111,7 @@ public class OrderListVo implements Serializable ,OrderElementStringDefine{
 		data.forEach((k, v) -> {
 			switch (k) {
 			case orderId:
-				orid = Integer.valueOf(v);
+				orId = Integer.valueOf(v);
 				break;
 			case memberId:
 				membId = Integer.valueOf(v);
@@ -145,7 +145,7 @@ public class OrderListVo implements Serializable ,OrderElementStringDefine{
 	}
 
 	public Integer getOrid() {
-		return orid;
+		return orId;
 	}
 
 	public Integer getMembId() {
@@ -193,7 +193,7 @@ public class OrderListVo implements Serializable ,OrderElementStringDefine{
 	}
 
 	public void setOrid(Integer id) {
-		this.orid = id;
+		this.orId = id;
 	}
 
 	public void setMembId(Integer membId) {
@@ -242,7 +242,7 @@ public class OrderListVo implements Serializable ,OrderElementStringDefine{
 
 	@Override
 	public String toString() {
-		return "OrderListVo [id=" + orid + ", membId=" + membId + ", time=" + time + ", status=" + status + ", payment="
+		return "OrderListVo [id=" + orId + ", membId=" + membId + ", time=" + time + ", status=" + status + ", payment="
 				+ payment + ", name=" + name + ", email=" + email + ", tell=" + tell + ", addr=" + addr + ", amount="
 				+ amount + "]";
 	}

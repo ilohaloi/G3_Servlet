@@ -59,6 +59,11 @@ public class OnlyUserCoupon extends HttpServlet implements JsonSerializerInterfa
 		System.out.println("接收到的 issueDateEnd: " + issueDateEndParam);
 		System.out.println("接收到的 isUsed: " + isUsedParam);
 
+
+
+
+
+
 		try {
 			// 將參數轉換為適當的類型
 			Integer memberId = memberIdParam != null ? Integer.parseInt(memberIdParam) : null;
@@ -75,6 +80,7 @@ public class OnlyUserCoupon extends HttpServlet implements JsonSerializerInterfa
 			List<UserCoupon> userCoupons = userCoupDAO.getCoupons(memberId, couponId, issueDateStart, issueDateEnd,
 					isUsed);
 
+
 			// 使用 Gson 序列化結果
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Timestamp.class, (JsonSerializer<Timestamp>) (src, typeOfSrc, context) -> {
@@ -82,29 +88,40 @@ public class OnlyUserCoupon extends HttpServlet implements JsonSerializerInterfa
 				return new JsonPrimitive(sdf.format(src));
 			});
 
-			Gson gson = gsonBuilder.create();
-			String jsonString = gson.toJson(userCoupons);
-			CpDAOHibernateImpl cpDao = new CpDAOHibernateImpl();
-			var coupTypes = cpDao.getAll();
-			List<WebMembCoupDto> wmDto = new ArrayList<WebMembCoupDto>();
+			//前台
+
+			if(req.getParameter("action")!=null) {
+				String action = (String)req.getParameter("action");
+				if(action.equals("member")) {
+					CpDAOHibernateImpl cpDao = new CpDAOHibernateImpl();
+					var coupTypes = cpDao.getAll();
+					List<WebMembCoupDto> wmDto = new ArrayList<WebMembCoupDto>();
 
 
-			for (int i = 0; i < userCoupons.size(); i++) {
+					for (int i = 0; i < userCoupons.size(); i++) {
 
-				if (userCoupons.get(i).getCoup_id()==coupTypes.get(i).getCoup_id()) {
-					int id = userCoupons.get(i).getCoup_id();
-					String coupName = coupTypes.get(i).getCoup_description();
-					Timestamp expirDate = userCoupons.get(i).getCoup_expiry_date();
-					double discpunt = coupTypes.get(i).getCoup_discount();
-					wmDto.add(new WebMembCoupDto(id,coupName,expirDate,discpunt));
+						if (userCoupons.get(i).getCoup_id()==coupTypes.get(i).getCoup_id()) {
+							int id = userCoupons.get(i).getCoup_id();
+							String coupName = coupTypes.get(i).getCoup_description();
+							Timestamp expirDate = userCoupons.get(i).getCoup_expiry_date();
+							double discpunt = coupTypes.get(i).getCoup_discount();
+							wmDto.add(new WebMembCoupDto(id,coupName,expirDate,discpunt));
+						}
+					}
+					resp.getWriter().write(toJson(wmDto, false));
+					return;
 				}
 			}
 
+
+
+
+			Gson gson = gsonBuilder.create();
+			String jsonString = gson.toJson(userCoupons);
+
 			// 如果結果為空，返回空陣列
 			//原版
-			//resp.getWriter().write(userCoupons.isEmpty() ? "[]" : jsonString);
-
-			resp.getWriter().write(toJson(wmDto, false));
+			resp.getWriter().write(userCoupons.isEmpty() ? "[]" : jsonString);
 
 
 		} catch (NumberFormatException e) {

@@ -5,7 +5,7 @@ import java.util.List;
 import com.order.model.OrderListVo;
 import com.prod.model.ProdVo;
 
-public class WebOrder {
+public class WebOrderDto {
 
 	private OrderListVo data;
 	private List<ProdVo> prod;

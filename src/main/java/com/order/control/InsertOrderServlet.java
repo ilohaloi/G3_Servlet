@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.order.dto.WebOrder;
+import com.order.dto.WebOrderDto;
 import com.outherutil.WebUtil;
 import com.outherutil.json.JsonDeserializerInterface;
 
@@ -27,7 +27,9 @@ public class InsertOrderServlet extends HttpServlet implements JsonDeserializerI
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		WebOrder webData = readJsonFromBufferedReader(req.getReader(), WebOrder.class);
+		req.setCharacterEncoding("UTF-8");
+
+		WebOrderDto webData = readJsonFromBufferedReader(req.getReader(), WebOrderDto.class);
 		if(webData==null)
 			return;
 		OrderService oService = new OrderService();

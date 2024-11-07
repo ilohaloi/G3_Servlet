@@ -1,12 +1,15 @@
 package com.order.control;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.order.dto.WebOrder;
-import com.order.dto.WebOrderDetail;
+import javax.swing.ListModel;
+
+import com.order.dto.WebOrderDto;
+import com.order.dto.WebOrderDetailDto;
 import com.order.model.OrderDaoImpl;
 import com.order.model.OrderDetailVo;
 import com.order.model.OrderElementStringDefine;
@@ -29,7 +32,7 @@ public class OrderService implements JsonDeserializerInterface, JsonSerializerIn
 		oDaoImpl = new OrderDaoImpl();
 	}
 
-	public void insert(WebOrder Data) {
+	public void insert(WebOrderDto Data) {
 		List<OrderDetailVo> oDetail = new ArrayList<>();
 		Data.getProd().forEach(e -> {
 			OrderDetailVo od = new OrderDetailVo();
@@ -53,23 +56,7 @@ public class OrderService implements JsonDeserializerInterface, JsonSerializerIn
 					String.valueOf(o.getAmount()));
 			data.add(new Pair<>(String.valueOf(o.getOrid()), element));
 		});
-		oDaoImpl.redisInsert(pool, REDIS_ORDER_FOLDER_NAME, data, 1000L * 50);
-
-		List<Pair<String, Map<String, String>>> orderDetails = new ArrayList<Pair<String, Map<String, String>>>();
-		orders.forEach(o -> {
-			var ods = o.getOrderDetails();
-			Map<String, String> od = new TreeMap<String, String>();
-			for (var p : ods) {
-
-				String id = String.valueOf(p.getProd().getId());
-				od.put(prodId + id, id);
-				od.put(prodName + id, p.getProd().getName());
-				od.put(prodPrice +  id, String.valueOf(p.getPrice()));
-			}
-			orderDetails.add(new Pair<>(String.valueOf(o.getOrid()), od));
-		});
-
-		oDaoImpl.redisInsert(pool, "orderDetail:", orderDetails, RedisInterface.NO_TTL);
+		oDaoImpl.redisInsert(pool, REDIS_ORDER_FOLDER_NAME, data, 2 * 60);
 	}
 
 	public List<OrderListVo> getOrders(JedisPool pool) {
@@ -89,13 +76,23 @@ public class OrderService implements JsonDeserializerInterface, JsonSerializerIn
 		return oDaoImpl.getByMembId(Integer.valueOf(membid));
 	}
 
+	public List<OrderListVo> getMultipleQuery(List<String>query,List<String>vaule){
+
+		Map<String,String> quertMap = new HashMap<String, String>();
+
+		for (int i = 0; i < query.size(); i++) {
+			quertMap.put(query.get(i),vaule.get(i));
+		}
+		return oDaoImpl.getMultipleQuery(quertMap);
+	}
+
 	public List<OrderDetailVo> getOrderDetail(String orderid, String membid) {
 		return oDaoImpl.getOrderDetail(Integer.valueOf(orderid), Integer.valueOf(membid));
 	}
 
-	public WebOrderDetail getOrderDetail(String orderid) {
+	public WebOrderDetailDto getOrderDetail(String orderid) {
 		var order = oDaoImpl.getOrderDetail(Integer.valueOf(orderid));
-		WebOrderDetail oDetail = new WebOrderDetail();
+		WebOrderDetailDto oDetail = new WebOrderDetailDto();
 		oDetail.setOrder(order);
 
 		List<Pair<Integer, OrderDetailVo>> prodsList = new ArrayList<Pair<Integer, OrderDetailVo>>();

@@ -7,7 +7,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.order.dto.WebOrderDetail;
+import com.order.dto.WebOrderDetailDto;
 
 import kotlin.Pair;
 
@@ -60,7 +60,7 @@ public interface JsonSerializerInterface {
 		return gson.toJson(data);
 	}
 
-	public default String toJson(WebOrderDetail data) {
+	public default String toJson(WebOrderDetailDto data) {
 		Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Pair.class, new PairSerializer())
                 .registerTypeAdapter(Pair.class, new PairDeserializer())

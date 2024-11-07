@@ -37,7 +37,11 @@ public class ProdVo  implements Serializable,ProdElementStringDefine{
 	@Column(name = "prod_category")
 	private String category;
 
+
+
 	@Column(name ="pord_describe")
+
+
 	private String describe;
 
 	@Column(name = "prod_stock")

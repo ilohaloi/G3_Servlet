@@ -20,13 +20,11 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 	String userid = "root";
 	String passwd = "123456";
 
-
 	private static final String INSERT_STMT = "INSERT INTO travel_order (memb_id, ship_id, coup_no, trav_orde_status, room_amount,room_type, trav_orde_amount)VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT * FROM travel_order order by trav_orde_id";
 	private static final String GET_ONE_STMT = "SELECT * FROM travel_order where trav_orde_id = ?";
-
 	private static final String DELETE = "DELETE FROM travel_order where trav_orde_id = ?";
-	private static final String UPDATE = "UPDATE travel_order set  memb_id=?, ship_id=?, coup_id=?, trav_orde_status=? ,room_amount=? ,room_type=?,trav_orde_amount=? where trav_orde_id = ?";
+	private static final String UPDATE = "UPDATE travel_order set  memb_id=?, ship_id=?, coup_no=?, trav_orde_status=? ,room_amount=? ,room_type=?,trav_orde_amount=? where trav_orde_id = ?";
 	private static final String SEARCH_STMT = "SELECT * FROM travel_order where";
 
 	@Override
@@ -162,7 +160,6 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 			pstmt.setString(6, travel_orderVO.getRoom_type());
 
 			pstmt.setInt(7, travel_orderVO.getTrav_orde_amount());
-
 			pstmt.executeUpdate();
 
 			// Handle any SQL errors
@@ -204,13 +201,9 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 			pstmt.setInt(2, travel_orderVO.getShip_id());
 			pstmt.setInt(3, travel_orderVO.getCoup_id());
 			pstmt.setString(4, travel_orderVO.getTrav_orde_status());
-
 			pstmt.setInt(5, travel_orderVO.getRoom_amount());
 			pstmt.setString(6, travel_orderVO.getRoom_type());
-
 			pstmt.setInt(7, travel_orderVO.getTrav_orde_amount());
-
-
 			pstmt.setInt(8, travel_orderVO.getId());//注意PK是放在最後!!!
 			int i = pstmt.executeUpdate();
 			System.out.print("更新" + i +"筆資料");
@@ -307,7 +300,6 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 				travel_orderVO.setTrav_orde_status(rs.getString("trav_orde_status"));
 				travel_orderVO.setRoom_type(rs.getString("room_type"));
 				travel_orderVO.setRoom_amount(rs.getInt("room_amount"));
-				travel_orderVO.setRoom_type(rs.getString("Room_type"));
 				travel_orderVO.setTrav_orde_amount(rs.getInt("trav_orde_amount"));
 				System.out.print("查詢成功");
 			}
@@ -364,11 +356,10 @@ public class Travel_orderDAO implements Travel_orderDAO_interface {
 				travel_orderVO.setId(rs.getInt("trav_orde_id"));
 				travel_orderVO.setMemb_id(rs.getInt("memb_id"));
 				travel_orderVO.setShip_id(rs.getInt("ship_id"));
-				travel_orderVO.setCoup_id(rs.getInt("coup_id"));
+				travel_orderVO.setCoup_id(rs.getInt("coup_no"));
 				travel_orderVO.setTrav_orde_status(rs.getString("trav_orde_status"));
 				travel_orderVO.setRoom_type(rs.getString("room_type"));
 				travel_orderVO.setRoom_amount(rs.getInt("room_amount"));
-				travel_orderVO.setRoom_type(rs.getString("Room_type"));
 				travel_orderVO.setTrav_orde_amount(rs.getInt("trav_orde_amount"));
 				list.add(travel_orderVO); // Store the row in the list
 			}

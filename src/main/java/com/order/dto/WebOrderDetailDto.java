@@ -7,7 +7,7 @@ import com.order.model.OrderListVo;
 
 import kotlin.Pair;
 
-public class WebOrderDetail {
+public class WebOrderDetailDto {
 
 	@Expose
 	List<Pair<Integer,OrderDetailVo>> prods;
@@ -15,9 +15,9 @@ public class WebOrderDetail {
 	@Expose
 	OrderListVo order;
 
-	public WebOrderDetail() {}
+	public WebOrderDetailDto() {}
 
-	public WebOrderDetail(List<Pair<Integer,OrderDetailVo>> prods, OrderListVo order) {
+	public WebOrderDetailDto(List<Pair<Integer,OrderDetailVo>> prods, OrderListVo order) {
 		super();
 		this.prods = prods;
 		this.order = order;
