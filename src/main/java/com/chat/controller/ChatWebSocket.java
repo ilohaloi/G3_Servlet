@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.member.model.MemberJDBC;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -95,6 +96,8 @@ public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerI
 
 					        if (memberSession != null && memberSession.isOpen()) {
 					            memberSession.getBasicRemote().sendText(content.getContent());
+					            userSession.getBasicRemote().sendText(createJsonKvObject("id","employ",
+										"data",content.getContent()));
 					            System.out.println("訊息成功傳送給會員 " + targetMemberId);
 					        } else {
 					        	
@@ -106,7 +109,8 @@ public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerI
 					        
 						break;
 					case "member":
-						receiver_sessionSession.getBasicRemote().sendText(content.getContent());
+						receiver_sessionSession.getBasicRemote().sendText(createJsonKvObject("id","member",
+								"data",content.getContent()));
 						break;
 					default:
 						break;
@@ -123,13 +127,17 @@ public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerI
 
 		}		
 	
-
+		
+		MemberJDBC mb = new MemberJDBC();
+		content.setName(mb.findByPK(content.getId()).getName());
+		
+		
 		try (Jedis jedis = jedisPool.getResource()) {
 //	        try (Jedis jedis = RedisUtil.getPool().getResource()) {
 			jedis.select(5); // 選擇 Redis 的第 5 個資料庫
 
 			// 使用 id 作為鍵，將欄位資料存入 Redis
-			jedis.rpush("chat:history:" + content.getId() ,message );
+			jedis.rpush("chat:history:" + content.getId() ,toJson(content, false));
 //	            jedis.del("chat:history:" + id);
 
 			System.out.println("訊息已成功儲存到 Redis。");
