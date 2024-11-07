@@ -17,7 +17,7 @@ public class Travel_orderVO {
 	private String trav_orde_status;
 	private String room_type;
 	private int room_amount;
-<<<<<<< Updated upstream
+
 
 	private int trav_orde_amount;
 	private String selectedFilter;
@@ -39,9 +39,7 @@ public class Travel_orderVO {
 		this.searchQuery = searchQuery;
 	}
 
-=======
-	private int trav_orde_amount;
->>>>>>> Stashed changes
+
 	public int getId() {
 		return id;
 	}
@@ -98,9 +96,5 @@ public class Travel_orderVO {
 		this.room_type = room_type;
 	}
 
-<<<<<<< Updated upstream
-=======
 
-
->>>>>>> Stashed changes
 }

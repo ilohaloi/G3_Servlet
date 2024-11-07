@@ -37,11 +37,9 @@ public class ProdVo  implements Serializable,ProdElementStringDefine{
 	@Column(name = "prod_category")
 	private String category;
 
-<<<<<<< Updated upstream
+
 	@Column(name ="pord_describe")
-=======
-	@Column(name ="prod_describe")
->>>>>>> Stashed changes
+
 	private String describe;
 
 	@Column(name = "prod_stock")
