@@ -17,8 +17,6 @@ public class Travel_orderVO {
 	private String trav_orde_status;
 	private String room_type;
 	private int room_amount;
-
-
 	private int trav_orde_amount;
 	private String selectedFilter;
 	private String searchQuery;
@@ -38,6 +36,7 @@ public class Travel_orderVO {
 	public void setSearchQuery(String searchQuery) {
 		this.searchQuery = searchQuery;
 	}
+
 
 
 	public int getId() {
@@ -95,6 +94,5 @@ public class Travel_orderVO {
 	public void setRoom_type(String room_type) {
 		this.room_type = room_type;
 	}
-
 
 }
