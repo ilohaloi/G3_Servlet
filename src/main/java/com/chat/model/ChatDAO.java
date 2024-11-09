@@ -17,7 +17,7 @@ public class ChatDAO implements ChatDAO_interface {
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestCruise");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TIA103G3");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -32,8 +32,8 @@ public class ChatDAO implements ChatDAO_interface {
 	// 查詢特定會員的所有對話
 	private static final String GET_ALL_CONV_ByOneMEMB_STMT = "SELECT memb_id,empo_id,con_speaking_time,conv_content FROM conversation_content where memb_id = ? ";
 
-	
-	
+
+
 	//*****************************我是空行
 	// 插入一筆新的 ChatVO
 	@Override
@@ -79,35 +79,35 @@ public class ChatDAO implements ChatDAO_interface {
 		}
 
 	}
-	
+
 	//*****************************************我是空行
-	
+
 		// 查詢特定會員 (memb_id) 的所有對話記錄
 	@Override
 	public List<ChatVO> findByMembId(Integer memb_id) {
-		
+
 		List<ChatVO> chatList = new ArrayList<>();
 		ChatVO chatVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_CONV_ByOneMEMB_STMT);
 			pstmt.setInt(1, memb_id);
 			rs = pstmt.executeQuery();
-		
+
 			while(rs.next()){
-				
+
 				chatVO = new ChatVO();
 				chatVO.setMembId(rs.getInt("memb_id"));
 				chatVO.setEmpoId(rs.getInt("empo_id"));
 				chatVO.setConvSpeakingTime(rs.getTimestamp("conv_speaking_time"));
 				chatVO.setConvContent(rs.getString("conv_content"));
-				chatList.add(chatVO);	
+				chatList.add(chatVO);
 			}
-				
+
 		} catch(SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -136,13 +136,13 @@ public class ChatDAO implements ChatDAO_interface {
 		}
 		return chatList;
 	}
-	
-	
+
+
 	//*****************************我是空行
 		// 查詢特定會員的特定對話
 	@Override
 	public List<ChatVO> findByMembIdAndConvContent(Integer memb_id, String conv_content) {
-		
+
 		List<ChatVO> chatList = new ArrayList<>();
 		ChatVO chatVO = null;
 		Connection con = null;
@@ -197,12 +197,12 @@ public class ChatDAO implements ChatDAO_interface {
 		}
 		return chatList;
 	}
-	
+
 	//*****************************************我是空行
 	// 查詢所有 ChatVO
 	@Override
 	public List<ChatVO> getAll() {
-		
+
 		List<ChatVO> chatList = new ArrayList<ChatVO>();
 		ChatVO chatVO = null;
 
@@ -222,7 +222,7 @@ public class ChatDAO implements ChatDAO_interface {
 				chatVO.setMembId(rs.getInt("memb_id"));
 				chatVO.setConvContent(rs.getString("conv_content"));
 				chatVO.setConvSpeakingTime(rs.getTimestamp("conv_speaking_time"));
-				
+
 				chatList.add(chatVO); // Store the row in the list
 			}
 
