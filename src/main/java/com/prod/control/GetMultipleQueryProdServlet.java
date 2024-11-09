@@ -20,7 +20,7 @@ public class GetMultipleQueryProdServlet extends HttpServlet implements JsonSeri
 		if(wmDto==null)
 			return;
 		ProdService pService = new ProdService();
-		var list =  pService.getMultipleQuery(wmDto.getQueryList(), wmDto.getValueList());
+		var list =  pService.getMultipleQuery(wmDto.getQuery(), wmDto.getValue());
 
 		resp.getWriter().write(toJson(list, false));
 
