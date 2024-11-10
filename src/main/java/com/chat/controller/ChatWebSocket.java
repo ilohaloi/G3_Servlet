@@ -1,9 +1,7 @@
 package com.chat.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.websocket.CloseReason;
@@ -14,41 +12,30 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import javax.websocket.server.ServerEndpointConfig.Configurator;
 
-import org.hibernate.query.criteria.internal.expression.LiteralExpression;
-
-import com.chat.model.ChatVO;
 import com.chat.model.WebChatDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.member.model.MemberJDBC;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-
 import com.outherutil.json.JsonDeserializerInterface;
 import com.outherutil.json.JsonSerializerInterface;
 import com.outherutil.redis.RedisUtil;
 
-import okhttp3.Request;
-
-import java.util.HashMap;
-import java.util.Map;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @ServerEndpoint(value = "/ChatWS/{userId}") //
 public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerInterface{
 
 	private static ConcurrentHashMap<String, Session> online_list = new ConcurrentHashMap<>();
-	private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
+	private static TreeMap<Integer, Boolean> check_list = new TreeMap<>();
+	private static JedisPool pool = RedisUtil.getPool();
 	private final Gson gson = new Gson();
 	private String userId;
 
 	@OnOpen
 	public void onOpen(@PathParam("userId") String userId, Session userSession) throws IOException {
-		try (Jedis jedis = jedisPool.getResource()) {
+		try (Jedis jedis = pool.getResource()) {
 			this.userId = userId;
 			userSession.getBasicRemote().sendText("歡迎 " + userId + " 加入聊天室！");
 			// 保存新的 Session 到 Redis db(5)
@@ -86,6 +73,7 @@ public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerI
 		Session receiver_sessionSession = online_list.get(receiver_id + "");
 
 		if (receiver_sessionSession != null) {
+			
 			if (receiver_sessionSession.isOpen()) {
 				
 					switch (content.getSender()) {
@@ -111,11 +99,12 @@ public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerI
 					case "member":
 						receiver_sessionSession.getBasicRemote().sendText(createJsonKvObject("id","member",
 								"data",content.getContent()));
+						
 						break;
 					default:
 						break;
 					}
-				
+					
 				
 				
 				//顧客傳訊息給客服
@@ -123,16 +112,24 @@ public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerI
 				System.out.println("isOpen:TRUE");
 			} else {
 				userSession.getBasicRemote().sendText(receiver_id + " send a massage to you");
+				
 			}
-
+			
 		}		
 	
 		
+		if(!check_list.containsKey(receiver_id)) {
+			check_list.put(receiver_id,true);
+			userSession.getBasicRemote().sendText( "你的客服" + receiver_id + "不在線上 ^^，他在睡覺歐");
+			System.out.println(777);
+		}
+	
+	
 		MemberJDBC mb = new MemberJDBC();
 		content.setName(mb.findByPK(content.getId()).getName());
 		
 		
-		try (Jedis jedis = jedisPool.getResource()) {
+		try (Jedis jedis = pool.getResource()) {
 //	        try (Jedis jedis = RedisUtil.getPool().getResource()) {
 			jedis.select(5); // 選擇 Redis 的第 5 個資料庫
 
@@ -173,7 +170,7 @@ public class ChatWebSocket implements JsonDeserializerInterface ,JsonSerializerI
 	}
 
 	private String getUserNameBySession(Session userSession) {
-		try (Jedis jedis = jedisPool.getResource()) {
+		try (Jedis jedis = pool.getResource()) {
 			for (String key : jedis.keys("session:*")) {
 				if (jedis.get(key).equals(userSession.getId())) {
 					return key.replace("session:", "");
