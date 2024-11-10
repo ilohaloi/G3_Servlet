@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.member.model.MemberJDBC;
 import com.member.model.MemberVO;
 import com.outherutil.json.JsonSerializerInterface;
+import com.outherutil.redis.RedisUtil;
 
 import net.bytebuddy.implementation.Implementation.Context.ExtractableView;
 import redis.clients.jedis.Jedis;
@@ -23,7 +24,7 @@ import redis.clients.jedis.JedisPool;
 
 @WebServlet("/api/chat/member")
 public class GetChatMemberID extends HttpServlet implements JsonSerializerInterface {
-    private static final JedisPool jedisPool = new JedisPool("localhost", 6380);
+	private static JedisPool pool = RedisUtil.getPool();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -31,7 +32,7 @@ public class GetChatMemberID extends HttpServlet implements JsonSerializerInterf
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 
-        try (Jedis jedis = jedisPool.getResource()) {
+        try (Jedis jedis = pool.getResource()) {
             jedis.select(5);  // Sélectionner la base de données Redis 5
 
             // Récupérer toutes les clés correspondant à "chat:member:*"
