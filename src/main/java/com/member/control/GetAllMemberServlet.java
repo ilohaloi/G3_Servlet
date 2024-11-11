@@ -21,7 +21,7 @@ public class GetAllMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = -5337326634130632679L;
 
 	@Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         MemberJDBC memberJDBC = new MemberJDBC();

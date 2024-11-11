@@ -41,8 +41,14 @@ public class GetUserCoupServlet extends HttpServlet {
         UserCoupDAO userCoupDAO = new UserCoupDAOHibernateImpl();
 		List<UserCoupon> uc = userCoupDAO.getAll();
         
+		uc.forEach(e->{
+			int id = e.getCp().getCoup_id();
+			e.setCoup_id(id);
+		});
+		
+		
         // 使用 GsonBuilder 進行自定義序列化
-        GsonBuilder gsonBuilder = new GsonBuilder();
+        GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         gsonBuilder.registerTypeAdapter(Timestamp.class, (JsonSerializer<Timestamp>) (src, typeOfSrc, context) -> {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             String formattedDate = sdf.format(src);

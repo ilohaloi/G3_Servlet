@@ -1,5 +1,6 @@
 package com.coupon.model;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface CpDAO {
@@ -13,4 +14,9 @@ public interface CpDAO {
 	Cp findByPK(Integer id);
 
 	List<Cp> getAll();
+
+	List<Cp> findCouponsToBeIssued(Timestamp today);
+
+	// 新增方法：根據 coup_id 查找 UserCoupon
+	List<Cp> findByCoupId(Integer coupId);
 }

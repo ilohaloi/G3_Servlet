@@ -5,7 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "coupon_type") // 確保表名與資料庫中一致
 public class Cp {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer coup_id;
@@ -25,7 +24,6 @@ public class Cp {
 	}
 
 	// Getters 和 Setters
-
 	public Integer getCoup_id() {
 		return coup_id;
 	}
@@ -57,7 +55,7 @@ public class Cp {
 	public void setCoup_discount(double coup_discount) {
 		this.coup_discount = coup_discount;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Cp{" + "coup_id=" + coup_id + ", coup_code='" + coup_code + '\'' + ", coup_description='"
