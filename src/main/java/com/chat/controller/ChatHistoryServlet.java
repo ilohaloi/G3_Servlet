@@ -14,12 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.outherutil.redis.RedisUtil;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @WebServlet("/api/chat/history")
 public class ChatHistoryServlet extends HttpServlet {
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static JedisPool pool = RedisUtil.getPool();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -44,7 +47,7 @@ public class ChatHistoryServlet extends HttpServlet {
     private Map<String, List<String>> getAllChatHistories(String ID) {
         Map<String, List<String>> chatHistories = new HashMap<>();
 
-        try (Jedis jedis = new Jedis("localhost", 6380)) {
+        try (Jedis jedis = pool.getResource()) {
         	jedis.select(5);
         	
         	if(ID == null) {
