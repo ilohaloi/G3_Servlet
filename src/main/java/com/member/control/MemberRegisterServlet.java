@@ -52,9 +52,11 @@ public class MemberRegisterServlet extends HttpServlet {
             return;
         }
 
-        // 檢查資料是否完整
-        if (memberVO.getEmail() == null || memberVO.getPassword() == null) {
+       
+        // 檢查是否有缺少必填欄位
+        if (memberVO.getEmail() == null || memberVO.getName() == null || memberVO.getPassword() == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.setContentType("application/json");
             resp.getWriter().write("{\"error\": \"資料不完整，請檢查必填欄位。\"}");
             return;
         }
@@ -62,10 +64,13 @@ public class MemberRegisterServlet extends HttpServlet {
         // 檢查 email 是否重複
         MemberJDBC memberJDBC = new MemberJDBC();
         if (memberJDBC.isEmailExists(memberVO.getEmail())) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            // 設置狀態碼為 409，表示資源衝突
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+            resp.setContentType("application/json");
             resp.getWriter().write("{\"error\": \"該電子郵件已被使用，請更換電子郵件。\"}");
             return;
         }
+
 
 //      // 使用BCrypt加密密碼
 //      String hashedPassword = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
